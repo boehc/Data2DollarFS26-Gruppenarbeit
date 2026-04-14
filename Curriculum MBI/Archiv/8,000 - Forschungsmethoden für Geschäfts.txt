@@ -1,0 +1,23 @@
+8,000  - Forschungsmethoden für Geschäftsinnovation
+8,004  - FPV: Digitale Kommunikation und Geschäftsmodelle
+8,006  - IC: Innovationen in Entwicklungsländern
+8,011  - FPV: Gestaltung Digitaler Produkte und Lösungen mit AI
+8,015  - Sustainable Innovation through Human-centered Design
+8,019  - Leveraging AI for Healthcare
+8,027  - Sustainable Corporate Strategies and Solutions
+8,029  - Corporate Transformation - An Integrative Perspective
+7,033  - Methods: Integrated Business Planning with Certificate
+8,036  - Entrepreneurial Finance
+8,040  - Selling Technology Solutions
+8,047  - Evaluating Innovation in Companies and at System Level
+8,232  - High-Growth Entrepreneurship: An International Applied Perspective
+7,000  - Grundlagen Business Innovation
+7,001  - Business Innovation I: Geschäftsmodelle entwickeln
+7,002  - Business Innovation II: Unternehmen gestalten und digital
+7,006  - FPV: Psychologie der Innovationsprozesse
+7,020  - IC: Aktuelle Managementfragestellungen im Schweizer
+7,041  - Asia Compact: Fintech Innovation in Singapore and Southeast
+7,047  - IC: Responsible Innovation Lab
+7,082  - Behavioral Science & Technology
+9,004  - FPV: Design Thinking mit KI
+9,005  - RPV: Aviation and Space Industry

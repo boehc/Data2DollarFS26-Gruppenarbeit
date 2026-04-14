@@ -1,0 +1,192 @@
+======================================================================
+STARTUP & SCALE-UP KEYWORD ANALYSIS
+======================================================================
+
+SUMMARY
+----------------------------------------------------------------------
+Courses in category:                        11
+Total unique keywords:                      134
+Total keyword mentions:                     155
+Average keywords per course:                14.1
+Keywords appearing multiple times:          17
+Overlap percentage:                         12.7%
+
+TOP 20 MOST COMMON KEYWORDS
+----------------------------------------------------------------------
+ 1. entrepreneurship                            4x
+ 2. venture capital                             4x
+ 3. AI                                          2x
+ 4. innovation                                  2x
+ 5. Design Thinking                             2x
+ 6. corporate venturing                         2x
+ 7. innovation partnerships                     2x
+ 8. stakeholder interactions                    2x
+ 9. investment process                          2x
+10. market entry                                2x
+11. resource access                             2x
+12. collaboration strategies                    2x
+13. business strategy                           2x
+14. technology access                           2x
+15. evaluation methods                          2x
+16. synergy realization                         2x
+17. interdisciplinary approach                  2x
+18. technology entrepreneurship                 1x
+19. scalable ventures                           1x
+20. pitch presentation                          1x
+
+KEYWORDS APPEARING MULTIPLE TIMES
+----------------------------------------------------------------------
+  entrepreneurship                                4x
+  venture capital                                 4x
+  AI                                              2x
+  innovation                                      2x
+  Design Thinking                                 2x
+  corporate venturing                             2x
+  innovation partnerships                         2x
+  stakeholder interactions                        2x
+  investment process                              2x
+  market entry                                    2x
+  resource access                                 2x
+  collaboration strategies                        2x
+  business strategy                               2x
+  technology access                               2x
+  evaluation methods                              2x
+  synergy realization                             2x
+  interdisciplinary approach                      2x
+
+ALL KEYWORDS (alphabetically sorted)
+----------------------------------------------------------------------
+AI                                                  2x
+AI tools                                            1x
+AWS                                                 1x
+Azure                                               1x
+Beobachtungstechniken                               1x
+Design Thinking                                     2x
+External Enablement Framework                       1x
+Feedback geben                                      1x
+Human Centered Design Thinking                      1x
+IP management                                       1x
+Innovationsphilosophie                              1x
+Interviewtechniken                                  1x
+Kundenbedürfnisse                                   1x
+Lean Startup                                        1x
+Lovable.dev                                         1x
+Next.js                                             1x
+Nutzerforschung                                     1x
+Nutzertests                                         1x
+Platform-as-a-Service                               1x
+Problem-Solution-Fit                                1x
+Product-Market-Fit                                  1x
+Prototypen entwickeln                               1x
+Rapid Prototyping                                   1x
+Scale-Up Navigator                                  1x
+St.Galler Startup Navigator                         1x
+Startup Navigator                                   1x
+Tailwind CSS                                        1x
+Teamarbeit                                          1x
+TypeScript                                          1x
+VC readiness                                        1x
+Vercel                                              1x
+behavioral metrics                                  1x
+behavioral science                                  1x
+business innovation                                 1x
+business model validation                           1x
+business opportunity evaluation                     1x
+business problem solving                            1x
+business strategy                                   2x
+case study                                          1x
+cloud services                                      1x
+collaboration                                       1x
+collaboration strategies                            2x
+consumer electronics                                1x
+contextual data                                     1x
+corporate venturing                                 2x
+creativity                                          1x
+customer expectations                               1x
+customer needs                                      1x
+data collection                                     1x
+data-driven products                                1x
+deal structures                                     1x
+digital health                                      1x
+digital media use                                   1x
+digitale Innovation                                 1x
+disruptive technology                               1x
+diversity in funding                                1x
+due diligence                                       1x
+emerging trends                                     1x
+entrepreneurial finance                             1x
+entrepreneurial mindset                             1x
+entrepreneurial ventures                            1x
+entrepreneurship                                    4x
+ethical considerations                              1x
+evaluation methods                                  2x
+execution strategy                                  1x
+exit strategies                                     1x
+financial modeling                                  1x
+founder friendliness                                1x
+funding sources                                     1x
+funding strategy                                    1x
+go-to market strategy                               1x
+growth planning                                     1x
+hands-on experience                                 1x
+human behavior analysis                             1x
+human-centered design                               1x
+hybrid teams                                        1x
+impact investing                                    1x
+innovation                                          2x
+innovation partnerships                             2x
+interdisciplinary approach                          2x
+interdisciplinary teams                             1x
+intrapreneurship                                    1x
+investment actors                                   1x
+investment committee                                1x
+investment criteria                                 1x
+investment evaluation                               1x
+investment lifecycle                                1x
+investment memo                                     1x
+investment pitches                                  1x
+investment process                                  2x
+iterative experience                                1x
+kreative Ideen                                      1x
+market dynamics                                     1x
+market entry                                        2x
+menschzentrierter Ansatz                            1x
+methodology                                         1x
+mobile sensing                                      1x
+negotiation skills                                  1x
+network leverage                                    1x
+opportunity identification                          1x
+payment gateways                                    1x
+physical activity                                   1x
+pitch presentation                                  1x
+privacy                                             1x
+product development                                 1x
+prototyping                                         1x
+real venture challenges                             1x
+resource access                                     2x
+sales and marketing                                 1x
+scalable tech architecture                          1x
+scalable ventures                                   1x
+secure authentication                               1x
+solution design                                     1x
+stakeholder interactions                            2x
+start-up evaluation                                 1x
+startup financing                                   1x
+surveys                                             1x
+synergy realization                                 2x
+team collaboration                                  1x
+team management                                     1x
+tech entrepreneurship                               1x
+tech scalability                                    1x
+technologische Entwicklung                          1x
+technology access                                   2x
+technology entrepreneurship                         1x
+transformative technology                           1x
+unique selling proposition                          1x
+user needs                                          1x
+valuation methods                                   1x
+value creation                                      1x
+value proposition                                   1x
+venture capital                                     4x
+venture financing                                   1x
+web-app development                                 1x

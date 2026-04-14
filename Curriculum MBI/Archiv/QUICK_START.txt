@@ -1,0 +1,132 @@
+═══════════════════════════════════════════════════════════════════════════════
+  🚀 MBI CURRICULUM SKILL EXTRACTION - QUICK START
+═══════════════════════════════════════════════════════════════════════════════
+
+📋 SCHRITT 1: API KEY EINRICHTEN
+────────────────────────────────────────────────────────────────────────────────
+
+1. Gehe zu: https://platform.openai.com/account/api-keys
+2. Erstelle einen neuen API Key (oder kopiere einen bestehenden)
+3. Öffne PowerShell und führe aus:
+   
+   $env:OPENAI_API_KEY = "sk-your-api-key-here"
+   
+   (Ersetze "sk-your-api-key-here" mit deinem echten Key!)
+
+✅ TIP: Den Key in der PowerShell mit: echo $env:OPENAI_API_KEY überprüfen
+
+
+📦 SCHRITT 2: ABHÄNGIGKEITEN INSTALLIEREN
+────────────────────────────────────────────────────────────────────────────────
+
+Öffne PowerShell im Verzeichnis und führe aus:
+
+   pip install openai pandas tqdm --upgrade
+
+
+🔍 SCHRITT 3: SETUP VALIDIEREN (OPTIONAL)
+────────────────────────────────────────────────────────────────────────────────
+
+Bevor du das Hauptskript ausführst, überprüfe die Einrichtung:
+
+   python validate_setup.py
+
+Ergebnis sollte sein: "🎉 ALL CHECKS PASSED!"
+
+
+▶️  SCHRITT 4: HAUPTSKRIPT AUSFÜHREN
+────────────────────────────────────────────────────────────────────────────────
+
+PowerShell:
+   cd "c:\Users\nadja\1_Data2Dollar\Kurskatalog"
+   python extract_skills_with_openai.py
+
+⏱️  Erwartete Dauer: 2-3 Minuten (je nach Anzahl der Kurse und API-Last)
+
+
+📊 SCHRITT 5: ERGEBNIS ÜBERPRÜFEN
+────────────────────────────────────────────────────────────────────────────────
+
+Nach erfolgreicher Ausführung:
+- ✅ Neue Datei: mbi_curriculum_enriched_v6.csv
+- ✅ Neue Spalte: extracted_keywords
+- Format: Komma-getrennte Keywords auf Englisch
+
+Öffne die Datei in Excel:
+   2x-Click auf mbi_curriculum_enriched_v6.csv
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  📁 DATEIEN IN DIESEM PROJEKT
+═══════════════════════════════════════════════════════════════════════════════
+
+HAUPTSKRIPTE:
+  ✓ extract_skills_with_openai.py      Hauptskript (führe dieses aus!)
+  ✓ validate_setup.py                  Setup-Validierung (vor dem Hauptskript)
+  ✓ QUICK_START.txt                    Diese Datei
+
+DOKUMENTATION:
+  ✓ SKILL_EXTRACTION_GUIDE.md           Detaillierte Anleitung & Troubleshooting
+
+INPUT:
+  ✓ 0_mbi_curriculum_database_withSections.csv   Eingabedatei
+
+OUTPUT (nach Ausführung):
+  ✓ mbi_curriculum_enriched_v6.csv     Neue CSV mit Keywords (wird erstellt)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  ⚡ HÄUFIGE FEHLER & LÖSUNGEN
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ "OPENAI_API_KEY environment variable not set"
+   → Lösung: $env:OPENAI_API_KEY = "sk-..." in PowerShell ausführen
+
+❌ "ModuleNotFoundError: No module named 'openai'"
+   → Lösung: pip install openai pandas tqdm
+
+❌ "FileNotFoundError: 0_mbi_curriculum_database_withSections.csv"
+   → Lösung: Stelle sicher, dass du im richtigen Verzeichnis bist (Siehe SCHRITT 4)
+
+❌ "OpenAI API rate limited"
+   → Lösung: Das Skript wartet automatisch. Keine weitere Aktion nötig.
+
+❌ "401 Invalid API Key"
+   → Lösung: Überprüfe deinen API Key auf https://platform.openai.com/account/api-keys
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  💰 KOSTEN & PERFORMANCE ÜBERSICHT
+═══════════════════════════════════════════════════════════════════════════════
+
+MODELL:           gpt-4o-mini ($0.00015 per 1K input tokens)
+DURCHSCHNITTLICHE ANZAHL KURSE:    ~123
+TOKEN PRO KURS:   ~500-800
+GESCHÄTZTE KOSTEN:   $15-25 USD
+GESCHÄTZTE ZEIT:    2-3 Minuten
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  🎯 NÄCHSTE SCHRITTE NACH ERFOLGREICHER AUSFÜHRUNG
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Öffne mbi_curriculum_enriched_v6.csv in Excel
+2. Überprüfe ein paar Zeilen manuell (sind die Keywords sinnvoll?)
+3. Falls Anpassungen nötig: Bearbeite den Prompt im extract_skills_with_openai.py
+   (Zeile ~25-40) und führe das Skript erneut aus
+4. Integriere die neue Datei in deinen Workflow
+5. Optional: Erstelle eine Analyse der häufigsten Keywords
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  📞 WEITERE HILFE
+═══════════════════════════════════════════════════════════════════════════════
+
+Detaillierte Anleitung:   Öffne: SKILL_EXTRACTION_GUIDE.md
+OpenAI Documentation:     https://platform.openai.com/docs
+API Keys Verwalten:       https://platform.openai.com/account/api-keys
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                    Ready? Run: python extract_skills_with_openai.py
+═══════════════════════════════════════════════════════════════════════════════
