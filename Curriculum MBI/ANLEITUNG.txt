@@ -1,0 +1,340 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║          MBI KURSKATALOG — VOLLSTÄNDIGE PIPELINE-ANLEITUNG                 ║
+║          Von Null bis zum fertigen 0_mbi_curriculum_final.csv              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Erstellt: April 2026
+Ziel: Alle MBI-Merkblätter scrapen → Texte extrahieren → Keywords mit KI
+      anreichern → fertiges CSV als Endresultat
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÜBERBLICK DER PIPELINE (4 Schritte)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [SCHRITT 0]  Einmalige Einrichtung (Umgebung + Dependencies)
+
+  [SCHRITT 1]  Scraper ausführen → Merkblatt-PDFs herunterladen
+                  0_Scraper_HS25.py  → Herbstsemester 2025
+                  0_Scraper_FS26.py  → Frühjahrssemester 2026
+
+  [SCHRITT 2]  PDFs in CSV umwandeln
+                  1_PDF_Extractor_to_CSV.py → mbi_curriculum_database.csv
+                                           → mbi_curriculum_database_withSections.csv
+
+  [SCHRITT 3]  Keywords mit OpenAI API extrahieren
+                  2_extract_keywords_pipeline.py → mbi_curriculum_enriched_keywords.csv
+
+  [SCHRITT 4]  Startup-spezifische Keywords filtern (optional)
+                  3_extract_startup_keywords.py → Startup_Scaleup_keywords.csv
+
+  ENDRESULTAT: 0_mbi_curriculum_final.csv
+               (alle Kurse mit Metadaten, MBI-Profil-Flags und Keywords)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHRITT 0 — EINMALIGE EINRICHTUNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Voraussetzungen:
+  - Python 3.11+ installiert
+  - Google Chrome installiert (für den Selenium-Scraper)
+  - OpenAI API Key für Schritt 3
+
+Virtuelle Umgebung erstellen und aktivieren:
+  python -m venv .venv
+  .venv\Scripts\activate          (Windows)
+  source .venv/bin/activate       (Mac/Linux)
+
+Basis-Pakete installieren (für Scraper + PDF-Extraktion):
+  pip install -r requirements.txt
+
+Inhalt requirements.txt:
+  selenium>=4.6.0
+  webdriver-manager>=3.8.0
+  requests>=2.31.0
+  pdfplumber>=0.10.0
+  pandas>=2.0.0
+  openpyxl>=3.1.0
+
+Zusatzpaket für Scraper (undetected Chrome):
+  pip install undetected-chromedriver
+
+Zusatzpakete für Schritt 3 (Keyword-Extraktion via OpenAI):
+  pip install -r requirements_skill_extraction.txt
+
+Inhalt requirements_skill_extraction.txt:
+  openai>=1.0.0
+  pandas>=2.0.0
+  tqdm>=4.65.0
+
+OpenAI API Key setzen (einmalig pro Session):
+  $env:OPENAI_API_KEY = "sk-..."    (Windows PowerShell)
+  export OPENAI_API_KEY="sk-..."    (Mac/Linux)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHRITT 1 — MERKBLATT-PDFs HERUNTERLADEN (Scraper)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Welche Dateien: 0_Scraper_HS25.py / 0_Scraper_FS26.py
+Benötigt:       Chrome-Browser, undetected-chromedriver, Internetverbindung
+
+Ausführen:
+  python 0_Scraper_HS25.py       ← Herbstsemester 2025
+  python 0_Scraper_FS26.py       ← Frühjahrssemester 2026
+
+Was passiert:
+  - Browser öffnet courses.unisg.ch automatisch
+  - Navigiert zu Master → 18MBIh → Fachstudium
+  - Klappt alle Baumknoten auf (Pflichtbereich, Vertiefungen, …)
+  - Sammelt alle Kurslinks und lädt für jeden Kurs das Merkblatt-PDF herunter
+  - HS25-Scraper speichert in:  mbi_hs25_ohne_wahlbereich/   (54 PDFs)
+  - FS26-Scraper speichert in:  FS26_mbi_ohne_wahlbereich/   (39 PDFs, gefiltert)
+                       und in:  mbi_course_sheets_FS26_all/  (126 PDFs, alle)
+
+WICHTIG — Ordnernamen:
+  Der HS25-Scraper legt den Ordner mbi_hs25_ohne_wahlbereich/ an (Kleinbuchstaben).
+  Das Skript 1_PDF_Extractor_to_CSV.py sucht aber nach HS25_mbi_ohne_wahlbereich/
+  (anderer Name!). Entweder den Ordner umbenennen ODER in Schritt 2 den Pfad
+  im Skript anpassen (Zeile ~80, Variable PDF_DIRECTORIES):
+
+    PDF_DIRECTORIES = [
+        Path("FS26_mbi_ohne_wahlbereich"),
+        Path("mbi_hs25_ohne_wahlbereich"),   ← diesen Pfad korrekt setzen
+    ]
+
+Ergebnis: Zwei Ordner mit PDFs — je einer pro Semester.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHRITT 2 — PDFs IN CSV UMWANDELN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Welche Datei:  1_PDF_Extractor_to_CSV.py
+Liest:         FS26_mbi_ohne_wahlbereich/  und  mbi_hs25_ohne_wahlbereich/
+Gibt aus:      mbi_curriculum_database.csv  (dann manuell umbenennen, s.u.)
+
+Ausführen:
+  python 1_PDF_Extractor_to_CSV.py
+
+Was passiert:
+  - Liest alle PDFs aus beiden Ordnern mit pdfplumber
+  - Erkennt automatisch Sprache (DE/EN)
+  - Extrahiert pro Kurs:
+      course_id, course_title, ects, language
+      learning_objectives_raw  (Lernziele)
+      course_content_raw       (Kursinhalte)
+      mbi_profile              (eine der 6 Fachrichtungen)
+  - Speichert als mbi_curriculum_database.csv (ca. ~94 Zeilen)
+
+Nach dem Ausführen:
+  Das resultierende mbi_curriculum_database.csv manuell prüfen und
+  ggf. umbenennen zu mbi_curriculum_database_withSections.csv, damit
+  Schritt 3 es einlesen kann.
+
+  HINWEIS: Das Skript 2_extract_keywords_pipeline.py sucht nach:
+    INPUT_FILE = "0_mbi_curriculum_database_withSections.csv"
+  Die tatsächliche Datei heißt aber mbi_curriculum_database_withSections.csv.
+  Entweder die Datei umbenennen (Präfix 0_ hinzufügen) ODER den INPUT_FILE-
+  Wert in Schritt 3 anpassen.
+
+Ergebnis: mbi_curriculum_database_withSections.csv mit allen Kurs-Metadaten.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHRITT 3 — KEYWORDS MIT OPENAI EXTRAHIEREN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Welche Datei:  2_extract_keywords_pipeline.py
+Liest:         0_mbi_curriculum_database_withSections.csv
+Gibt aus:      mbi_curriculum_enriched_keywords.csv
+Braucht:       OpenAI API Key (Umgebungsvariable OPENAI_API_KEY)
+
+Kosten: GPT-4o-mini ist sehr günstig (<1$ für ~94 Kurse).
+        GPT-4o liefert bessere Ergebnisse, aber ist ca. 10–20x teurer.
+
+Testlauf zuerst (nur 3 Kurse, um API-Key und Format zu prüfen):
+  python 2_extract_keywords_pipeline.py --test
+
+Vollständiger Produktionslauf:
+  python 2_extract_keywords_pipeline.py
+
+Mit besserem Modell:
+  python 2_extract_keywords_pipeline.py --model gpt-4o
+
+Was passiert:
+  - Lädt das CSV mit allen Kursen
+  - Pro Kurs: kombiniert Lernziele + Kursinhalte und schickt sie an OpenAI
+  - OpenAI extrahiert englische Keywords (Hard Skills, Tools, Methoden, Domänen)
+  - Keywords werden mit | (Pipe) getrennt gespeichert (kein Konflikt mit CSV-Semikolon)
+  - Schreibt Checkpoint nach jeder Zeile → bei Abbruch kann weitergemacht werden
+
+Checkpoint-Verhalten:
+  Bei Unterbrechung (Strg+C) einfach neu starten — das Skript macht dort weiter,
+  wo es aufgehört hat. Checkpoint liegt in: .keyword_extraction_checkpoint.json
+
+Ergebnis: mbi_curriculum_enriched_keywords.csv
+          (alle ursprünglichen Spalten + neue Spalte extracted_keywords)
+
+Nach dem Ausführen:
+  Das Skript 3_extract_startup_keywords.py liest 0.1_mbi_curriculum_enriched_keywords.csv.
+  Datei also umbenennen oder den INPUT_FILE-Wert im Skript anpassen.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHRITT 4 — STARTUP-KEYWORDS EXTRAHIEREN (optional)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Welche Datei:  3_extract_startup_keywords.py
+Liest:         0.1_mbi_curriculum_enriched_keywords.csv
+Gibt aus:      Startup_Scaleup_keywords.csv
+               Startup_Scaleup_keywords_analysis.txt
+
+Ausführen:
+  python 3_extract_startup_keywords.py
+
+Was passiert:
+  - Filtert alle Kurse, die zur MBI-Fachrichtung "Startup & Scale-up" gehören
+  - Sammelt alle extrahierten Keywords dieser Kurse
+  - Erstellt Häufigkeitsanalyse und speichert in zwei Ausgabedateien
+
+Ergebnis: Startup_Scaleup_keywords.csv + Startup_Scaleup_keywords_analysis.txt
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENDRESULTAT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  0_mbi_curriculum_final.csv
+
+Spalten:
+  pdf_file                  Quelldatei (z.B. 8,000,1.00.pdf)
+  course_id                 Kursnummer
+  course_title              Vollständiger Kursname
+  ects                      3, 4 oder 6 Punkte
+  language                  DE oder EN
+  learning_objectives_raw   Lernziele (Rohtext aus PDF)
+  course_content_raw        Kursinhalte (Rohtext aus PDF)
+  Business Development      1 = Kurs gehört zu dieser Fachrichtung, 0 = nicht
+  Digital Channel & CRM     1 / 0
+  Startup & Scale-up        1 / 0
+  Supply Chain & Operations 1 / 0
+  Technology Architecture   1 / 0
+  Digital Transformation    1 / 0
+  extracted_keywords        Keywords getrennt mit | (Pipe)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATEIEN — WAS WIRD BENÖTIGT, WAS NICHT?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+KERNPIPELINE — diese Dateien werden wirklich gebraucht:
+  0_Scraper_HS25.py                      Scraper Herbstsemester
+  0_Scraper_FS26.py                      Scraper Frühjahrssemester
+  1_PDF_Extractor_to_CSV.py              PDF → CSV Konvertierung
+  2_extract_keywords_pipeline.py         OpenAI Keyword-Extraktion
+  3_extract_startup_keywords.py          Startup-Filter (falls gebraucht)
+  requirements.txt                       Pakete für Schritt 0–2
+  requirements_skill_extraction.txt      Pakete für Schritt 3
+  mbi_hs25_ohne_wahlbereich/             Heruntergeladene HS25-PDFs
+  FS26_mbi_ohne_wahlbereich/             Heruntergeladene FS26-PDFs (gefiltert)
+
+ZWISCHENERGEBNISSE — entstehen automatisch, kein manueller Schritt nötig:
+  mbi_curriculum_database.csv           Output von Schritt 2
+  mbi_curriculum_database_withSections.csv   bereinigtes/umbenanntes CSV
+  mbi_curriculum_enriched_keywords.csv  Output von Schritt 3
+  .keyword_extraction_checkpoint.json   Checkpoint für Schritt 3
+
+ENDRESULTAT:
+  0_mbi_curriculum_final.csv            Das fertige Datenprojekt-Ergebnis
+
+NICHT BENÖTIGT FÜR DIE PIPELINE (Debug/Analyse-Skripte):
+  analyze_broschure.py                  Analyse der Broschüre (Einzel-Tool)
+  check_duplicates.py                   Duplikate prüfen
+  debug_fullsections.py                 Debug für Sektionen
+  debug_profiles.py                     Debug für MBI-Profile
+  debug_sections.py                     Debug für Sektionen
+  extract_full_broschure.py             Broschüren-Extraktion
+  list_unclassified.py                  Nicht klassifizierte Kurse anzeigen
+  PDF_ANALYSIS.py                       Einzelne PDF analysieren
+  preview_multiprofile_csv.py           CSV Preview
+  preview_v5_sections.py                Preview v5 Datenbank
+  QUICK_REFERENCE.py                    Cheat-Sheet (Leseskript)
+
+TXT-DATEIEN (Outputs / Doku — kein Skript braucht sie als Input):
+  _broschure_full_text.txt              Aus der Broschüre extrahierter Volltext
+  8,000 - Forschungsmethoden...txt      Extrahierter Text eines einzelnen Kurses
+  Startup_Scaleup_keywords_analysis.txt Output von Schritt 4
+  pipeline_run.log                      Log-Protokoll eines früheren Laufs
+
+DOKUMENTATION (reine Lesedokumente):
+  PROJECT_SUMMARY.md                    Executive Summary des Projekts
+  SKILL_EXTRACTION_GUIDE.md            Guide zur Keyword-Extraktion
+  QUICK_START.txt                       Kurzanleitung
+  00_START_HERE.txt                     Ältere Einstiegsdoku
+  00_SETUP_COMPLETE.txt                 Setup-Bestätigung
+  PIPELINE_ANLEITUNG.txt                Diese Datei
+
+ÄLTERE CSV-VERSIONEN (nicht mehr relevant):
+  mbi_curriculum_database_v5.csv        Ältere Zwischenversion
+
+ORDNER MIT MEHR PDFs (Vollständige Sammlung, nicht MBI-gefiltert):
+  mbi_course_sheets_FS26_all/           Alle 126 FS26-PDFs inkl. Wahlkurse
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BEKANNTE STOLPERSTEINE (Naming-Inkonsistenzen)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. HS25-Ordnername:
+   Scraper legt an:  mbi_hs25_ohne_wahlbereich/
+   Extractor sucht:  HS25_mbi_ohne_wahlbereich/
+   → Lösung: Ordner umbenennen ODER PDF_DIRECTORIES in 1_PDF_Extractor_to_CSV.py
+              (ca. Zeile 80) auf "mbi_hs25_ohne_wahlbereich" setzen.
+
+2. Input-Dateiname für Schritt 3:
+   Extractor gibt aus:   mbi_curriculum_database.csv
+   Pipeline liest aber:  0_mbi_curriculum_database_withSections.csv
+   → Lösung: Die CSV nach Schritt 2 umbenennen, oder INPUT_FILE in
+              2_extract_keywords_pipeline.py anpassen.
+
+3. Input-Dateiname für Schritt 4:
+   Pipeline gibt aus:        mbi_curriculum_enriched_keywords.csv
+   Startup-Skript liest:     0.1_mbi_curriculum_enriched_keywords.csv
+   → Lösung: Die CSV nach Schritt 3 umbenennen, oder INPUT_FILE in
+              3_extract_startup_keywords.py anpassen.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KURZÜBERSICHT — BEFEHLE IN REIHENFOLGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  # 0. Einmalig: Umgebung einrichten
+  python -m venv .venv
+  .venv\Scripts\activate
+  pip install -r requirements.txt
+  pip install undetected-chromedriver
+  pip install -r requirements_skill_extraction.txt
+  $env:OPENAI_API_KEY = "sk-..."
+
+  # 1. PDFs herunterladen
+  python 0_Scraper_HS25.py
+  python 0_Scraper_FS26.py
+
+  # 1b. Ordnernamen prüfen / ggf. anpassen (s. Stolpersteine oben)
+
+  # 2. PDFs → CSV
+  python 1_PDF_Extractor_to_CSV.py
+  # Ergebnis prüfen, dann umbenennen zu 0_mbi_curriculum_database_withSections.csv
+
+  # 3. Keywords extrahieren (zuerst testen!)
+  python 2_extract_keywords_pipeline.py --test
+  python 2_extract_keywords_pipeline.py
+  # Ergebnis umbenennen zu 0.1_mbi_curriculum_enriched_keywords.csv
+
+  # 4. Startup-Keywords (optional)
+  python 3_extract_startup_keywords.py
+
+  # → FERTIG: 0_mbi_curriculum_final.csv ist das Endresultat.
+
+══════════════════════════════════════════════════════════════════════════════
