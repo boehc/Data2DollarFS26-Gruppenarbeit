@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Visualisierung – Quarterly Keyword Comparison</title>
+    
+    <!-- Plotly.js Library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📊 Trend-Analyse</h1>
+            <p class="subtitle">Quartalsweise Keyword-Trends vergleichen</p>
+        </header>
+        
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-group keywords-group">
+                <label class="label">
+                    <strong>Keywords auswählen</strong>
+                    <span class="hint">— klicken zum Auswählen</span>
+                </label>
+                <div id="keywordsList" class="keywords-list">
+                    <div class="loading">Lädt Keywords...</div>
+                </div>
+            </div>
+            
+            <div class="control-group buttons-group">
+                <button id="selectAllButton" class="select-all-button">✓ Alle auswählen</button>
+                <button id="resetButton" class="reset-button">↻ Zurücksetzen</button>
+            </div>
+        </div>
+        
+        <!-- Warning Message -->
+        <div id="warningMessage" class="warning-message" style="display: none;"></div>
+        
+        <!-- Empty State Message -->
+        <div id="emptyStateMessage" class="empty-state-message" style="display: none;">
+            <div class="empty-state-content">
+                <p>👆 Bitte wählen Sie mindestens ein Keyword aus der Liste oben</p>
+            </div>
+        </div>
+        
+        <!-- Chart Container -->
+        <div id="chartWrapper" class="chart-wrapper" style="display: none;">
+            <div id="chart" class="chart"></div>
+        </div>
+        
+        <!-- Footer Info -->
+        <footer class="footer">
+            <p>
+                <strong>Hinweis:</strong> Die Visualisierung zeigt normalisierte Quartalswerte (%). 
+                Hovern Sie über die Linien für genaue Werte.
+            </p>
+        </footer>
+    </div>
+    
+    <!-- JavaScript mit eingebetteten Daten -->
+    <script src="script.js"></script>
+</body>
+</html>
