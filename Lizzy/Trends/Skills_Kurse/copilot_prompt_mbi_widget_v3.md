@@ -23,22 +23,22 @@ Das Widget hat zwei Bereiche:
 Lizzy bewertet sich selbst pro Domain: stark / okay / Lücke.
 Basierend auf ihren Lücken erscheint darunter eine priorisierte Kursliste.
 
-### Die 12 EC-Domains mit Evidenz-Gewicht und MBI-Abdeckung (bilinguales DE+EN Matching)
+### Die 12 EC-Domains mit Anzahl MBI-Kurse (bilinguales DE+EN Matching)
 
-| Domain | Evidenz für Startup-Erfolg | MBI-Kurse | Hinweis |
-|--------|---------------------------|-----------|---------|
-| Opportunity | SEHR STARK | 3 Kurse | ⚠ kritischste Lücke |
-| Strategic | SEHR STARK | 25 Kurse |  |
-| Commitment | SEHR STARK | 25 Kurse |  |
-| Analytical | SEHR STARK | 37 Kurse |  |
-| Innovative | STARK | 22 Kurse |  |
-| Human | STARK | 23 Kurse |  |
-| Operational | STARK | 50 Kurse |  |
-| Relationship | SEHR STARK | 47 Kurse |  |
-| Learning | STARK | 54 Kurse |  |
-| Personal Strength | MODERAT | 12 Kurse | ⚠ Pitch-Lücke |
-| Technical | MODERAT | 43 Kurse |  |
-| Ethical | MODERAT | 12 Kurse |  |
+| Domain | MBI-Kurse |
+|--------|-----------|
+| Opportunity | 3 |
+| Strategic | 25 |
+| Commitment | 25 |
+| Analytical | 37 |
+| Innovative | 22 |
+| Human | 23 |
+| Operational | 50 |
+| Relationship | 47 |
+| Learning | 54 |
+| Personal Strength | 12 |
+| Technical | 43 |
+| Ethical | 12 |
 
 ### Kurse pro EC-Domain (bilingual DE+EN, sortiert nach Score)
 
@@ -475,9 +475,9 @@ Sektor: Robotics (3 Kurse)
 
 ### BEREICH A — EC Self-Assessment
 - 12 klickbare Karten, je eine pro EC-Domain
-- Jede Karte zeigt: Domain-Name, Evidenz-Gewicht, Anzahl MBI-Kurse
+- Jede Karte zeigt: Domain-Name und Anzahl MBI-Kurse
 - 3 Zustände pro Karte: neutral (noch nicht bewertet) / stark (grün) / Lücke (orange)
-- Karten mit ⚠ (Opportunity, Personal Strength) standardmässig hervorgehoben
+- Alle 12 Karten optisch gleich — keine Hervorhebungen
 - Darunter: dynamische Kursliste — zeigt nur Kurse für Domains die als "Lücke" markiert
 - Kursliste sortiert nach score DESC, zeigt Kursname + ECTS + Sprache + betroffene EC-Domains
 
@@ -488,8 +488,8 @@ Sektor: Robotics (3 Kurse)
 
 ### Styling
 - Farben: akademisch, ruhig — kein buntes Pop-Color-Schema
-- Lücken-Domains (Opportunity, Personal Strength): orange/amber Hervorhebung
-- Stark-Domains: grün/teal
+- Lücke-Zustand: orange/amber
+- Stark-Zustand: grün/teal
 - "Doppelt wertvoll" Badge: blau
 - Schrift: System-Font, gut lesbar bei Präsentation auf Beamer
 
@@ -497,7 +497,7 @@ Sektor: Robotics (3 Kurse)
 
 ## Datengrundlage
 Alle Scores basieren auf bilingualen DE+EN Keyword-Matching (Scoring 0–3, gekappt bei 3).
-Quelle: mbi_ec_sector_matrix_bilingual.csv (84 Kurse × 24 Spalten)
+Quelle: mbi_ec_sector_matrix_bilingual.csv (84 Kurse x 24 Spalten)
 
 ---
 
