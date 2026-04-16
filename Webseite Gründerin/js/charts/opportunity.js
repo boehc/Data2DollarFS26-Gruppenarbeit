@@ -1,5 +1,5 @@
 /**
- * data2dollar – Opportunity Analysis
+ * Lizzys – Opportunity Analysis
  * Plotly.js · News × VC · Tech × Industry
  */
 
@@ -7,7 +7,7 @@ const QUARTERS = ["2023-Q1","2023-Q2","2023-Q3","2023-Q4","2024-Q1","2024-Q2","2
 
 const MATRIX_A = [
   {kw:"BioTech",n25:3.0,d25:32.2,dg:4.7,td:413},
-  {kw:"FinTech",n25:17.5,d25:37.8,dg:1.3,td:465},
+  {kw:"FinTech",n25:17.5,d25:37.8,dg:-1.5,td:465},
   {kw:"ClimateTech",n25:3.8,d25:10.2,dg:-6.6,td:169},
   {kw:"HealthTech",n25:5.8,d25:4.2,dg:0.0,td:48},
   {kw:"MedTech",n25:0.2,d25:5.2,dg:1.7,td:65},
@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHeatmap();
   renderTechDive();
   renderRobotics();
+  renderRecommendation();
 });
 
 // ===== MATRIX =====
@@ -88,8 +89,6 @@ function renderMatrix() {
     customdata: d.map(r=>[r.td,r.dg]),
     hovertemplate:'<b>%{text}</b><br>News 2025: %{x:.1f}%<br>Deals 2025: %{y:.1f}%<br>Total Deals: %{customdata[0]}<br>Trend: %{customdata[1]:+.1f}%/a<extra></extra>'
   };
-
-  // Quadrant lines
   const shapes = [
     {type:'line',x0:4,x1:4,y0:0,y1:40,line:{color:'rgba(255,255,255,0.1)',dash:'dot',width:1}},
     {type:'line',x0:0,x1:20,y0:8,y1:8,line:{color:'rgba(255,255,255,0.1)',dash:'dot',width:1}}
@@ -100,7 +99,6 @@ function renderMatrix() {
     {x:1,y:1,text:'Nische',showarrow:false,font:{size:10,color:'#6b7280'}},
     {x:15,y:1,text:'Hype ohne Deals',showarrow:false,font:{size:10,color:'#FF7A45'}}
   ];
-
   Plotly.newPlot('matrixChart',[trace],ml({
     xaxis:{title:{text:'News-Anteil 2025 (%)'}},
     yaxis:{title:{text:'Deal-Anteil 2025 (%)'}},
@@ -114,11 +112,19 @@ function renderRanking() {
   const tbody = document.querySelector('#rankingTable tbody');
   tbody.innerHTML = sorted.map((r,i) => {
     let signal, cls;
-    if (r.d25>15 && r.dg>0) { signal='🟢 Sehr attraktiv'; cls='color:#00E5A0'; }
-    else if (r.d25>3 && r.dg>=0) { signal='🟢 Attraktiv'; cls='color:#00E5A0'; }
-    else if (r.dg>0) { signal='🟡 Wachsend'; cls='color:#fbbf24'; }
-    else if (r.dg>-2) { signal='🟡 Stabil'; cls='color:#fbbf24'; }
-    else { signal='🔴 Rückläufig'; cls='color:#ef4444'; }
+    if (r.kw === 'FinTech') {
+      signal='🟡 Stagnierend'; cls='color:#fbbf24';
+    } else if (r.d25>15 && r.dg>0) {
+      signal='🟢 Sehr attraktiv'; cls='color:#00E5A0';
+    } else if (r.d25>3 && r.dg>=0) {
+      signal='🟢 Attraktiv'; cls='color:#00E5A0';
+    } else if (r.dg>0) {
+      signal='🟡 Wachsend'; cls='color:#fbbf24';
+    } else if (r.dg>-2) {
+      signal='🟡 Stabil'; cls='color:#fbbf24';
+    } else {
+      signal='🔴 Rückläufig'; cls='color:#ef4444';
+    }
     return `<tr>
       <td>${i+1}</td>
       <td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${C[r.kw]||'#6b7280'};margin-right:6px;vertical-align:middle;"></span>${r.kw}</td>
@@ -148,7 +154,7 @@ function renderHeatmap() {
   }),CFG);
 }
 
-// ===== TECH DIVE: GenAI + AgentAI =====
+// ===== TECH DIVE =====
 function renderTechDive() {
   const qs = TECH_DIVE.map(d=>d.q);
   const traces = [
@@ -159,8 +165,7 @@ function renderTechDive() {
   Plotly.newPlot('techDiveChart',traces,ml({
     yaxis:{title:{text:'News-Artikel'},side:'left'},
     yaxis2:{title:{text:'CH VC-Deals'},overlaying:'y',side:'right',tickfont:{size:11,color:'#8B949E'},gridcolor:'rgba(0,0,0,0)'},
-    xaxis:{tickangle:-45},
-    legend:{y:-0.3}
+    xaxis:{tickangle:-45},legend:{y:-0.3}
   }),CFG);
 }
 
@@ -174,7 +179,79 @@ function renderRobotics() {
   Plotly.newPlot('roboticsChart',traces,ml({
     yaxis:{title:{text:'News-Artikel'},side:'left'},
     yaxis2:{title:{text:'CH VC-Deals'},overlaying:'y',side:'right',tickfont:{size:11,color:'#8B949E'},gridcolor:'rgba(0,0,0,0)'},
-    xaxis:{tickangle:-45},
-    legend:{y:-0.3}
+    xaxis:{tickangle:-45},legend:{y:-0.3}
   }),CFG);
+}
+
+// ===== RECOMMENDATION =====
+const SECTOR_SKILLS = {
+  BioTech:    {need:['Analytical','Technical','Ethical'],nice:['Strategic','Learning'],label:'BioTech',why:'Stärkstes Schweizer VC-Ökosystem. Erfordert wissenschaftliches Verständnis oder starke technische Co-Founder.'},
+  FinTech:    {need:['Analytical','Technical','Strategic'],nice:['Innovative','Operational'],label:'FinTech',why:'Historisch meiste Deals, aber stagnierend. Differenzierung nötig (z.B. GenAI-Layer, Nische).'},
+  HealthTech: {need:['Analytical','Human','Ethical'],nice:['Technical','Innovative'],label:'HealthTech',why:'Solide Deal-Basis, starkes Schweizer Gesundheitssystem. GenAI als Hebel.'},
+  MedTech:    {need:['Technical','Analytical','Ethical'],nice:['Operational','Strategic'],label:'MedTech',why:'Regulatorisches Know-how essentiell. Starker Standortvorteil Schweiz.'},
+  ClimateTech:{need:['Technical','Ethical','Strategic'],nice:['Commitment','Innovative'],label:'ClimateTech',why:'Deal-Anteil sinkt, aber gesellschaftlich relevant. Regulatorisches Know-how nötig.'},
+  GenAI:      {need:['Technical','Innovative','Analytical'],nice:['Strategic','Learning'],label:'GenAI-Startup',why:'Deals steigen, noch klein. Besser als Tech-Layer auf bestehende Branchen.'},
+  Robotics:   {need:['Technical','Innovative','Commitment'],nice:['Strategic','Operational'],label:'Robotics',why:'Steigende News + erste Deals. Kapitalintensiv, ETHZ-Nähe als Vorteil.'},
+};
+
+function renderRecommendation() {
+  const container = document.getElementById('recoContent');
+  if (!container) return;
+
+  let ecData;
+  try {
+    ecData = JSON.parse(localStorage.getItem('lizzys_ec_assessment'));
+    if (!ecData || typeof ecData !== 'object') throw 'no data';
+    // Check if assessment is complete
+    const filled = Object.values(ecData).filter(v => v !== null && v !== undefined);
+    if (filled.length < 6) throw 'incomplete';
+  } catch(e) {
+    return; // Keep placeholder
+  }
+
+  // Score each sector based on user skills
+  const scored = Object.entries(SECTOR_SKILLS).map(([key, cfg]) => {
+    const needScores = cfg.need.map(d => ecData[d] || 1);
+    const niceScores = cfg.nice.map(d => ecData[d] || 1);
+    const needAvg = needScores.reduce((a,b)=>a+b,0) / needScores.length;
+    const niceAvg = niceScores.reduce((a,b)=>a+b,0) / niceScores.length;
+    const skillScore = needAvg * 0.7 + niceAvg * 0.3;
+
+    // Market score from MATRIX_A
+    const mkt = MATRIX_A.find(m => m.kw === key);
+    const marketScore = mkt ? (mkt.d25 * 0.5 + Math.max(0, mkt.dg + 3) * 2 + mkt.n25 * 0.3) : 0;
+
+    const totalScore = skillScore * 0.4 + marketScore * 0.08;
+    return { key, ...cfg, skillScore, marketScore, totalScore, needScores, niceScores, needAvg, niceAvg };
+  });
+
+  scored.sort((a, b) => b.totalScore - a.totalScore);
+
+  const avgSelf = Object.values(ecData).filter(v=>v).reduce((a,b)=>a+b,0) / Object.values(ecData).filter(v=>v).length;
+
+  let html = `<div class="reco-summary">
+    <p>📊 Dein Ø Kompetenz-Score: <strong>${avgSelf.toFixed(1)} / 5</strong></p>
+  </div>
+  <div class="reco-grid">`;
+
+  scored.forEach((s, i) => {
+    const stars = s.skillScore >= 4 ? '🟢' : s.skillScore >= 3 ? '🟡' : '🔴';
+    const mktStars = s.marketScore > 15 ? '🟢' : s.marketScore > 5 ? '🟡' : '🔴';
+    const gaps = s.needScores.filter(v => v < 3).length;
+    const rank = i + 1;
+
+    html += `<div class="reco-card ${rank <= 3 ? 'reco-card--top' : ''}">
+      <div class="reco-rank">#${rank}</div>
+      <h4><span style="color:${C[s.key]||'#fff'}">■</span> ${s.label}</h4>
+      <div class="reco-scores">
+        <span>${stars} Skill-Fit: ${s.skillScore.toFixed(1)}/5</span>
+        <span>${mktStars} Markt-Score: ${s.marketScore.toFixed(0)}</span>
+      </div>
+      <p class="reco-why">${s.why}</p>
+      ${gaps > 0 ? `<p class="reco-gap">⚠️ ${gaps} Kernkompetenz(en) unter Level 3 – <a href="courses.html" style="color:var(--accent)">Kurse ansehen</a></p>` : '<p class="reco-gap" style="color:var(--accent)">✅ Alle Kernkompetenzen auf gutem Level</p>'}
+    </div>`;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
 }

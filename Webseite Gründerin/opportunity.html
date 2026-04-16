@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gründungs-Opportunity – data2dollar</title>
+    <title>Gründungs-Opportunity – Lizzys</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 <body>
     <nav class="nav" id="mainNav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">data2dollar</a>
+            <a href="index.html" class="nav-logo">Lizzys</a>
             <div class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="trends.html" class="nav-link">Trends</a>
@@ -65,6 +65,7 @@
                 <button class="sector-tab active" data-tab="matrix">🗺️ Opportunity-Matrix</button>
                 <button class="sector-tab" data-tab="heatmap">🔥 Tech × Branche</button>
                 <button class="sector-tab" data-tab="techdive">📈 Tech Deep Dive</button>
+                <button class="sector-tab" data-tab="reco">🎯 Deine Empfehlung</button>
             </div>
         </div>
     </section>
@@ -119,6 +120,23 @@
         </div></div></section>
     </div>
 
+    <!-- Recommendation Tab -->
+    <div id="tab-reco" class="opp-tab-content" style="display:none;">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Deine persönliche Empfehlung</h3>
+                <span class="chart-controls-hint">Basierend auf deiner Selbsteinschätzung (MBI-Kurse) × Markt-Opportunity</span>
+            </div></div>
+            <div id="recoContent" class="reco-content">
+                <div class="reco-placeholder">
+                    <p>⚠️ Du hast noch keine Selbsteinschätzung gemacht.</p>
+                    <p>Gehe zuerst zum <a href="courses.html" style="color:var(--accent);">MBI-Kurse Wizard</a> und bewerte deine Kompetenzen.</p>
+                    <p>Dann komm hierhin zurück für deine persönliche Empfehlung.</p>
+                </div>
+            </div>
+        </div></div></section>
+    </div>
+
     <!-- Fazit -->
     <section class="chart-section" id="fazit">
         <div class="container">
@@ -127,11 +145,15 @@
                 <div class="fazit-grid">
                     <div class="fazit-item fazit-item--green">
                         <h4>🟢 Sehr attraktiv</h4>
-                        <p><strong>FinTech & BioTech</strong> — Höchste VC-Aktivität, bewährtes Ökosystem, starke Schweizer Infrastruktur. Idealer Einstieg für MBI-Absolvent:innen mit Business-Fokus.</p>
+                        <p><strong>BioTech</strong> — Höchste VC-Aktivität und wachsend. Starkes Schweizer Ökosystem (Basel, Genf, Lausanne). Erfordert Domänenwissen oder starke Co-Founder.</p>
                     </div>
                     <div class="fazit-item fazit-item--green">
                         <h4>🟢 Spannende Nische</h4>
                         <p><strong>HealthTech / MedTech</strong> — Solide Deal-Basis, starkes Schweizer Gesundheitssystem. GenAI als Hebel für Diagnostik, Patientendaten, klinische Workflows.</p>
+                    </div>
+                    <div class="fazit-item fazit-item--yellow">
+                        <h4>🟡 Etabliert, aber stagnierend</h4>
+                        <p><strong>FinTech</strong> — Historisch meiste Deals, aber <strong>Deal-Anteil rückläufig</strong> seit 2023. Markt reift. Einstieg nur mit klarer Differenzierung (z.B. GenAI-Layer).</p>
                     </div>
                     <div class="fazit-item fazit-item--yellow">
                         <h4>🟡 Wachsend, beobachten</h4>
@@ -164,6 +186,22 @@
             </details>
         </div>
     </section>
+
+    <!-- Transition Teaser -->
+    <section class="transition-teaser">
+        <div class="container">
+            <div class="teaser-box">
+                <p class="teaser-text">Du weisst jetzt <strong>wo</strong>. Aber bist du auch bereit dafür? Welche MBI-Kurse helfen dir?</p>
+                <a href="courses.html" class="teaser-cta">Weiter zu MBI-Kurse →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Lizzys · HSG MBI FS26 · Datenbasierte Gründungsanalyse</p>
+        </div>
+    </footer>
 
     <script src="js/components/nav.js"></script>
     <script src="js/charts/opportunity.js"></script>

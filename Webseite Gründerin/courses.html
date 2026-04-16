@@ -3,32 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBI-Kurse für Gründer:innen – data2dollar</title>
+    <title>MBI-Kurse für Gründer:innen – Lizzys</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/trends.css">
     <style>
-        .ec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;margin-bottom:2rem;}
-        .ec-card{padding:1rem 1.1rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;position:relative;}
-        .ec-card:hover{border-color:var(--text-muted);}
-        .ec-card.stark{border-color:#0d9488;background:rgba(13,148,136,0.08);}
-        .ec-card.okay{border-color:#6b7280;background:rgba(107,114,128,0.06);}
-        .ec-card.luecke{border-color:#f97316;background:rgba(249,115,22,0.08);}
-        .ec-card-name{font-weight:600;color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;}
-        .ec-card-meta{font-size:0.78rem;color:var(--text-muted);font-family:var(--font-mono);}
-        .ec-card-evidence{font-size:0.72rem;color:var(--accent);margin-top:0.25rem;}
-        .ec-card-warn{position:absolute;top:8px;right:10px;font-size:0.85rem;}
-        .ec-state-btns{display:flex;gap:4px;margin-top:0.5rem;}
-        .ec-state-btn{font-size:0.7rem;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;}
-        .ec-state-btn.active-stark{background:#0d9488;color:#fff;border-color:#0d9488;}
-        .ec-state-btn.active-okay{background:#374151;color:#d1d5db;border-color:#6b7280;}
-        .ec-state-btn.active-luecke{background:#f97316;color:#fff;border-color:#f97316;}
-        .ec-result{margin-top:1.5rem;}
-        .ec-result-empty{color:var(--text-muted);font-style:italic;padding:1rem 0;}
-        .course-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);margin-bottom:0.5rem;}
+        /* Assessment Wizard */
+        .wizard-progress{display:flex;gap:4px;margin-bottom:2rem;flex-wrap:wrap;}
+        .wizard-dot{width:32px;height:6px;border-radius:3px;background:var(--border);transition:background .3s;}
+        .wizard-dot.done{background:#0d9488;}
+        .wizard-dot.active{background:#00E5A0;}
+
+        .wizard-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:640px;margin:0 auto;text-align:center;transition:all .3s;}
+        .wizard-domain{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;color:var(--text);margin-bottom:0.5rem;}
+        .wizard-desc{color:var(--text-muted);font-size:0.95rem;margin-bottom:0.25rem;}
+        .wizard-evidence{font-size:0.8rem;color:var(--accent);margin-bottom:1.5rem;}
+        .wizard-question{color:var(--text);font-size:1.05rem;margin-bottom:1.5rem;font-weight:500;}
+        .wizard-btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+        .wizard-btn{padding:0.75rem 1.5rem;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-family:inherit;font-size:0.95rem;transition:all .2s;}
+        .wizard-btn:hover{border-color:var(--text-muted);background:rgba(255,255,255,0.04);}
+        .wizard-btn.selected-stark{background:#0d9488;color:#fff;border-color:#0d9488;}
+        .wizard-btn.selected-okay{background:#374151;color:#d1d5db;border-color:#6b7280;}
+        .wizard-btn.selected-luecke{background:#f97316;color:#fff;border-color:#f97316;}
+        .wizard-nav{display:flex;justify-content:space-between;margin-top:1.5rem;}
+        .wizard-nav-btn{padding:0.5rem 1.25rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;font-size:0.85rem;}
+        .wizard-nav-btn:hover{color:var(--text);border-color:var(--text-muted);}
+        .wizard-nav-btn.primary{background:#00E5A0;color:#0D1117;border-color:#00E5A0;font-weight:600;}
+        .wizard-nav-btn.primary:hover{background:#00cc8e;}
+        .wizard-counter{color:var(--text-muted);font-size:0.85rem;text-align:center;margin-top:0.75rem;}
+        .wizard-warn{font-size:0.75rem;color:#f97316;margin-top:0.25rem;}
+
+        /* Results */
+        .result-section{margin-top:2rem;}
+        .result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;}
+        .result-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--text);}
+        .restart-btn{padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;font-size:0.8rem;}
+        .restart-btn:hover{color:var(--text);border-color:var(--text-muted);}
+
+        .gap-summary{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+        .gap-badge{padding:0.3rem 0.75rem;border-radius:6px;font-size:0.8rem;font-weight:500;}
+        .gap-badge.stark{background:rgba(13,148,136,0.15);color:#0d9488;}
+        .gap-badge.okay{background:rgba(107,114,128,0.12);color:#9ca3af;}
+        .gap-badge.luecke{background:rgba(249,115,22,0.15);color:#f97316;}
+
+        .course-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);margin-bottom:0.5rem;transition:border-color .2s;}
         .course-item:hover{border-color:var(--text-muted);}
         .course-name{font-weight:500;color:var(--text);font-size:0.9rem;margin-bottom:0.2rem;}
         .course-meta{font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);}
@@ -37,16 +59,19 @@
         .score-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
         .score-dot.filled{background:var(--accent);}
         .badge-doppelt{display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:4px;background:rgba(74,158,255,0.15);color:#4A9EFF;font-weight:600;margin-left:0.5rem;}
+        .badge-rank{display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:4px;background:rgba(0,229,160,0.15);color:#00E5A0;font-weight:600;margin-right:0.5rem;}
         .sector-hint{padding:0.75rem 1rem;border-radius:8px;border:1px solid rgba(249,115,22,0.3);background:rgba(249,115,22,0.06);color:#fb923c;font-size:0.85rem;margin-top:0.75rem;}
-        .assess-legend{display:flex;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;}
-        .assess-legend span{font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:0.4rem;}
-        .assess-legend .dot{width:10px;height:10px;border-radius:3px;}
+        .no-gaps-msg{text-align:center;padding:2rem;color:var(--text-muted);font-style:italic;}
+        .sector-tabs-wrap{margin-top:2rem;}
+
+        /* Radar chart */
+        .radar-wrap{margin-top:1.5rem;}
     </style>
 </head>
 <body>
     <nav class="nav" id="mainNav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">data2dollar</a>
+            <a href="index.html" class="nav-logo">Lizzys</a>
             <div class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="trends.html" class="nav-link">Trends</a>
@@ -63,55 +88,48 @@
         <div class="container">
             <span class="page-hero-label">🎓 Mai & Thai (2025) · 12 EC-Domains · 84 MBI-Kurse</span>
             <h1 class="page-hero-title">MBI-Kurse für Gründer:innen</h1>
-            <p class="page-hero-subtitle">Welche Entrepreneurial Competencies (ECs) brauchst du?<br>Und welche MBI-Kurse trainieren sie?</p>
+            <p class="page-hero-subtitle">Finde heraus, welche Gründungskompetenzen du bereits hast –<br>und welche MBI-Kurse deine Lücken schliessen.</p>
         </div>
     </section>
 
-    <section class="insights-section">
-        <div class="container">
-            <div class="insights-grid">
-                <div class="insight-card">
-                    <span class="insight-icon">📚</span>
-                    <h3>12 EC-Domains</h3>
-                    <p>Basierend auf Mai & Thai (2025): Systematischer Review von 174 Papers zu Gründer-Kompetenzen.</p>
-                </div>
-                <div class="insight-card">
-                    <span class="insight-icon">⚠️</span>
-                    <h3>Kritische Lücken</h3>
-                    <p>Opportunity Recognition & Personal Strength (Pitching) — die wichtigsten ECs haben die wenigsten Kurse.</p>
-                </div>
-                <div class="insight-card">
-                    <span class="insight-icon">🎯</span>
-                    <h3>Doppelt wertvoll</h3>
-                    <p>Manche Kurse trainieren EC-Kompetenzen UND Sektor-Wissen gleichzeitig. Best of both worlds.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BEREICH A: EC Self-Assessment -->
+    <!-- Guided Assessment -->
     <section class="chart-section">
         <div class="container">
             <div class="chart-panel">
                 <div class="chart-controls"><div class="chart-controls-header">
-                    <h3>🧭 EC Self-Assessment</h3>
-                    <span class="chart-controls-hint">Klicke pro Domain: stark / okay / Lücke — Kurse für deine Lücken erscheinen darunter</span>
+                    <h3>🧭 Self-Assessment: Deine Gründungskompetenzen</h3>
+                    <span class="chart-controls-hint">Bewerte dich in 12 Entrepreneurial Competencies – Schritt für Schritt</span>
                 </div></div>
-                <div class="assess-legend">
-                    <span><span class="dot" style="background:#0d9488;"></span> Stark</span>
-                    <span><span class="dot" style="background:#6b7280;"></span> Okay</span>
-                    <span><span class="dot" style="background:#f97316;"></span> Lücke</span>
-                    <span><span class="dot" style="background:transparent;border:1px solid var(--border);"></span> Nicht bewertet</span>
+
+                <!-- Wizard -->
+                <div id="wizardView">
+                    <div class="wizard-progress" id="wizardProgress"></div>
+                    <div class="wizard-card" id="wizardCard"></div>
+                    <div class="wizard-counter" id="wizardCounter"></div>
                 </div>
-                <div class="ec-grid" id="ecGrid"></div>
-                <div class="ec-result" id="ecResult">
-                    <div class="ec-result-empty">Markiere Domains als «Lücke», um passende Kurse zu sehen.</div>
+
+                <!-- Results (hidden until assessment complete) -->
+                <div id="resultsView" style="display:none;">
+                    <div class="result-header">
+                        <span class="result-title">📋 Dein Kompetenzprofil</span>
+                        <button class="restart-btn" onclick="restartAssessment()">↻ Neu starten</button>
+                    </div>
+                    <div class="gap-summary" id="gapSummary"></div>
+                    <div class="radar-wrap">
+                        <div id="radarChart" style="min-height:400px;"></div>
+                    </div>
+
+                    <!-- Gap courses -->
+                    <div class="result-section" id="gapCoursesSection"></div>
+
+                    <!-- Okay courses -->
+                    <div class="result-section" id="okayCoursesSection"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BEREICH B: Sektor-Kurse -->
+    <!-- Sektor-Kurse -->
     <section class="chart-section">
         <div class="container">
             <div class="chart-panel">
@@ -137,13 +155,19 @@
             <details class="methodik-accordion">
                 <summary>📐 Wissenschaftliche Grundlage</summary>
                 <div class="methodik-content">
-                    <p><strong>Quelle:</strong> Mai, T. P. & Thai, M. T. T. (2025). Entrepreneurial Competencies: A Systematic Review. <em>Journal of International Entrepreneurship</em>, 23(1), 54–130. DOI: 10.1007/s10843-024-00356-7</p>
+                    <p><strong>Quelle:</strong> Mai, T. P. & Thai, M. T. T. (2025). Entrepreneurial Competencies: A Systematic Review. <em>Journal of International Entrepreneurship</em>, 23(1), 54–130.</p>
                     <p><strong>Methode:</strong> Systematischer Review von 174 Papers. 12 EC-Domains identifiziert. Evidenz-Gewicht = Häufigkeit der Domain in der Literatur.</p>
-                    <p><strong>Kurs-Matching:</strong> Bilinguales DE+EN Keyword-Matching (Score 0–3, gekappt bei 3). Basiert auf mbi_ec_sector_matrix_bilingual.csv (84 Kurse × 24 Spalten).</p>
+                    <p><strong>Kurs-Matching:</strong> Bilinguales DE+EN Keyword-Matching (Score 0–3). Basiert auf mbi_ec_sector_matrix_bilingual.csv (84 Kurse × 24 Spalten).</p>
                 </div>
             </details>
         </div>
     </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Lizzys · HSG MBI FS26 · Datenbasierte Gründungsanalyse</p>
+        </div>
+    </footer>
 
     <script src="js/components/nav.js"></script>
     <script src="js/charts/courses.js"></script>

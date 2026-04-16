@@ -406,14 +406,14 @@ function classifyTrend(values) {
 
   if (momentum < -0.3) return { label: 'Declining', emoji: '📉', momentum };
   if (last > p75 && momentum > 0.3) return { label: 'Hot', emoji: '🔥', momentum };
-  if (last > p75 && momentum >= -0.3 && momentum <= 0.3) return { label: 'Mature', emoji: '⚖️', momentum };
-  if (last < med && momentum > 0.3) return { label: 'Emerging', emoji: '🚀', momentum };
+  if (last > p75 && momentum >= -0.3 && momentum <= 0.3) return { label: 'Stable', emoji: '😴', momentum };
+  if (last < med && momentum > 0.3) return { label: 'Rising', emoji: '✨', momentum };
   if (momentum > 0.15) return { label: 'Rising', emoji: '✨', momentum };
   return { label: 'Stable', emoji: '😴', momentum };
 }
 
 function badgeClass(label) {
-  const map = { emerging: '--emerging', rising: '--rising', hot: '--hot', mature: '--mature', declining: '--declining', stable: '--stable' };
+  const map = { rising: '--rising', hot: '--hot', declining: '--declining', stable: '--stable' };
   const key = (label || '').toLowerCase();
   for (const [k, v] of Object.entries(map)) if (key.includes(k)) return `trend-badge${v}`;
   return 'trend-badge--stable';
@@ -435,10 +435,8 @@ const keywordColors = buildKeywordColors();
 // ===== RENDER LEGEND =====
 function renderLegend(usedLabels) {
   const items = [
-    { label: 'Emerging', emoji: '🚀', css: 'emerging', desc: 'niedrig & wächst stark' },
     { label: 'Rising', emoji: '✨', css: 'rising', desc: 'moderat & wächst' },
     { label: 'Hot', emoji: '🔥', css: 'hot', desc: 'hoch & wächst' },
-    { label: 'Mature', emoji: '⚖️', css: 'mature', desc: 'hoch & stagniert' },
     { label: 'Stable', emoji: '😴', css: 'stable', desc: 'keine klare Bewegung' },
     { label: 'Declining', emoji: '📉', css: 'declining', desc: 'Aufmerksamkeit sinkt' },
   ];
@@ -465,7 +463,7 @@ function populateKeywords() {
   const usedLabels = new Set(classified.map(c => c.trend.label));
   renderLegend(usedLabels);
 
-  const order = { Emerging: 0, Rising: 1, Hot: 2, Mature: 3, Stable: 4, Declining: 5 };
+  const order = { Rising: 0, Hot: 1, Stable: 2, Declining: 3 };
   classified.sort((a, b) => {
     const oa = order[a.trend.label] ?? 6, ob = order[b.trend.label] ?? 6;
     return oa !== ob ? oa - ob : a.kw.localeCompare(b.kw);

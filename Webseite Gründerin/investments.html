@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schweizer Startup-Investments – data2dollar</title>
+    <title>Schweizer Startup-Investments – Lizzys</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 <body>
     <nav class="nav" id="mainNav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">data2dollar</a>
+            <a href="index.html" class="nav-logo">Lizzys</a>
             <div class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="trends.html" class="nav-link">Trends</a>
@@ -65,8 +65,6 @@
                 <button class="sector-tab active" data-tab="overview">📊 Übersicht</button>
                 <button class="sector-tab" data-tab="deals">🔢 Deal Count</button>
                 <button class="sector-tab" data-tab="funding">💰 Funding</button>
-                <button class="sector-tab" data-tab="stages">📈 Stages</button>
-                <button class="sector-tab" data-tab="bubble">🫧 Deal Size</button>
             </div>
         </div>
     </section>
@@ -75,21 +73,23 @@
     <div id="tab-overview" class="invest-tab-content">
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Startup-Investments pro Quartal</h3>
-                <span class="chart-controls-hint">Anzahl Deals (ohne Doppelzählung)</span>
+                <h3>Deals & Funding pro Quartal</h3>
+                <span class="chart-controls-hint">Balken = Deals · Linie = Funding (Mio. CHF)</span>
             </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="totalDealsChart" class="trend-chart"></div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="comboChart" class="trend-chart" style="min-height:420px;"></div></div>
         </div></div></section>
+
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Funding-Volumen pro Quartal</h3>
-                <span class="chart-controls-hint">Mio. CHF · EUR/USD umgerechnet · nur bekannte Beträge</span>
+                <h3>Investment-Stages pro Quartal</h3>
+                <span class="chart-controls-hint">Seed dominiert · Pre-Seed wächst · Grant = Fördergelder</span>
             </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="totalFundingChart" class="trend-chart"></div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="stagesChart" class="trend-chart" style="min-height:480px;"></div></div>
         </div></div></section>
+
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Top 5 + Übrige: Deals vs. Funding</h3>
+                <h3>Branchen-Übersicht: Deals vs. Funding</h3>
                 <span class="chart-controls-hint">Kumuliert 2023–2026</span>
             </div></div>
             <div class="table-wrapper"><table class="data-table" id="dealSizeTable">
@@ -101,20 +101,31 @@
 
     <!-- Deals Tab -->
     <div id="tab-deals" class="invest-tab-content" style="display:none;">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Deal Count – Top 5 + Übrige (gestapelt)</h3>
-                <span class="chart-controls-hint">Anteil der grössten Kategorien am Gesamtmarkt</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="dealStackedChart" class="trend-chart"></div></div>
-        </div></div></section>
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Deal Count – Einzelne Linien pro Branche</h3>
-                <span class="chart-controls-hint">Top 7 Branchen</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="dealLinesChart" class="trend-chart"></div></div>
-        </div></div></section>
+        <section class="chart-section"><div class="container">
+            <div class="sector-tabs sector-subtabs" id="dealSubTabs">
+                <button class="sector-tab active" data-subtab="deal-top7">Top 7</button>
+                <button class="sector-tab" data-subtab="deal-custom">Eigene Auswahl</button>
+            </div>
+        </div></section>
+        <div id="subtab-deal-top7">
+            <section class="chart-section"><div class="container"><div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>Deal Count – Top 7 Branchen</h3>
+                    <span class="chart-controls-hint">Quartalsweise</span>
+                </div></div>
+                <div class="chart-wrapper" style="display:block;"><div id="dealLinesChart" class="trend-chart"></div></div>
+            </div></div></section>
+        </div>
+        <div id="subtab-deal-custom" style="display:none;">
+            <section class="chart-section"><div class="container"><div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>Deal Count – Eigene Auswahl</h3>
+                    <span class="chart-controls-hint">Bis zu 7 Branchen auswählen</span>
+                </div></div>
+                <div class="custom-branch-selector" id="dealBranchSelector"></div>
+                <div class="chart-wrapper" style="display:block;"><div id="dealCustomChart" class="trend-chart"></div></div>
+            </div></div></section>
+        </div>
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
                 <h3>Marktanteil-Entwicklung (Deal Share %)</h3>
@@ -126,42 +137,31 @@
 
     <!-- Funding Tab -->
     <div id="tab-funding" class="invest-tab-content" style="display:none;">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Funding Top 5 (Mio. CHF, gestapelt)</h3>
-                <span class="chart-controls-hint">BioTech zieht konsistent das meiste Kapital</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="fundingStackedChart" class="trend-chart"></div></div>
-        </div></div></section>
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Funding – Einzelne Linien (Mio. CHF)</h3>
-                <span class="chart-controls-hint">Top 7 Branchen inkl. Robotics & EdTech</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="fundingLinesChart" class="trend-chart"></div></div>
-        </div></div></section>
-    </div>
-
-    <!-- Stages Tab -->
-    <div id="tab-stages" class="invest-tab-content" style="display:none;">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Investment-Stages pro Quartal</h3>
-                <span class="chart-controls-hint">Seed dominiert · Pre-Seed wächst · Award = Preise · Grant = Fördergelder</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="stagesChart" class="trend-chart" style="min-height:480px;"></div></div>
-        </div></div></section>
-    </div>
-
-    <!-- Bubble Tab -->
-    <div id="tab-bubble" class="invest-tab-content" style="display:none;">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Deal Count vs. Funding-Volumen pro Branche</h3>
-                <span class="chart-controls-hint">X = Anzahl Deals · Y = Total Funding (Mrd CHF) · Grösse = Ø Deal Size</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="dealBubbleChart" class="trend-chart" style="min-height:520px;"></div></div>
-        </div></div></section>
+        <section class="chart-section"><div class="container">
+            <div class="sector-tabs sector-subtabs" id="fundingSubTabs">
+                <button class="sector-tab active" data-subtab="funding-top7">Top 7</button>
+                <button class="sector-tab" data-subtab="funding-custom">Eigene Auswahl</button>
+            </div>
+        </div></section>
+        <div id="subtab-funding-top7">
+            <section class="chart-section"><div class="container"><div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>Funding – Top 7 Branchen (Mio. CHF)</h3>
+                    <span class="chart-controls-hint">Quartalsweise</span>
+                </div></div>
+                <div class="chart-wrapper" style="display:block;"><div id="fundingLinesChart" class="trend-chart"></div></div>
+            </div></div></section>
+        </div>
+        <div id="subtab-funding-custom" style="display:none;">
+            <section class="chart-section"><div class="container"><div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>Funding – Eigene Auswahl (Mio. CHF)</h3>
+                    <span class="chart-controls-hint">Bis zu 7 Branchen auswählen</span>
+                </div></div>
+                <div class="custom-branch-selector" id="fundingBranchSelector"></div>
+                <div class="chart-wrapper" style="display:block;"><div id="fundingCustomChart" class="trend-chart"></div></div>
+            </div></div></section>
+        </div>
     </div>
 
     <!-- Methodik -->
@@ -177,6 +177,22 @@
             </details>
         </div>
     </section>
+
+    <!-- Transition Teaser -->
+    <section class="transition-teaser">
+        <div class="container">
+            <div class="teaser-box">
+                <p class="teaser-text">Du kennst jetzt Branchen und Kapitalflüsse. Aber wo ist der <strong>Sweet Spot</strong> für dich als MBI-Gründer:in?</p>
+                <a href="opportunity.html" class="teaser-cta">Weiter zu Opportunity →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Lizzys · HSG MBI FS26 · Datenbasierte Gründungsanalyse</p>
+        </div>
+    </footer>
 
     <script src="js/components/nav.js"></script>
     <script src="js/charts/investments.js"></script>

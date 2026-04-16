@@ -1,9 +1,8 @@
 /**
- * data2dollar – Investments
+ * Lizzys – Investments
  * Plotly.js · alle Daten embedded
  */
 
-// ===== DATA =====
 const QUARTERS = ["2023-Q1","2023-Q2","2023-Q3","2023-Q4","2024-Q1","2024-Q2","2024-Q3","2024-Q4","2025-Q1","2025-Q2","2025-Q3","2025-Q4","2026-Q1"];
 
 const TOTALS = [
@@ -11,23 +10,6 @@ const TOTALS = [
   {q:"2024-Q1",deals:96,funding:5003.8},{q:"2024-Q2",deals:102,funding:5791.3},{q:"2024-Q3",deals:105,funding:2861.1},{q:"2024-Q4",deals:98,funding:4227.4},
   {q:"2025-Q1",deals:110,funding:8280.9},{q:"2025-Q2",deals:69,funding:2774.9},{q:"2025-Q3",deals:122,funding:6409.0},{q:"2025-Q4",deals:117,funding:8736.4},
   {q:"2026-Q1",deals:106,funding:8916.1}
-];
-
-const TOP5_KEYS = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","Übrige"];
-const F1_TOP5 = [
-  {q:"2023-Q1",BioTech:32,FinTech:46,ClimateTech:16,HealthTech:6,GenAI:2,Übrige:17},
-  {q:"2023-Q2",BioTech:25,FinTech:29,ClimateTech:20,HealthTech:3,GenAI:3,Übrige:10},
-  {q:"2023-Q3",BioTech:22,FinTech:33,ClimateTech:13,HealthTech:2,GenAI:1,Übrige:11},
-  {q:"2023-Q4",BioTech:31,FinTech:38,ClimateTech:18,HealthTech:6,GenAI:1,Übrige:12},
-  {q:"2024-Q1",BioTech:43,FinTech:23,ClimateTech:7,HealthTech:3,GenAI:1,Übrige:19},
-  {q:"2024-Q2",BioTech:31,FinTech:40,ClimateTech:13,HealthTech:2,GenAI:4,Übrige:12},
-  {q:"2024-Q3",BioTech:32,FinTech:37,ClimateTech:11,HealthTech:2,GenAI:3,Übrige:20},
-  {q:"2024-Q4",BioTech:30,FinTech:33,ClimateTech:17,HealthTech:3,GenAI:5,Übrige:10},
-  {q:"2025-Q1",BioTech:36,FinTech:39,ClimateTech:15,HealthTech:6,GenAI:3,Übrige:11},
-  {q:"2025-Q2",BioTech:24,FinTech:20,ClimateTech:4,HealthTech:5,GenAI:1,Übrige:15},
-  {q:"2025-Q3",BioTech:34,FinTech:51,ClimateTech:12,HealthTech:1,GenAI:5,Übrige:19},
-  {q:"2025-Q4",BioTech:35,FinTech:41,ClimateTech:10,HealthTech:5,GenAI:8,Übrige:18},
-  {q:"2026-Q1",BioTech:38,FinTech:35,ClimateTech:13,HealthTech:4,GenAI:5,Übrige:11}
 ];
 
 const ALL_SECTORS = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech","Robotics","Enterprise","Ecommerce","EdTech","PropTech","Cybersecurity","AgriTech","SpaceTech"];
@@ -52,49 +34,47 @@ const FV_SM = {
   Robotics:[16,237,9,13,180,229,153,357,31,24,618,394,180],SpaceTech:[0,0,0,6,0,2,0,0,0,0,0,0,0]
 };
 
-const STAGE_KEYS = ["Pre-Seed","Seed","Series A","Series B","Series C+","Strategic","Grant","Award","Sonstige"];
+const STAGE_KEYS = ["Pre-Seed","Seed","Series A","Series B","Series C+","Strategic","Grant"];
 const STAGES = [
-  {q:"2023-Q1","Pre-Seed":16,Seed:42,"Series A":24,"Series B":14,"Series C+":7,Strategic:5,Grant:5,Award:47,Sonstige:66},
-  {q:"2023-Q2","Pre-Seed":17,Seed:31,"Series A":8,"Series B":3,"Series C+":6,Strategic:7,Grant:4,Award:36,Sonstige:53},
-  {q:"2023-Q3","Pre-Seed":16,Seed:35,"Series A":18,"Series B":3,"Series C+":4,Strategic:0,Grant:4,Award:19,Sonstige:56},
-  {q:"2023-Q4","Pre-Seed":7,Seed:51,"Series A":22,"Series B":3,"Series C+":6,Strategic:1,Grant:1,Award:33,Sonstige:63},
-  {q:"2024-Q1","Pre-Seed":17,Seed:28,"Series A":30,"Series B":14,"Series C+":3,Strategic:5,Grant:2,Award:36,Sonstige:69},
-  {q:"2024-Q2","Pre-Seed":15,Seed:52,"Series A":16,"Series B":4,"Series C+":12,Strategic:3,Grant:0,Award:18,Sonstige:61},
-  {q:"2024-Q3","Pre-Seed":18,Seed:29,"Series A":13,"Series B":14,"Series C+":2,Strategic:7,Grant:3,Award:53,Sonstige:76},
-  {q:"2024-Q4","Pre-Seed":12,Seed:38,"Series A":23,"Series B":10,"Series C+":5,Strategic:4,Grant:1,Award:20,Sonstige:57},
-  {q:"2025-Q1","Pre-Seed":16,Seed:37,"Series A":23,"Series B":3,"Series C+":2,Strategic:4,Grant:5,Award:36,Sonstige:61},
-  {q:"2025-Q2","Pre-Seed":8,Seed:23,"Series A":19,"Series B":6,"Series C+":0,Strategic:3,Grant:3,Award:26,Sonstige:45},
-  {q:"2025-Q3","Pre-Seed":21,Seed:37,"Series A":21,"Series B":3,"Series C+":4,Strategic:10,Grant:5,Award:47,Sonstige:73},
-  {q:"2025-Q4","Pre-Seed":16,Seed:29,"Series A":14,"Series B":6,"Series C+":3,Strategic:12,Grant:8,Award:42,Sonstige:66},
-  {q:"2026-Q1","Pre-Seed":22,Seed:47,"Series A":17,"Series B":7,"Series C+":6,Strategic:10,Grant:2,Award:28,Sonstige:64}
+  {q:"2023-Q1","Pre-Seed":16,Seed:42,"Series A":24,"Series B":14,"Series C+":7,Strategic:5,Grant:5},
+  {q:"2023-Q2","Pre-Seed":17,Seed:31,"Series A":8,"Series B":3,"Series C+":6,Strategic:7,Grant:4},
+  {q:"2023-Q3","Pre-Seed":16,Seed:35,"Series A":18,"Series B":3,"Series C+":4,Strategic:0,Grant:4},
+  {q:"2023-Q4","Pre-Seed":7,Seed:51,"Series A":22,"Series B":3,"Series C+":6,Strategic:1,Grant:1},
+  {q:"2024-Q1","Pre-Seed":17,Seed:28,"Series A":30,"Series B":14,"Series C+":3,Strategic:5,Grant:2},
+  {q:"2024-Q2","Pre-Seed":15,Seed:52,"Series A":16,"Series B":4,"Series C+":12,Strategic:3,Grant:0},
+  {q:"2024-Q3","Pre-Seed":18,Seed:29,"Series A":13,"Series B":14,"Series C+":2,Strategic:7,Grant:3},
+  {q:"2024-Q4","Pre-Seed":12,Seed:38,"Series A":23,"Series B":10,"Series C+":5,Strategic:4,Grant:1},
+  {q:"2025-Q1","Pre-Seed":16,Seed:37,"Series A":23,"Series B":3,"Series C+":2,Strategic:4,Grant:5},
+  {q:"2025-Q2","Pre-Seed":8,Seed:23,"Series A":19,"Series B":6,"Series C+":0,Strategic:3,Grant:3},
+  {q:"2025-Q3","Pre-Seed":21,Seed:37,"Series A":21,"Series B":3,"Series C+":4,Strategic:10,Grant:5},
+  {q:"2025-Q4","Pre-Seed":16,Seed:29,"Series A":14,"Series B":6,"Series C+":3,Strategic:12,Grant:8},
+  {q:"2026-Q1","Pre-Seed":22,Seed:47,"Series A":17,"Series B":7,"Series C+":6,Strategic:10,Grant:2}
 ];
 
-// ===== COLORS =====
 const C = {
   BioTech:'#0d9488',FinTech:'#f97316',ClimateTech:'#8b5cf6',HealthTech:'#ec4899',
   GenAI:'#84cc16',MedTech:'#eab308',Robotics:'#a16207',Cybersecurity:'#6b7280',
   Enterprise:'#3b82f6',Ecommerce:'#22d3ee',EdTech:'#f43f5e',PropTech:'#fb923c',
-  AgriTech:'#a78bfa',SpaceTech:'#14b8a6',Übrige:'#475569',
+  AgriTech:'#a78bfa',SpaceTech:'#14b8a6',
   "Pre-Seed":'#a7f3d0',Seed:'#6ee7b7',"Series A":'#fbbf24',"Series B":'#f97316',
-  "Series C+":'#ef4444',Strategic:'#8b5cf6',Grant:'#38bdf8',Award:'#94a3b8',Sonstige:'#334155'
+  "Series C+":'#ef4444',Strategic:'#8b5cf6',Grant:'#38bdf8'
 };
 
-// ===== PLOTLY LAYOUT BASE =====
 const BASE_LAYOUT = {
   plot_bgcolor:'rgba(0,0,0,0)',paper_bgcolor:'rgba(0,0,0,0)',
   font:{family:'DM Sans, sans-serif',color:'#8B949E'},
-  margin:{l:55,r:20,t:30,b:70},
+  margin:{l:55,r:55,t:30,b:70},
   xaxis:{tickangle:-45,tickfont:{size:11,color:'#8B949E'},gridcolor:'rgba(255,255,255,0.06)',linecolor:'rgba(255,255,255,0.1)'},
   yaxis:{tickfont:{size:11,color:'#8B949E'},gridcolor:'rgba(255,255,255,0.06)',zeroline:false},
   hovermode:'x unified',
   legend:{orientation:'h',x:0,y:-0.22,font:{size:11,color:'#8B949E'},bgcolor:'rgba(0,0,0,0)'}
 };
 const CFG = {responsive:true,displayModeBar:true,modeBarButtonsToRemove:['lasso2d','select2d'],displaylogo:false};
-
-function mergeLayout(overrides){return JSON.parse(JSON.stringify({...BASE_LAYOUT,...overrides,xaxis:{...BASE_LAYOUT.xaxis,...(overrides.xaxis||{})},yaxis:{...BASE_LAYOUT.yaxis,...(overrides.yaxis||{})}}));}
+function ml(o){return JSON.parse(JSON.stringify({...BASE_LAYOUT,...o,xaxis:{...BASE_LAYOUT.xaxis,...(o.xaxis||{})},yaxis:{...BASE_LAYOUT.yaxis,...(o.yaxis||{})}}));}
 
 // ===== TAB SWITCHING =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Main tabs
   const tabs = document.querySelectorAll('#investTabs .sector-tab');
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -103,60 +83,126 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.invest-tab-content').forEach(c => c.style.display = 'none');
       const target = document.getElementById('tab-' + tab.dataset.tab);
       if (target) target.style.display = 'block';
-      // Trigger resize for Plotly
       setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
     });
   });
 
+  // Sub-tabs (Deal & Funding)
+  document.querySelectorAll('.sector-subtabs').forEach(container => {
+    container.querySelectorAll('.sector-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        container.querySelectorAll('.sector-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const prefix = btn.dataset.subtab.split('-')[0]; // 'deal' or 'funding'
+        document.getElementById('subtab-' + prefix + '-top7').style.display = btn.dataset.subtab.endsWith('top7') ? 'block' : 'none';
+        document.getElementById('subtab-' + prefix + '-custom').style.display = btn.dataset.subtab.endsWith('custom') ? 'block' : 'none';
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+      });
+    });
+  });
+
+  buildBranchSelectors();
   renderAll();
 });
 
+// ===== CUSTOM BRANCH SELECTORS =====
+function buildBranchSelectors() {
+  ['deal', 'funding'].forEach(type => {
+    const container = document.getElementById(type === 'deal' ? 'dealBranchSelector' : 'fundingBranchSelector');
+    if (!container) return;
+    container.innerHTML = ALL_SECTORS.map(s =>
+      `<label class="branch-chip"><input type="checkbox" value="${s}" data-type="${type}"><span class="branch-chip-dot" style="background:${C[s]}"></span>${s}</label>`
+    ).join('');
+    container.querySelectorAll('input').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const checked = container.querySelectorAll('input:checked');
+        if (checked.length > 7) { cb.checked = false; return; }
+        // Disable unchecked when 7 reached
+        const atMax = checked.length >= 7;
+        container.querySelectorAll('input').forEach(c => {
+          c.closest('.branch-chip').classList.toggle('disabled', atMax && !c.checked);
+        });
+        if (type === 'deal') renderDealCustom();
+        else renderFundingCustom();
+      });
+    });
+  });
+}
+
+function getSelectedSectors(type) {
+  const container = document.getElementById(type === 'deal' ? 'dealBranchSelector' : 'fundingBranchSelector');
+  return Array.from(container.querySelectorAll('input:checked')).map(c => c.value);
+}
+
+function renderDealCustom() {
+  const sectors = getSelectedSectors('deal');
+  if (!sectors.length) { Plotly.purge('dealCustomChart'); return; }
+  const traces = sectors.map(k => ({
+    x:QUARTERS,y:F1_SM[k],type:'scatter',mode:'lines+markers',name:k,
+    line:{color:C[k],width:2},marker:{size:4,color:C[k]},
+    hovertemplate:`${k}: %{y}<extra></extra>`
+  }));
+  Plotly.newPlot('dealCustomChart',traces,ml({yaxis:{title:{text:'Deals'}}}),CFG);
+}
+
+function renderFundingCustom() {
+  const sectors = getSelectedSectors('funding');
+  if (!sectors.length) { Plotly.purge('fundingCustomChart'); return; }
+  const traces = sectors.map(k => ({
+    x:QUARTERS,y:FV_SM[k],type:'scatter',mode:'lines+markers',name:k,
+    line:{color:C[k],width:2},marker:{size:4},
+    hovertemplate:`${k}: CHF %{y:,.0f} Mio.<extra></extra>`
+  }));
+  Plotly.newPlot('fundingCustomChart',traces,ml({yaxis:{title:{text:'Mio. CHF'}}}),CFG);
+}
+
 function renderAll() {
-  renderTotalDeals();
-  renderTotalFunding();
+  renderComboChart();
+  renderStages();
   renderDealSizeTable();
-  renderDealStacked();
   renderDealLines();
   renderDealShare();
-  renderFundingStacked();
   renderFundingLines();
-  renderStages();
-  renderBubble();
 }
 
-// ===== OVERVIEW =====
-function renderTotalDeals() {
-  const trace = {
+// ===== COMBO CHART: Deals (bars) + Funding (line) =====
+function renderComboChart() {
+  const dealBars = {
     x: TOTALS.map(t=>t.q), y: TOTALS.map(t=>t.deals),
-    type:'bar', marker:{color:'#00E5A0',opacity:0.85},
-    hovertemplate:'<b>%{x}</b><br>%{y} Deals<extra></extra>'
+    type:'bar', name:'Deals', marker:{color:'#00E5A0',opacity:0.75},
+    hovertemplate:'%{y} Deals<extra></extra>', yaxis:'y'
   };
-  const avg = Math.round(TOTALS.reduce((s,t)=>s+t.deals,0)/TOTALS.length);
-  const avgLine = {x:TOTALS.map(t=>t.q),y:Array(13).fill(avg),type:'scatter',mode:'lines',
-    line:{color:'#4A9EFF',dash:'dash',width:2},name:`Ø ${avg}`,hoverinfo:'skip'};
-  Plotly.newPlot('totalDealsChart',[trace,avgLine],mergeLayout({yaxis:{title:{text:'Anzahl Deals'}}}),CFG);
+  const fundingLine = {
+    x: TOTALS.map(t=>t.q), y: TOTALS.map(t=>t.funding),
+    type:'scatter', mode:'lines+markers', name:'Funding (Mio. CHF)',
+    line:{color:'#C77DFF',width:2.5}, marker:{size:5,color:'#C77DFF'},
+    hovertemplate:'CHF %{y:,.0f} Mio.<extra></extra>', yaxis:'y2'
+  };
+  Plotly.newPlot('comboChart',[dealBars,fundingLine],ml({
+    yaxis:{title:{text:'Anzahl Deals'},side:'left'},
+    yaxis2:{title:{text:'Mio. CHF'},overlaying:'y',side:'right',tickfont:{size:11,color:'#8B949E'},gridcolor:'rgba(0,0,0,0)',zeroline:false},
+    legend:{y:-0.28}
+  }),CFG);
 }
 
-function renderTotalFunding() {
-  const trace = {
-    x:TOTALS.map(t=>t.q),y:TOTALS.map(t=>t.funding),
-    type:'scatter',mode:'lines+markers',fill:'tozeroy',
-    line:{color:'#C77DFF',width:2.5},marker:{size:5,color:'#C77DFF'},
-    fillcolor:'rgba(199,125,255,0.1)',
-    hovertemplate:'<b>%{x}</b><br>CHF %{y:,.0f} Mio.<extra></extra>'
-  };
-  Plotly.newPlot('totalFundingChart',[trace],mergeLayout({yaxis:{title:{text:'Mio. CHF'}}}),CFG);
+// ===== STAGES =====
+function renderStages() {
+  const traces = STAGE_KEYS.map(k => ({
+    x:STAGES.map(s=>s.q),y:STAGES.map(s=>s[k]),
+    type:'bar',name:k,marker:{color:C[k]},
+    hovertemplate:`${k}: %{y}<extra></extra>`
+  }));
+  Plotly.newPlot('stagesChart',traces,ml({barmode:'stack',yaxis:{title:{text:'Deals'}},legend:{y:-0.28}}),CFG);
 }
 
+// ===== TABLE =====
 function renderDealSizeTable() {
-  // Aggregate per sector
   const agg = {};
   ALL_SECTORS.forEach(s => {
     const deals = F1_SM[s].reduce((a,b)=>a+b,0);
     const funding = FV_SM[s].reduce((a,b)=>a+b,0);
     agg[s] = {deals,funding,avg:deals>0?funding/deals:0};
   });
-  // Sort by deals desc
   const sorted = Object.entries(agg).sort((a,b)=>b[1].deals-a[1].deals);
   const tbody = document.querySelector('#dealSizeTable tbody');
   tbody.innerHTML = sorted.map(([s,v]) =>
@@ -165,17 +211,7 @@ function renderDealSizeTable() {
   ).join('');
 }
 
-// ===== DEALS TAB =====
-function renderDealStacked() {
-  const traces = TOP5_KEYS.map(k => ({
-    x:F1_TOP5.map(r=>r.q),y:F1_TOP5.map(r=>r[k]),
-    type:'scatter',mode:'lines',stackgroup:'one',name:k,
-    line:{color:C[k],width:0},fillcolor:C[k]+'B3',
-    hovertemplate:`${k}: %{y}<extra></extra>`
-  }));
-  Plotly.newPlot('dealStackedChart',traces,mergeLayout({yaxis:{title:{text:'Deals'}}}),CFG);
-}
-
+// ===== DEAL LINES =====
 function renderDealLines() {
   const top7 = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech","Robotics"];
   const traces = top7.map(k => ({
@@ -184,9 +220,10 @@ function renderDealLines() {
     line:{color:C[k],width:2},marker:{size:4,color:C[k]},
     hovertemplate:`${k}: %{y}<extra></extra>`
   }));
-  Plotly.newPlot('dealLinesChart',traces,mergeLayout({yaxis:{title:{text:'Deals'}}}),CFG);
+  Plotly.newPlot('dealLinesChart',traces,ml({yaxis:{title:{text:'Deals'}}}),CFG);
 }
 
+// ===== DEAL SHARE =====
 function renderDealShare() {
   const top = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech"];
   const traces = top.map(k => {
@@ -200,21 +237,10 @@ function renderDealShare() {
       hovertemplate:`${k}: %{y:.1f}%<extra></extra>`
     };
   });
-  Plotly.newPlot('shareChart',traces,mergeLayout({yaxis:{title:{text:'Marktanteil (%)'},ticksuffix:'%'}}),CFG);
+  Plotly.newPlot('shareChart',traces,ml({yaxis:{title:{text:'Marktanteil (%)'},ticksuffix:'%'}}),CFG);
 }
 
-// ===== FUNDING TAB =====
-function renderFundingStacked() {
-  const top5f = ["BioTech","FinTech","HealthTech","ClimateTech","EdTech"];
-  const traces = top5f.map(k => ({
-    x:QUARTERS,y:FV_SM[k],
-    type:'scatter',mode:'lines',stackgroup:'one',name:k,
-    line:{color:C[k],width:0},fillcolor:C[k]+'B3',
-    hovertemplate:`${k}: CHF %{y:,.0f} Mio.<extra></extra>`
-  }));
-  Plotly.newPlot('fundingStackedChart',traces,mergeLayout({yaxis:{title:{text:'Mio. CHF'}}}),CFG);
-}
-
+// ===== FUNDING LINES =====
 function renderFundingLines() {
   const top7 = ["BioTech","FinTech","HealthTech","ClimateTech","Robotics","EdTech","GenAI"];
   const traces = top7.map(k => ({
@@ -223,46 +249,5 @@ function renderFundingLines() {
     line:{color:C[k],width:2},marker:{size:4},
     hovertemplate:`${k}: CHF %{y:,.0f} Mio.<extra></extra>`
   }));
-  Plotly.newPlot('fundingLinesChart',traces,mergeLayout({yaxis:{title:{text:'Mio. CHF'}}}),CFG);
-}
-
-// ===== STAGES TAB =====
-function renderStages() {
-  const coreStages = ["Pre-Seed","Seed","Series A","Series B","Series C+","Strategic","Grant"];
-  const traces = coreStages.map(k => ({
-    x:STAGES.map(s=>s.q),y:STAGES.map(s=>s[k]),
-    type:'bar',name:k,marker:{color:C[k]},
-    hovertemplate:`${k}: %{y}<extra></extra>`
-  }));
-  Plotly.newPlot('stagesChart',traces,mergeLayout({barmode:'stack',yaxis:{title:{text:'Deals'}},legend:{y:-0.28}}),CFG);
-}
-
-// ===== BUBBLE TAB =====
-function renderBubble() {
-  const data = ALL_SECTORS.map(s => {
-    const deals = F1_SM[s].reduce((a,b)=>a+b,0);
-    const funding = FV_SM[s].reduce((a,b)=>a+b,0)/1000; // Mrd
-    const avg = deals>0?funding*1000/deals:0; // Mio per deal
-    return {s,deals,funding,avg};
-  }).filter(d=>d.deals>3);
-
-  const trace = {
-    x:data.map(d=>d.deals),y:data.map(d=>d.funding),
-    text:data.map(d=>d.s),
-    mode:'markers+text',type:'scatter',
-    textposition:'top center',textfont:{size:10,color:'#E6EDF3'},
-    marker:{
-      size:data.map(d=>Math.max(12,Math.sqrt(d.avg)*4)),
-      color:data.map(d=>C[d.s]||'#6b7280'),
-      opacity:0.8,
-      line:{width:1,color:'rgba(255,255,255,0.2)'}
-    },
-    hovertemplate:'<b>%{text}</b><br>Deals: %{x}<br>Funding: CHF %{y:.1f} Mrd.<br>Ø %{customdata:.0f} Mio./Deal<extra></extra>',
-    customdata:data.map(d=>d.avg)
-  };
-  Plotly.newPlot('dealBubbleChart',[trace],mergeLayout({
-    xaxis:{title:{text:'Anzahl Deals (kumuliert)'}},
-    yaxis:{title:{text:'Total Funding (Mrd. CHF)'}},
-    hovermode:'closest'
-  }),CFG);
+  Plotly.newPlot('fundingLinesChart',traces,ml({yaxis:{title:{text:'Mio. CHF'}}}),CFG);
 }
