@@ -1,0 +1,20 @@
+{
+  "info": "Dieser Ordner enthält JSON-Daten für die Website",
+  "status": "Noch keine Daten generiert",
+  "next_steps": [
+    "Python-Skripte in scripts/ erstellen",
+    "CSV-Dateien transformieren",
+    "JSON-Dateien hier ablegen"
+  ],
+  "expected_files": [
+    "tech_trends.json",
+    "industry_trends.json",
+    "deal_count.json",
+    "funding_share.json",
+    "momentum_matrix.json",
+    "co_occurrence.json",
+    "mbi_courses.json",
+    "ec_domains.json",
+    "canton_map.json (optional)"
+  ]
+}

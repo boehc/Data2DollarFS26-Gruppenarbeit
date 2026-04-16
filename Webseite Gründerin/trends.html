@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globale Tech-Trends – data2dollar</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/trends.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">data2dollar</a>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="trends.html" class="nav-link active">Trends</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="opportunity.html" class="nav-link">Opportunity</a>
+                <a href="courses.html" class="nav-link">MBI-Kurse</a>
+                <a href="opportunity.html#fazit" class="nav-cta">→ Empfehlung</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <span class="page-hero-label">📊 Datenquelle: 2'817 Tech-Artikel</span>
+            <h1 class="page-hero-title">Globale Tech-Trends</h1>
+            <p class="page-hero-subtitle">
+                28 Keywords · 13 Quartale · 2023 Q1 – 2026 Q1<br>
+                Welche Technologien gewinnen an Aufmerksamkeit – und welche verlieren?
+            </p>
+        </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section class="insights">
+        <div class="container">
+            <div class="insights-grid">
+                <div class="insight-card insight-card--hot">
+                    <span class="insight-emoji">🔥</span>
+                    <div>
+                        <strong>GenAI dominiert</strong>
+                        <p>11 – 21 % Attention Share seit 2023. Klarer #1 Trend über den gesamten Zeitraum.</p>
+                    </div>
+                </div>
+                <div class="insight-card insight-card--emerging">
+                    <span class="insight-emoji">🚀</span>
+                    <div>
+                        <strong>AgentAI explodiert</strong>
+                        <p>Von 1.3 % auf 8.5 % – stärkstes Wachstum aller Keywords. Der nächste Mega-Trend.</p>
+                    </div>
+                </div>
+                <div class="insight-card insight-card--declining">
+                    <span class="insight-emoji">📉</span>
+                    <div>
+                        <strong>Web3 & Cybersecurity sinken</strong>
+                        <p>Web3 fällt von 6.6 % auf 4.9 %, Cybersecurity von 7.1 % auf 1.9 %. Hype vorbei.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="chart-panel">
+                <!-- Controls -->
+                <div class="chart-controls">
+                    <div class="chart-controls-header">
+                        <h3>Trend auswählen</h3>
+                        <span class="chart-controls-hint">Max. 5 gleichzeitig · Sortiert nach Attraktivität</span>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="trend-legend" id="trendLegend"></div>
+
+                    <!-- Keyword Checkboxes -->
+                    <div class="keywords-grid" id="keywordsList">
+                        <div class="loading-placeholder">Lädt Keywords…</div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="chart-buttons">
+                        <button class="btn btn--outline" id="selectTopBtn">✓ Top 5</button>
+                        <button class="btn btn--ghost" id="resetBtn">↻ Reset</button>
+                    </div>
+                </div>
+
+                <!-- Warning -->
+                <div id="warningMsg" class="warning-msg" style="display:none;"></div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display:none;">
+                    <p>👆 Wähle mindestens ein Keyword aus der Liste oben</p>
+                </div>
+
+                <!-- Plotly Chart -->
+                <div id="chartWrapper" class="chart-wrapper" style="display:none;">
+                    <div id="trendChart" class="trend-chart"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodik -->
+    <section class="methodik">
+        <div class="container">
+            <details class="methodik-details">
+                <summary class="methodik-summary">📐 Methodik & Klassifizierung</summary>
+                <div class="methodik-content">
+                    <p>
+                        <strong>Datenquelle:</strong> 2'817 Tech-Artikel von führenden Plattformen (TechCrunch, Wired, etc.), 
+                        quartalsweise aggregiert von 2023 Q1 bis 2026 Q1.
+                    </p>
+                    <p>
+                        <strong>Attention Share (%):</strong> Normalisierter Anteil eines Keywords an allen Keyword-Erwähnungen 
+                        pro Quartal. Zeigt relative Aufmerksamkeit, nicht absolute Häufigkeit.
+                    </p>
+                    <p><strong>Trend-Klassifizierung:</strong></p>
+                    <ul>
+                        <li>🚀 <strong>Emerging</strong> – Niedriger Anteil, aber starkes Wachstum (Momentum &gt; 0.3, unter Median)</li>
+                        <li>✨ <strong>Rising</strong> – Moderater Anteil mit positivem Momentum (&gt; 0.15)</li>
+                        <li>🔥 <strong>Hot</strong> – Hoher Anteil UND wachsend (über 75. Perzentil + Momentum &gt; 0.3)</li>
+                        <li>⚖️ <strong>Mature</strong> – Hoher Anteil, aber stagnierend (über 75. Perzentil, Momentum ±0.3)</li>
+                        <li>😴 <strong>Stable</strong> – Keine klare Bewegung</li>
+                        <li>📉 <strong>Declining</strong> – Aufmerksamkeit sinkt (Momentum &lt; -0.3)</li>
+                    </ul>
+                    <p>
+                        <strong>Momentum:</strong> Durchschnittliche Veränderung der letzten 4 Quartale in Prozentpunkten pro Quartal.
+                    </p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>data2dollar · HSG MBI FS26 · Datenbasierte Gründungsanalyse</p>
+        </div>
+    </footer>
+
+    <script src="js/components/nav.js"></script>
+    <script src="js/charts/trends.js"></script>
+</body>
+</html>

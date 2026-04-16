@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schweizer Startup-Investments – data2dollar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/trends.css">
+</head>
+<body>
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">data2dollar</a>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="trends.html" class="nav-link">Trends</a>
+                <a href="investments.html" class="nav-link active">Investments</a>
+                <a href="opportunity.html" class="nav-link">Opportunity</a>
+                <a href="courses.html" class="nav-link">MBI-Kurse</a>
+                <a href="opportunity.html#fazit" class="nav-cta">→ Empfehlung</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="page-hero-label">🇨🇭 1'322 Deals · 14 Branchen · Q1/2023 – Q1/2026</span>
+            <h1 class="page-hero-title">Schweizer Startup-Investments</h1>
+            <p class="page-hero-subtitle">Wohin fliesst das Schweizer Venture Capital?<br>Deals, Funding-Volumen, Stages und Branchenentwicklung.</p>
+        </div>
+    </section>
+
+    <section class="insights-section">
+        <div class="container">
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <span class="insight-icon">📊</span>
+                    <h3>Ø 101 Deals / Quartal</h3>
+                    <p>Stabiles Ökosystem mit 1'322 Deals in 13 Quartalen. Stärkstes Quartal: Q3/2025 mit 122 Deals.</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-icon">💰</span>
+                    <h3>CHF 75.5 Mrd. Total</h3>
+                    <p>Gesamtes Funding-Volumen über 3 Jahre. Q1/2026 mit CHF 8.9 Mrd. als Rekordquartal.</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-icon">🌱</span>
+                    <h3>Seed dominiert</h3>
+                    <p>Seed-Runden machen den grössten Anteil aus. Pre-Seed wächst stark – das Ökosystem wird jünger.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="sector-tabs" id="investTabs">
+                <button class="sector-tab active" data-tab="overview">📊 Übersicht</button>
+                <button class="sector-tab" data-tab="deals">🔢 Deal Count</button>
+                <button class="sector-tab" data-tab="funding">💰 Funding</button>
+                <button class="sector-tab" data-tab="stages">📈 Stages</button>
+                <button class="sector-tab" data-tab="bubble">🫧 Deal Size</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Tab -->
+    <div id="tab-overview" class="invest-tab-content">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Startup-Investments pro Quartal</h3>
+                <span class="chart-controls-hint">Anzahl Deals (ohne Doppelzählung)</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="totalDealsChart" class="trend-chart"></div></div>
+        </div></div></section>
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Funding-Volumen pro Quartal</h3>
+                <span class="chart-controls-hint">Mio. CHF · EUR/USD umgerechnet · nur bekannte Beträge</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="totalFundingChart" class="trend-chart"></div></div>
+        </div></div></section>
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Top 5 + Übrige: Deals vs. Funding</h3>
+                <span class="chart-controls-hint">Kumuliert 2023–2026</span>
+            </div></div>
+            <div class="table-wrapper"><table class="data-table" id="dealSizeTable">
+                <thead><tr><th>Branche</th><th>Deals</th><th>Funding (Mrd. CHF)</th><th>Ø Deal (Mio. CHF)</th></tr></thead>
+                <tbody></tbody>
+            </table></div>
+        </div></div></section>
+    </div>
+
+    <!-- Deals Tab -->
+    <div id="tab-deals" class="invest-tab-content" style="display:none;">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Deal Count – Top 5 + Übrige (gestapelt)</h3>
+                <span class="chart-controls-hint">Anteil der grössten Kategorien am Gesamtmarkt</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="dealStackedChart" class="trend-chart"></div></div>
+        </div></div></section>
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Deal Count – Einzelne Linien pro Branche</h3>
+                <span class="chart-controls-hint">Top 7 Branchen</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="dealLinesChart" class="trend-chart"></div></div>
+        </div></div></section>
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Marktanteil-Entwicklung (Deal Share %)</h3>
+                <span class="chart-controls-hint">Top-Branchen · Quartalsweise</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="shareChart" class="trend-chart"></div></div>
+        </div></div></section>
+    </div>
+
+    <!-- Funding Tab -->
+    <div id="tab-funding" class="invest-tab-content" style="display:none;">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Funding Top 5 (Mio. CHF, gestapelt)</h3>
+                <span class="chart-controls-hint">BioTech zieht konsistent das meiste Kapital</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="fundingStackedChart" class="trend-chart"></div></div>
+        </div></div></section>
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Funding – Einzelne Linien (Mio. CHF)</h3>
+                <span class="chart-controls-hint">Top 7 Branchen inkl. Robotics & EdTech</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="fundingLinesChart" class="trend-chart"></div></div>
+        </div></div></section>
+    </div>
+
+    <!-- Stages Tab -->
+    <div id="tab-stages" class="invest-tab-content" style="display:none;">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Investment-Stages pro Quartal</h3>
+                <span class="chart-controls-hint">Seed dominiert · Pre-Seed wächst · Award = Preise · Grant = Fördergelder</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="stagesChart" class="trend-chart" style="min-height:480px;"></div></div>
+        </div></div></section>
+    </div>
+
+    <!-- Bubble Tab -->
+    <div id="tab-bubble" class="invest-tab-content" style="display:none;">
+        <section class="chart-section"><div class="container"><div class="chart-panel">
+            <div class="chart-controls"><div class="chart-controls-header">
+                <h3>Deal Count vs. Funding-Volumen pro Branche</h3>
+                <span class="chart-controls-hint">X = Anzahl Deals · Y = Total Funding (Mrd CHF) · Grösse = Ø Deal Size</span>
+            </div></div>
+            <div class="chart-wrapper" style="display:block;"><div id="dealBubbleChart" class="trend-chart" style="min-height:520px;"></div></div>
+        </div></div></section>
+    </div>
+
+    <!-- Methodik -->
+    <section class="chart-section">
+        <div class="container">
+            <details class="methodik-accordion">
+                <summary>📐 Methodik & Datenquellen</summary>
+                <div class="methodik-content">
+                    <p><strong>Datenquellen:</strong> Startupticker.ch, Venture Kick, Swiss Startup Radar, quartalsweise aggregiert Q1/2023 – Q1/2026.</p>
+                    <p><strong>Funding-Volumen:</strong> In Mio. CHF, EUR/USD zum Tageskurs umgerechnet. Nur bekannte Beträge.</p>
+                    <p><strong>Stages:</strong> Pre-Seed, Seed, Series A–C+, Strategic, Grant, Award, Sonstige.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <script src="js/components/nav.js"></script>
+    <script src="js/charts/investments.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBI-Kurse für Gründer:innen – data2dollar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/trends.css">
+    <style>
+        .ec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;margin-bottom:2rem;}
+        .ec-card{padding:1rem 1.1rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;position:relative;}
+        .ec-card:hover{border-color:var(--text-muted);}
+        .ec-card.stark{border-color:#0d9488;background:rgba(13,148,136,0.08);}
+        .ec-card.okay{border-color:#6b7280;background:rgba(107,114,128,0.06);}
+        .ec-card.luecke{border-color:#f97316;background:rgba(249,115,22,0.08);}
+        .ec-card-name{font-weight:600;color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;}
+        .ec-card-meta{font-size:0.78rem;color:var(--text-muted);font-family:var(--font-mono);}
+        .ec-card-evidence{font-size:0.72rem;color:var(--accent);margin-top:0.25rem;}
+        .ec-card-warn{position:absolute;top:8px;right:10px;font-size:0.85rem;}
+        .ec-state-btns{display:flex;gap:4px;margin-top:0.5rem;}
+        .ec-state-btn{font-size:0.7rem;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;}
+        .ec-state-btn.active-stark{background:#0d9488;color:#fff;border-color:#0d9488;}
+        .ec-state-btn.active-okay{background:#374151;color:#d1d5db;border-color:#6b7280;}
+        .ec-state-btn.active-luecke{background:#f97316;color:#fff;border-color:#f97316;}
+        .ec-result{margin-top:1.5rem;}
+        .ec-result-empty{color:var(--text-muted);font-style:italic;padding:1rem 0;}
+        .course-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);margin-bottom:0.5rem;}
+        .course-item:hover{border-color:var(--text-muted);}
+        .course-name{font-weight:500;color:var(--text);font-size:0.9rem;margin-bottom:0.2rem;}
+        .course-meta{font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);}
+        .course-ecs{font-size:0.72rem;color:var(--accent);margin-top:0.15rem;}
+        .course-score{display:flex;gap:3px;flex-shrink:0;margin-left:0.75rem;margin-top:2px;}
+        .score-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+        .score-dot.filled{background:var(--accent);}
+        .badge-doppelt{display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:4px;background:rgba(74,158,255,0.15);color:#4A9EFF;font-weight:600;margin-left:0.5rem;}
+        .sector-hint{padding:0.75rem 1rem;border-radius:8px;border:1px solid rgba(249,115,22,0.3);background:rgba(249,115,22,0.06);color:#fb923c;font-size:0.85rem;margin-top:0.75rem;}
+        .assess-legend{display:flex;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+        .assess-legend span{font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:0.4rem;}
+        .assess-legend .dot{width:10px;height:10px;border-radius:3px;}
+    </style>
+</head>
+<body>
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">data2dollar</a>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="trends.html" class="nav-link">Trends</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="opportunity.html" class="nav-link">Opportunity</a>
+                <a href="courses.html" class="nav-link active">MBI-Kurse</a>
+                <a href="opportunity.html#fazit" class="nav-cta">→ Empfehlung</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="page-hero-label">🎓 Mai & Thai (2025) · 12 EC-Domains · 84 MBI-Kurse</span>
+            <h1 class="page-hero-title">MBI-Kurse für Gründer:innen</h1>
+            <p class="page-hero-subtitle">Welche Entrepreneurial Competencies (ECs) brauchst du?<br>Und welche MBI-Kurse trainieren sie?</p>
+        </div>
+    </section>
+
+    <section class="insights-section">
+        <div class="container">
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <span class="insight-icon">📚</span>
+                    <h3>12 EC-Domains</h3>
+                    <p>Basierend auf Mai & Thai (2025): Systematischer Review von 174 Papers zu Gründer-Kompetenzen.</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-icon">⚠️</span>
+                    <h3>Kritische Lücken</h3>
+                    <p>Opportunity Recognition & Personal Strength (Pitching) — die wichtigsten ECs haben die wenigsten Kurse.</p>
+                </div>
+                <div class="insight-card">
+                    <span class="insight-icon">🎯</span>
+                    <h3>Doppelt wertvoll</h3>
+                    <p>Manche Kurse trainieren EC-Kompetenzen UND Sektor-Wissen gleichzeitig. Best of both worlds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEREICH A: EC Self-Assessment -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>🧭 EC Self-Assessment</h3>
+                    <span class="chart-controls-hint">Klicke pro Domain: stark / okay / Lücke — Kurse für deine Lücken erscheinen darunter</span>
+                </div></div>
+                <div class="assess-legend">
+                    <span><span class="dot" style="background:#0d9488;"></span> Stark</span>
+                    <span><span class="dot" style="background:#6b7280;"></span> Okay</span>
+                    <span><span class="dot" style="background:#f97316;"></span> Lücke</span>
+                    <span><span class="dot" style="background:transparent;border:1px solid var(--border);"></span> Nicht bewertet</span>
+                </div>
+                <div class="ec-grid" id="ecGrid"></div>
+                <div class="ec-result" id="ecResult">
+                    <div class="ec-result-empty">Markiere Domains als «Lücke», um passende Kurse zu sehen.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEREICH B: Sektor-Kurse -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="chart-panel">
+                <div class="chart-controls"><div class="chart-controls-header">
+                    <h3>🏭 Sektor-spezifische Kurse</h3>
+                    <span class="chart-controls-hint">Welche MBI-Kurse bereiten auf deinen Zielsektor vor?</span>
+                </div></div>
+                <div class="sector-tabs" id="sektorTabs">
+                    <button class="sector-tab active" data-sektor="GenAI">GenAI</button>
+                    <button class="sector-tab" data-sektor="HealthTech">HealthTech</button>
+                    <button class="sector-tab" data-sektor="MedTech">MedTech</button>
+                    <button class="sector-tab" data-sektor="BioTech">BioTech</button>
+                    <button class="sector-tab" data-sektor="Robotics">Robotics</button>
+                </div>
+                <div id="sektorContent" style="margin-top:1rem;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodik -->
+    <section class="chart-section">
+        <div class="container">
+            <details class="methodik-accordion">
+                <summary>📐 Wissenschaftliche Grundlage</summary>
+                <div class="methodik-content">
+                    <p><strong>Quelle:</strong> Mai, T. P. & Thai, M. T. T. (2025). Entrepreneurial Competencies: A Systematic Review. <em>Journal of International Entrepreneurship</em>, 23(1), 54–130. DOI: 10.1007/s10843-024-00356-7</p>
+                    <p><strong>Methode:</strong> Systematischer Review von 174 Papers. 12 EC-Domains identifiziert. Evidenz-Gewicht = Häufigkeit der Domain in der Literatur.</p>
+                    <p><strong>Kurs-Matching:</strong> Bilinguales DE+EN Keyword-Matching (Score 0–3, gekappt bei 3). Basiert auf mbi_ec_sector_matrix_bilingual.csv (84 Kurse × 24 Spalten).</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <script src="js/components/nav.js"></script>
+    <script src="js/charts/courses.js"></script>
+</body>
+</html>
