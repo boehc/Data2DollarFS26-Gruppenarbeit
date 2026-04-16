@@ -1,0 +1,15 @@
+keyword,earlier_avg,recent_avg,momentum_pct,classification
+GenAI,1.8,5.0,168.4,Accelerating 🚀
+Robotics,1.0,2.2,109.1,Accelerating 🚀
+Ecommerce,1.2,1.5,23.1,Growing ↑
+PropTech,1.2,1.5,23.1,Growing ↑
+MedTech,3.5,3.8,8.3,Stable →
+AgriTech,0.8,0.8,0.0,Stable →
+BioTech,27.5,27.0,-1.8,Stable →
+FinTech,36.5,32.0,-12.3,Slowing ↓
+Enterprise,2.5,1.8,-26.9,Slowing ↓
+Cybersecurity,0.8,0.5,-33.3,Slowing ↓
+HealthTech,4.2,2.5,-39.5,Slowing ↓
+ClimateTech,16.8,8.8,-47.3,Slowing ↓
+EdTech,0.8,0.2,-66.7,Declining 📉
+SpaceTech,0.8,0.0,-88.9,Declining 📉
