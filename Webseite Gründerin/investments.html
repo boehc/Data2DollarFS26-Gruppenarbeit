@@ -46,8 +46,8 @@
                 </div>
                 <div class="insight-card">
                     <span class="insight-icon">💰</span>
-                    <h3>CHF 75.5 Mrd. Total</h3>
-                    <p>Gesamtes Funding-Volumen über 3 Jahre. Q1/2026 mit CHF 8.9 Mrd. als Rekordquartal.</p>
+                    <h3>CHF 38.5 Mrd. Total</h3>
+                    <p>Gesamtes Funding-Volumen über 3 Jahre. Q1/2025 mit CHF 4.9 Mrd. als Rekordquartal.</p>
                 </div>
                 <div class="insight-card">
                     <span class="insight-icon">🌱</span>
@@ -90,10 +90,26 @@
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
                 <h3>Branchen-Übersicht: Deals vs. Funding</h3>
-                <span class="chart-controls-hint">Kumuliert 2023–2026</span>
-            </div></div>
-            <div class="table-wrapper"><table class="data-table" id="dealSizeTable">
-                <thead><tr><th>Branche</th><th>Deals</th><th>Funding (Mrd. CHF)</th><th>Ø Deal (Mio. CHF)</th></tr></thead>
+                <span class="chart-controls-hint" id="tableHint">Kumuliert 2023–2026</span>
+            </div>
+            <div class="table-filter-bar">
+                <label class="table-filter-label">Zeitraum:</label>
+                <select id="yearFilter" class="table-filter-select">
+                    <option value="all" selected>Alle (2023–2026)</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+            </div>
+            </div>
+            <div class="table-wrapper"><table class="data-table sortable-table" id="dealSizeTable">
+                <thead><tr>
+                    <th data-sort="name" class="sortable">Branche <span class="sort-icon">⇅</span></th>
+                    <th data-sort="deals" class="sortable sorted-desc">Deals <span class="sort-icon">↓</span></th>
+                    <th data-sort="funding" class="sortable">Funding (Mrd. CHF) <span class="sort-icon">⇅</span></th>
+                    <th data-sort="avg" class="sortable">Ø Deal (Mio. CHF) <span class="sort-icon">⇅</span></th>
+                </tr></thead>
                 <tbody></tbody>
             </table></div>
         </div></div></section>
@@ -129,7 +145,7 @@
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
                 <h3>Marktanteil-Entwicklung (Deal Share %)</h3>
-                <span class="chart-controls-hint">Top-Branchen · Quartalsweise</span>
+                <span class="chart-controls-hint" id="shareChartHint">Top-Branchen · Quartalsweise</span>
             </div></div>
             <div class="chart-wrapper" style="display:block;"><div id="shareChart" class="trend-chart"></div></div>
         </div></div></section>

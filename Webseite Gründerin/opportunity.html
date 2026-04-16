@@ -62,23 +62,15 @@
     <section class="chart-section">
         <div class="container">
             <div class="sector-tabs" id="oppTabs">
-                <button class="sector-tab active" data-tab="matrix">🗺️ Opportunity-Matrix</button>
+                <button class="sector-tab active" data-tab="matrix">� Branchen-Ranking</button>
                 <button class="sector-tab" data-tab="heatmap">🔥 Tech × Branche</button>
                 <button class="sector-tab" data-tab="techdive">📈 Tech Deep Dive</button>
-                <button class="sector-tab" data-tab="reco">🎯 Deine Empfehlung</button>
             </div>
         </div>
     </section>
 
     <!-- Matrix Tab -->
     <div id="tab-matrix" class="opp-tab-content">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Opportunity-Matrix: News-Hype vs. VC-Deals (2025)</h3>
-                <span class="chart-controls-hint">X = Ø News-Anteil 2025 (%) · Y = Ø Deal-Anteil 2025 (%) · Grösse = Total Deals 2023–2026</span>
-            </div></div>
-            <div class="chart-wrapper" style="display:block;"><div id="matrixChart" class="trend-chart" style="min-height:520px;"></div></div>
-        </div></div></section>
         <section class="chart-section"><div class="container"><div class="chart-panel">
             <div class="chart-controls"><div class="chart-controls-header">
                 <h3>Branchen-Ranking: Gründungsattraktivität</h3>
@@ -120,22 +112,7 @@
         </div></div></section>
     </div>
 
-    <!-- Recommendation Tab -->
-    <div id="tab-reco" class="opp-tab-content" style="display:none;">
-        <section class="chart-section"><div class="container"><div class="chart-panel">
-            <div class="chart-controls"><div class="chart-controls-header">
-                <h3>Deine persönliche Empfehlung</h3>
-                <span class="chart-controls-hint">Basierend auf deiner Selbsteinschätzung (MBI-Kurse) × Markt-Opportunity</span>
-            </div></div>
-            <div id="recoContent" class="reco-content">
-                <div class="reco-placeholder">
-                    <p>⚠️ Du hast noch keine Selbsteinschätzung gemacht.</p>
-                    <p>Gehe zuerst zum <a href="courses.html" style="color:var(--accent);">MBI-Kurse Wizard</a> und bewerte deine Kompetenzen.</p>
-                    <p>Dann komm hierhin zurück für deine persönliche Empfehlung.</p>
-                </div>
-            </div>
-        </div></div></section>
-    </div>
+
 
     <!-- Fazit -->
     <section class="chart-section" id="fazit">
@@ -144,16 +121,16 @@
                 <h2 class="fazit-title">🎯 Fazit: Wo gründen?</h2>
                 <div class="fazit-grid">
                     <div class="fazit-item fazit-item--green">
-                        <h4>🟢 Sehr attraktiv</h4>
-                        <p><strong>BioTech</strong> — Höchste VC-Aktivität und wachsend. Starkes Schweizer Ökosystem (Basel, Genf, Lausanne). Erfordert Domänenwissen oder starke Co-Founder.</p>
-                    </div>
-                    <div class="fazit-item fazit-item--green">
-                        <h4>🟢 Spannende Nische</h4>
-                        <p><strong>HealthTech / MedTech</strong> — Solide Deal-Basis, starkes Schweizer Gesundheitssystem. GenAI als Hebel für Diagnostik, Patientendaten, klinische Workflows.</p>
+                        <h4>🟢 Marktführer</h4>
+                        <p><strong>BioTech</strong> — Dominiert mit 34% aller Deals und 19.8 Mrd. CHF Funding. Deal-Anteil leicht sinkend, aber absolute Marktdominanz. Erfordert Domänenwissen oder starke Co-Founder.</p>
                     </div>
                     <div class="fazit-item fazit-item--yellow">
-                        <h4>🟡 Etabliert, aber stagnierend</h4>
-                        <p><strong>FinTech</strong> — Historisch meiste Deals, aber <strong>Deal-Anteil rückläufig</strong> seit 2023. Markt reift. Einstieg nur mit klarer Differenzierung (z.B. GenAI-Layer).</p>
+                        <h4>� Grösster Markt, aber kompetitiv</h4>
+                        <p><strong>FinTech</strong> — 40% Deal-Anteil, grösster Schweizer VC-Markt. Quartalszahlen schwanken stark und Dynamik lässt nach. Differenzierung nötig: GenAI-Layer, Embedded Finance oder Nischenfokus (WealthTech, RegTech).</p>
+                    </div>
+                    <div class="fazit-item fazit-item--green">
+                        <h4>� Spannende Nische</h4>
+                        <p><strong>HealthTech / MedTech</strong> — HealthTech wächst stark (+70% Deals). Starkes Schweizer Gesundheitssystem. GenAI als Hebel für Diagnostik und klinische Workflows.</p>
                     </div>
                     <div class="fazit-item fazit-item--yellow">
                         <h4>🟡 Wachsend, beobachten</h4>
@@ -163,9 +140,9 @@
                         <h4>🟡 Frühphase</h4>
                         <p><strong>Robotics</strong> — Steigende News + erste Deals. Kapitalintensiv, aber ETHZ-Nähe als Vorteil. Eher für technische Gründer:innen.</p>
                     </div>
-                    <div class="fazit-item fazit-item--red">
-                        <h4>🔴 Rückläufig</h4>
-                        <p><strong>ClimateTech</strong> — Deal-Anteil sinkt seit 2023. Immer noch relevant, aber schwierigeres Funding-Umfeld. Regulatorisches Know-how nötig.</p>
+                    <div class="fazit-item fazit-item--yellow">
+                        <h4>� Stabil, aber rückläufig</h4>
+                        <p><strong>ClimateTech</strong> — 10.8% Deal-Anteil, leicht sinkend (–1.9pp). Gesellschaftlich relevant, aber Funding-Umfeld aktuell schwieriger. Regulatorisches Know-how nötig.</p>
                     </div>
                 </div>
             </div>
@@ -178,7 +155,7 @@
             <details class="methodik-accordion">
                 <summary>📐 Methodik & Datenquellen</summary>
                 <div class="methodik-content">
-                    <p><strong>News-Daten:</strong> Globale Tech-News, quartalsweise aggregiert, normalisiert als Anteil (%). Quelle: Lizzy/Trends.</p>
+                    <p><strong>News-Daten:</strong> Globale Tech-News (TechCrunch, HackerNews), quartalsweise aggregiert, normalisiert als Anteil (%).</p>
                     <p><strong>VC-Deals:</strong> Schweizer Startups, 1'322 Deals, Q1/2023–Q1/2026. Quelle: Startupticker, Venture Kick, Swiss Startup Radar.</p>
                     <p><strong>Heatmap:</strong> Co-Occurrence = Anzahl Artikel die sowohl Technologie als auch Branche erwähnen.</p>
                     <p><strong>Hinweis:</strong> GenAI und AgentAI sind als Technologien klassifiziert, nicht als eigenständige Branchen.</p>

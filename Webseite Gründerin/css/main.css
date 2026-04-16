@@ -518,7 +518,7 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 12px 0 16px;
+  padding: 12px 0 8px;
 }
 .branch-chip {
   display: inline-flex;
@@ -551,12 +551,58 @@ section {
   border-radius: 50%;
   flex-shrink: 0;
 }
+.custom-empty-hint {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
 .sector-subtabs {
   margin-bottom: 0 !important;
 }
 .sector-subtabs .sector-tab {
   font-size: 0.85rem;
   padding: 6px 16px;
+}
+
+/* ===== Table Filter & Sort ===== */
+.table-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.table-filter-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.table-filter-select {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  outline: none;
+}
+.table-filter-select:focus { border-color: var(--accent); }
+.sortable-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.sortable-table th.sortable:hover { color: var(--accent); }
+.sortable-table th .sort-icon {
+  font-size: 0.75rem;
+  margin-left: 4px;
+  opacity: 0.5;
+}
+.sortable-table th.sorted-asc .sort-icon,
+.sortable-table th.sorted-desc .sort-icon {
+  opacity: 1;
+  color: var(--accent);
 }
 
 /* ===== Recommendation Cards ===== */
@@ -618,4 +664,19 @@ section {
 .reco-gap {
   font-size: 0.8rem;
   margin: 0;
+}
+
+/* Ranking expandable rows */
+.ranking-row:hover { background: rgba(255,255,255,0.03); }
+.ranking-row td:last-child::after { content: ' ▸'; font-size: 0.75rem; opacity: 0.4; }
+.ranking-detail { display: none; }
+.ranking-detail--open { display: table-row; }
+.ranking-detail td { padding: 0 !important; border-top: none !important; }
+.ranking-detail-inner {
+  padding: 10px 16px 14px 32px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  background: rgba(0,229,160,0.03);
+  border-bottom: 1px solid var(--border);
 }

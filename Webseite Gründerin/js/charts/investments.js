@@ -6,10 +6,10 @@
 const QUARTERS = ["2023-Q1","2023-Q2","2023-Q3","2023-Q4","2024-Q1","2024-Q2","2024-Q3","2024-Q4","2025-Q1","2025-Q2","2025-Q3","2025-Q4","2026-Q1"];
 
 const TOTALS = [
-  {q:"2023-Q1",deals:119,funding:6183.9},{q:"2023-Q2",deals:90,funding:4605.4},{q:"2023-Q3",deals:82,funding:8526.1},{q:"2023-Q4",deals:106,funding:3195.9},
-  {q:"2024-Q1",deals:96,funding:5003.8},{q:"2024-Q2",deals:102,funding:5791.3},{q:"2024-Q3",deals:105,funding:2861.1},{q:"2024-Q4",deals:98,funding:4227.4},
-  {q:"2025-Q1",deals:110,funding:8280.9},{q:"2025-Q2",deals:69,funding:2774.9},{q:"2025-Q3",deals:122,funding:6409.0},{q:"2025-Q4",deals:117,funding:8736.4},
-  {q:"2026-Q1",deals:106,funding:8916.1}
+  {q:"2023-Q1",deals:119,funding:2322.6},{q:"2023-Q2",deals:90,funding:2539.0},{q:"2023-Q3",deals:82,funding:3512.5},{q:"2023-Q4",deals:106,funding:2016.7},
+  {q:"2024-Q1",deals:96,funding:3067.6},{q:"2024-Q2",deals:102,funding:3094.7},{q:"2024-Q3",deals:105,funding:1582.2},{q:"2024-Q4",deals:98,funding:2188.7},
+  {q:"2025-Q1",deals:110,funding:4867.1},{q:"2025-Q2",deals:69,funding:2050.4},{q:"2025-Q3",deals:122,funding:3415.4},{q:"2025-Q4",deals:117,funding:4328.7},
+  {q:"2026-Q1",deals:106,funding:3494.3}
 ];
 
 const ALL_SECTORS = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech","Robotics","Enterprise","Ecommerce","EdTech","PropTech","Cybersecurity","AgriTech","SpaceTech"];
@@ -25,13 +25,13 @@ const F1_SM = {
 };
 
 const FV_SM = {
-  AgriTech:[0,0,0,0,0,0,0,0,0,0,0,0,0],BioTech:[2201,1745,2501,1150,2761,2205,1212,1543,3036,1188,2611,3280,2934],
-  ClimateTech:[1333,76,1022,962,235,451,10,200,120,68,272,286,1456],Cybersecurity:[68,0,583,8,5,72,14,208,40,14,267,18,78],
-  Ecommerce:[0,0,0,0,0,0,0,0,0,0,0,0,0],EdTech:[58,185,182,25,252,39,282,445,920,106,221,645,1691],
-  Enterprise:[7,0,58,1,0,0,0,23,0,0,0,0,80],FinTech:[1968,1646,1917,422,985,2229,656,900,2792,815,1661,1420,1620],
-  GenAI:[5,173,0,41,20,51,21,3,7,0,278,95,89],HealthTech:[486,395,1321,130,502,480,286,456,1221,544,174,2180,601],
-  MedTech:[23,139,18,5,54,11,196,24,3,10,26,163,156],PropTech:[19,10,916,434,9,24,31,69,112,6,282,257,32],
-  Robotics:[16,237,9,13,180,229,153,357,31,24,618,394,180],SpaceTech:[0,0,0,6,0,2,0,0,0,0,0,0,0]
+  AgriTech:[0,0,0,0,6,0,5,2,10,10,0,13,0],BioTech:[1621,865,1841,1079,2697,832,786,1131,2961,1158,1620,2801,2537],
+  ClimateTech:[402,76,925,529,49,140,6,82,121,32,229,114,118],Cybersecurity:[0,0,0,1,0,0,1,0,0,0,0,2,0],
+  Ecommerce:[0,0,0,0,0,3,101,0,0,2,0,0,180],EdTech:[0,0,1,1,0,0,0,0,0,0,9,0,0],
+  Enterprise:[7,0,58,1,0,0,0,23,0,0,0,0,79],FinTech:[263,1439,667,379,213,2065,440,897,874,811,907,701,353],
+  GenAI:[4,5,1,0,14,7,2,14,2,0,56,296,59],HealthTech:[1,9,0,7,30,0,44,15,885,20,1,19,11],
+  MedTech:[23,140,18,5,54,11,198,24,3,10,26,164,157],PropTech:[0,2,0,0,1,0,0,0,0,6,0,208,0],
+  Robotics:[0,4,0,9,3,35,0,0,12,1,567,9,0],SpaceTech:[0,0,0,6,0,2,0,0,0,0,0,0,0]
 };
 
 const STAGE_KEYS = ["Pre-Seed","Seed","Series A","Series B","Series C+","Strategic","Grant"];
@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prefix = btn.dataset.subtab.split('-')[0]; // 'deal' or 'funding'
         document.getElementById('subtab-' + prefix + '-top7').style.display = btn.dataset.subtab.endsWith('top7') ? 'block' : 'none';
         document.getElementById('subtab-' + prefix + '-custom').style.display = btn.dataset.subtab.endsWith('custom') ? 'block' : 'none';
+        if (prefix === 'deal') renderDealShare(); // update share chart
         setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
       });
     });
@@ -136,18 +137,34 @@ function getSelectedSectors(type) {
 
 function renderDealCustom() {
   const sectors = getSelectedSectors('deal');
-  if (!sectors.length) { Plotly.purge('dealCustomChart'); return; }
+  const el = document.getElementById('dealCustomChart');
+  if (!sectors.length) {
+    Plotly.purge('dealCustomChart');
+    el.innerHTML = '<div class="custom-empty-hint">👆 Wähle oben bis zu 7 Branchen aus, um den Chart zu sehen</div>';
+    el.style.minHeight = '120px';
+    renderDealShare();
+    return;
+  }
+  el.style.minHeight = '';
   const traces = sectors.map(k => ({
     x:QUARTERS,y:F1_SM[k],type:'scatter',mode:'lines+markers',name:k,
     line:{color:C[k],width:2},marker:{size:4,color:C[k]},
     hovertemplate:`${k}: %{y}<extra></extra>`
   }));
   Plotly.newPlot('dealCustomChart',traces,ml({yaxis:{title:{text:'Deals'}}}),CFG);
+  renderDealShare(); // sync share chart
 }
 
 function renderFundingCustom() {
   const sectors = getSelectedSectors('funding');
-  if (!sectors.length) { Plotly.purge('fundingCustomChart'); return; }
+  const el = document.getElementById('fundingCustomChart');
+  if (!sectors.length) {
+    Plotly.purge('fundingCustomChart');
+    el.innerHTML = '<div class="custom-empty-hint">👆 Wähle oben bis zu 7 Branchen aus, um den Chart zu sehen</div>';
+    el.style.minHeight = '120px';
+    return;
+  }
+  el.style.minHeight = '';
   const traces = sectors.map(k => ({
     x:QUARTERS,y:FV_SM[k],type:'scatter',mode:'lines+markers',name:k,
     line:{color:C[k],width:2},marker:{size:4},
@@ -196,20 +213,69 @@ function renderStages() {
 }
 
 // ===== TABLE =====
+let tableSortCol = 'deals';
+let tableSortDir = -1; // -1 = desc, 1 = asc
+
+function getQuarterIndices(yearFilter) {
+  if (yearFilter === 'all') return QUARTERS.map((_,i) => i);
+  return QUARTERS.map((q,i) => q.startsWith(yearFilter) ? i : -1).filter(i => i >= 0);
+}
+
 function renderDealSizeTable() {
+  const yearFilter = document.getElementById('yearFilter')?.value || 'all';
+  const indices = getQuarterIndices(yearFilter);
+  const hint = document.getElementById('tableHint');
+  if (hint) hint.textContent = yearFilter === 'all' ? 'Kumuliert 2023–2026' : `Kumuliert ${yearFilter}`;
+
   const agg = {};
   ALL_SECTORS.forEach(s => {
-    const deals = F1_SM[s].reduce((a,b)=>a+b,0);
-    const funding = FV_SM[s].reduce((a,b)=>a+b,0);
-    agg[s] = {deals,funding,avg:deals>0?funding/deals:0};
+    const deals = indices.reduce((a,i) => a + (F1_SM[s][i]||0), 0);
+    // Only sum funding for quarters where there are deals
+    const funding = indices.reduce((a,i) => {
+      return a + (F1_SM[s][i] > 0 ? (FV_SM[s][i]||0) : 0);
+    }, 0);
+    agg[s] = {deals, funding, avg: deals > 0 ? funding / deals : 0, name: s};
   });
-  const sorted = Object.entries(agg).sort((a,b)=>b[1].deals-a[1].deals);
+
+  let sorted = Object.entries(agg);
+  if (tableSortCol === 'name') {
+    sorted.sort((a,b) => tableSortDir * a[0].localeCompare(b[0]));
+  } else {
+    sorted.sort((a,b) => tableSortDir * (a[1][tableSortCol] - b[1][tableSortCol]));
+  }
+
   const tbody = document.querySelector('#dealSizeTable tbody');
   tbody.innerHTML = sorted.map(([s,v]) =>
     `<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${C[s]||'#6b7280'};margin-right:6px;vertical-align:middle;"></span>${s}</td>
      <td>${v.deals}</td><td>${(v.funding/1000).toFixed(1)}</td><td>${Math.round(v.avg)}</td></tr>`
   ).join('');
+
+  // Update sort icons
+  document.querySelectorAll('#dealSizeTable th.sortable').forEach(th => {
+    const col = th.dataset.sort;
+    const icon = th.querySelector('.sort-icon');
+    th.classList.remove('sorted-asc','sorted-desc');
+    if (col === tableSortCol) {
+      th.classList.add(tableSortDir === 1 ? 'sorted-asc' : 'sorted-desc');
+      icon.textContent = tableSortDir === 1 ? '↑' : '↓';
+    } else {
+      icon.textContent = '⇅';
+    }
+  });
 }
+
+// Table sort click handler
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#dealSizeTable thead')?.addEventListener('click', e => {
+    const th = e.target.closest('th.sortable');
+    if (!th) return;
+    const col = th.dataset.sort;
+    if (col === tableSortCol) { tableSortDir *= -1; }
+    else { tableSortCol = col; tableSortDir = col === 'name' ? 1 : -1; }
+    renderDealSizeTable();
+  });
+  document.getElementById('yearFilter')?.addEventListener('change', () => renderDealSizeTable());
+});
 
 // ===== DEAL LINES =====
 function renderDealLines() {
@@ -224,8 +290,17 @@ function renderDealLines() {
 }
 
 // ===== DEAL SHARE =====
+function isCustomDealActive() {
+  const el = document.getElementById('subtab-deal-custom');
+  return el && el.style.display !== 'none';
+}
+
 function renderDealShare() {
-  const top = ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech"];
+  const customActive = isCustomDealActive();
+  const customSectors = customActive ? getSelectedSectors('deal') : [];
+  const top = customActive && customSectors.length ? customSectors : ["BioTech","FinTech","ClimateTech","HealthTech","GenAI","MedTech"];
+  const hint = document.getElementById('shareChartHint');
+  if (hint) hint.textContent = customActive && customSectors.length ? 'Eigene Auswahl · Quartalsweise' : 'Top-Branchen · Quartalsweise';
   const traces = top.map(k => {
     const shares = F1_SM[k].map((v,i) => {
       const total = TOTALS[i].deals;

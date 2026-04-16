@@ -157,13 +157,26 @@ const SECTOR_COURSES = {
     {name:"KI- und Technologie-Anwendungen im Supply Chain",ects:3,lang:"DE",score:3,ecs:["Commitment","Operational","Learning","Ethical"],doppelt:true},
     {name:"Evaluating Innovation in Companies and at System Level",ects:3,lang:"EN",score:2,ecs:["Analytical","Operational","Relationship","Learning","Technical"],doppelt:true},
     {name:"Methoden: Data Science und AI for Business",ects:6,lang:"DE",score:1,ecs:["Analytical","Operational","Relationship","Learning"],doppelt:true}
+  ],
+  FinTech:[
+    {name:"Platform Economy",ects:6,lang:"EN",score:3,ecs:["Strategic","Analytical","Innovative","Learning"],doppelt:true},
+    {name:"Entrepreneurial Finance",ects:3,lang:"EN",score:3,ecs:["Learning","Analytical","Relationship"],doppelt:true},
+    {name:"RPV: Digital Business and IT Innovations",ects:4,lang:"EN",score:3,ecs:["Strategic","Operational","Learning","Technical"],doppelt:true},
+    {name:"Grundlagen Business Innovation",ects:4,lang:"DE",score:3,ecs:["Strategic","Operational","Relationship","Learning","Technical"],doppelt:true},
+    {name:"Business Process Mining and Engineering",ects:6,lang:"EN",score:2,ecs:["Analytical","Human","Operational","Technical","Ethical"],doppelt:true},
+    {name:"RPV: Prompt Engineering: Innovation through generative AI",ects:4,lang:"EN",score:2,ecs:["Analytical","Operational","Relationship","Learning","PersonalStrength","Technical"],doppelt:true},
+    {name:"Digital Platforms: Foundations, Management, Governance",ects:6,lang:"EN",score:2,ecs:["Commitment","PersonalStrength","Relationship","Technical","Ethical"],doppelt:true},
+    {name:"Selling Technology Solutions",ects:3,lang:"EN",score:2,ecs:["Strategic","Commitment","Operational","Relationship","Technical","Ethical"],doppelt:true}
   ]
 };
 
 const SECTOR_HINTS = {
-  MedTech:"MedTech kaum im MBI-Curriculum abgedeckt. Externe Ressourcen empfohlen: Swiss Medtech Cluster, EPFL, FDA/CE-Mark Grundlagen.",
-  BioTech:"BioTech nicht im MBI-Curriculum. Externe Ressourcen: Swiss Biotech Association, ETH Life Sciences, Basel Biovalley.",
-  Robotics:"Robotics kaum im MBI-Curriculum. Externe Ressourcen: ETH Robotics, Swiss Innovation Park, NCCR Robotics."
+  GenAI:"💡 Unser Tipp: Baue ein starkes technisches Netzwerk auf. Besuche ETH AI Center Events, nimm an Hackathons teil, und vertiefe dich in Prompt Engineering & LLM-Anwendungen. GenAI ist am stärksten als Layer auf bestehende Branchen (FinTech, HealthTech).",
+  HealthTech:"💡 Unser Tipp: Vernetze dich mit dem Schweizer Gesundheitssektor – Spitäler, Medtech-Cluster, Digital Health Startups. Besuche externe Kurse zu Regulierung (CE, FDA). Ein Co-Founder mit klinischer Erfahrung ist Gold wert.",
+  MedTech:"💡 Unser Tipp: MedTech ist kaum im MBI-Curriculum abgedeckt. Schliesse dich mit ETH/EPFL zusammen (NCCR Robotics, Swiss Medtech Cluster). Externe Weiterbildung zu CE-Marking und FDA-Zulassung ist essentiell. Suche einen technischen Co-Founder.",
+  BioTech:"💡 Unser Tipp: BioTech ist nicht im MBI-Curriculum. Nutze das Basel Biovalley Netzwerk, ETH Life Sciences Events, und die Swiss Biotech Association. Ein wissenschaftlicher Co-Founder ist fast Pflicht. Fokussiere dich auf Business & Fundraising.",
+  Robotics:"💡 Unser Tipp: Robotics ist kapitalintensiv – nutze die ETHZ-Nähe (Robotics Systems Lab, ANYbotics-Ökosystem). Besuche Swiss Innovation Park Events, NCCR Robotics Workshops. Ohne technischen Co-Founder kaum machbar – fokussiere dich auf Go-to-Market & Operations.",
+  FinTech:"💡 Unser Tipp: FinTech ist der grösste Schweizer VC-Markt (40% aller Deals). Differenzierung ist entscheidend – z.B. durch GenAI-Layer, Embedded Finance oder Nischenfokus (WealthTech, RegTech). Nutze das Crypto Valley Zug und das Schweizer Banking-Netzwerk. Kurse in Platform Economy und Entrepreneurial Finance geben dir die Grundlage."
 };
 
 // ===== WIZARD RENDERING =====
@@ -379,7 +392,7 @@ function renderSektorContent(sektor) {
   const el = document.getElementById('sektorContent');
   const sorted = [...courses].sort((a,b) => b.score - a.score);
   el.innerHTML = sorted.map((c,i) => renderCourseItem(c, c.ecs, i+1)).join('') +
-    (hint ? `<div class="sector-hint">⚠️ ${hint}</div>` : '');
+    (hint ? `<div class="sector-hint">${hint}</div>` : '');
 }
 
 // ===== INIT =====
