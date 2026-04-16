@@ -486,15 +486,7 @@
                     <strong>Trend auswählen</strong>
                     <span class="hint">— klicken zum Auswählen</span>
                 </label>
-                <div class="trend-legend">
-                    <span class="trend-legend-label">Legende:</span>
-                    <span class="trend-badge trend-badge--emerging">🚀 Emerging — niedrig & wächst stark</span>
-                    <span class="trend-badge trend-badge--rising">✨ Rising — moderat & wächst</span>
-                    <span class="trend-badge trend-badge--hot">🔥 Hot — hoch & wächst</span>
-                    <span class="trend-badge trend-badge--mature">⚖️ Mature — hoch & stagniert</span>
-                    <span class="trend-badge trend-badge--stable">😴 Stable — keine klare Bewegung</span>
-                    <span class="trend-badge trend-badge--declining">📉 Declining — Aufmerksamkeit sinkt</span>
-                </div>
+                <div class="trend-legend"></div>
                 <div id="keywordsList" class="keywords-list">
                     <div class="loading">Lädt Keywords...</div>
                 </div>
@@ -932,6 +924,31 @@
                 return { keyword, trend, displayLabel };
             });
             
+            // Collect which labels are actually used
+            const usedLabels = new Set(keywordsWithTrends.map(k => k.trend.label));
+            
+            // Define the ordered list of legend items
+            const legendItems = [
+              { label: 'Emerging',  emoji: '🚀', css: 'emerging',  desc: 'niedrig & wächst stark' },
+              { label: 'Rising',    emoji: '✨', css: 'rising',    desc: 'moderat & wächst' },
+              { label: 'Hot',       emoji: '🔥', css: 'hot',       desc: 'hoch & wächst' },
+              { label: 'Mature',    emoji: '⚖️', css: 'mature',    desc: 'hoch & stagniert' },
+              { label: 'Stable',    emoji: '😴', css: 'stable',    desc: 'keine klare Bewegung' },
+              { label: 'Declining', emoji: '📉', css: 'declining', desc: 'Aufmerksamkeit sinkt' },
+            ];
+            
+            // Render legend dynamically
+            const legendEl = document.querySelector('.trend-legend');
+            legendEl.innerHTML = '<span class="trend-legend-label">Legende:</span>';
+            legendItems
+              .filter(item => usedLabels.has(item.label))
+              .forEach(item => {
+                const span = document.createElement('span');
+                span.className = `trend-badge trend-badge--${item.css}`;
+                span.textContent = `${item.emoji} ${item.label} — ${item.desc}`;
+                legendEl.appendChild(span);
+              });
+            
             const attractivenessOrder = {
                 'Emerging': 0, 'Rising': 1, 'Hot': 2, 'Mature': 3,
                 'Stable': 4, 'Declining': 5
@@ -1173,7 +1190,10 @@
                 });
                 
                 const yValues = quarters.map(q => valuesByQuarter[q] || 0);
-                const trend = classifyTrend(yValues);
+                
+                // FIX: use only real values for classification, not zero-padded array
+                const cleanValues = keywordData.map(item => item.keyword_pct);
+                const trend = classifyTrend(cleanValues);
                 const traceColor = keywordColors[keyword] || '#90A4AE';
                 
                 traces.push({
