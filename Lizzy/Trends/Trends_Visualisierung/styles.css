@@ -316,6 +316,65 @@ body {
     background: #999;
 }
 
+/* Trend Badge Styles */
+.trend-badge {
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 4px;
+    white-space: nowrap;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.trend-badge--emerging {
+    background: #E0F7FA;
+    color: #00838F;
+}
+
+.trend-badge--hot {
+    background: #FBE9E7;
+    color: #BF360C;
+}
+
+.trend-badge--mature {
+    background: #F5F5F5;
+    color: #616161;
+}
+
+.trend-badge--declining {
+    background: #F3E5F5;
+    color: #6A1B9A;
+}
+
+.trend-badge--rising {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.trend-badge--stable {
+    background: #ECEFF1;
+    color: #546E7A;
+}
+
+.trend-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #f4f4f4;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.trend-legend-label {
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     body {

@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Visualisierung – Quarterly Keyword Comparison</title>
+    
+    <!-- Plotly.js Library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <style>
+        /*
+          Trend Visualisierung - Styles (verbessert)
+          Fokus auf klare Keyword-Auswahl und Vergleichbarkeit
+        */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                         sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            padding: 30px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #e0e0e0;
+            align-items: flex-start;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .control-group.keywords-group {
+            flex: 1;
+        }
+
+        .control-group.buttons-group {
+            display: flex;
+            gap: 10px;
+            padding-top: 32px;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .label strong {
+            color: #333;
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #999;
+            margin-left: auto;
+        }
+
+        /* Keywords List - Checkboxes */
+        .keywords-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            transition: border-color 0.3s ease;
+        }
+
+        .keywords-list:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .keywords-list.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .keywords-list .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        /* Checkbox Item */
+        .keyword-checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .keyword-checkbox-wrapper:hover {
+            background: #f0f0f0;
+        }
+
+        .keyword-checkbox-wrapper input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .keyword-checkbox-wrapper label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .keyword-checkbox-wrapper input[type="checkbox"]:checked + label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        /* Buttons */
+        .reset-button {
+            padding: 12px 24px;
+            border: 2px solid #f44336;
+            background: white;
+            color: #f44336;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .reset-button:hover {
+            background: #f44336;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .reset-button:active {
+            transform: translateY(0);
+        }
+
+        .select-all-button {
+            padding: 12px 24px;
+            border: 2px solid #4CAF50;
+            background: white;
+            color: #4CAF50;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .select-all-button:hover {
+            background: #4CAF50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .select-all-button:active {
+            transform: translateY(0);
+        }
+
+        /* Warning Message */
+        .warning-message {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 30px 0 30px;
+            border-radius: 4px;
+            color: #856404;
+            font-size: 0.95rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Empty State */
+        .empty-state-message {
+            padding: 60px 30px;
+            text-align: center;
+            color: #999;
+            background: #fafafa;
+        }
+
+        .empty-state-content {
+            font-size: 1.1rem;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+
+        .empty-state-content p {
+            margin: 0;
+        }
+
+        /* Chart Wrapper */
+        .chart-wrapper {
+            padding: 30px;
+            background: white;
+            min-height: 550px;
+        }
+
+        .chart {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f5f5f5;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        /* Custom Scrollbar für Keywords List */
+        .keywords-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .keywords-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .keywords-list::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-radius: 3px;
+        }
+
+        .keywords-list::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* Trend Badge Styles */
+        .trend-badge {
+            font-size: 0.75rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+            white-space: nowrap;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .trend-badge--emerging {
+            background: #E0F7FA;
+            color: #00838F;
+        }
+
+        .trend-badge--hot {
+            background: #FBE9E7;
+            color: #BF360C;
+        }
+
+        .trend-badge--mature {
+            background: #F5F5F5;
+            color: #616161;
+        }
+
+        .trend-badge--declining {
+            background: #F3E5F5;
+            color: #6A1B9A;
+        }
+
+        .trend-badge--rising {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .trend-badge--stable {
+            background: #ECEFF1;
+            color: #546E7A;
+        }
+
+        .trend-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 12px;
+            background: #f4f4f4;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .trend-legend-label {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .control-panel {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .control-group.buttons-group {
+                padding-top: 0;
+                flex-direction: column;
+            }
+            
+            .keywords-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                max-height: 320px;
+            }
+            
+            .chart-wrapper {
+                padding: 20px;
+                min-height: 400px;
+            }
+            
+            .chart {
+                min-height: 400px;
+            }
+            
+            .footer {
+                padding: 15px 20px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .label .hint {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header .subtitle {
+                font-size: 0.85rem;
+            }
+            
+            .control-panel {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .keywords-list {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 10px;
+            }
+            
+            .chart-wrapper {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📊 Trend-Analyse</h1>
+            <p class="subtitle">Quartalsweise Trends vergleichen</p>
+        </header>
+        
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-group keywords-group">
+                <label class="label">
+                    <strong>Trend auswählen</strong>
+                    <span class="hint">— klicken zum Auswählen</span>
+                </label>
+                <div class="trend-legend">
+                    <span class="trend-legend-label">Legende:</span>
+                    <span class="trend-badge trend-badge--emerging">🚀 Emerging — niedrig & wächst stark</span>
+                    <span class="trend-badge trend-badge--rising">✨ Rising — moderat & wächst</span>
+                    <span class="trend-badge trend-badge--hot">🔥 Hot — hoch & wächst</span>
+                    <span class="trend-badge trend-badge--mature">⚖️ Mature — hoch & stagniert</span>
+                    <span class="trend-badge trend-badge--stable">😴 Stable — keine klare Bewegung</span>
+                    <span class="trend-badge trend-badge--declining">📉 Declining — Aufmerksamkeit sinkt</span>
+                </div>
+                <div id="keywordsList" class="keywords-list">
+                    <div class="loading">Lädt Keywords...</div>
+                </div>
+            </div>
+            
+            <div class="control-group buttons-group">
+                <button id="selectAllButton" class="select-all-button">✓ Alle auswählen</button>
+                <button id="resetButton" class="reset-button">↻ Zurücksetzen</button>
+            </div>
+        </div>
+        
+        <!-- Warning Message -->
+        <div id="warningMessage" class="warning-message" style="display: none;"></div>
+        
+        <!-- Empty State Message -->
+        <div id="emptyStateMessage" class="empty-state-message" style="display: none;">
+            <div class="empty-state-content">
+                <p>👆 Bitte wählen Sie mindestens ein Keyword aus der Liste oben</p>
+            </div>
+        </div>
+        
+        <!-- Chart Container -->
+        <div id="chartWrapper" class="chart-wrapper" style="display: none;">
+            <div id="chart" class="chart"></div>
+        </div>
+        
+        <!-- Footer Info -->
+        <footer class="footer">
+            <p>
+                <strong>Hinweis:</strong> Die Visualisierung zeigt normalisierte Quartalswerte (%). 
+                Hovern Sie über die Linien für genaue Werte.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        /*
+          Trend-Visualisierung - Script (VERBESSERT)
+          Automatisch generiert von prepare_trend_data.py
+          Quartalweise Keyword-Trends mit normalisierte Werten (keyword_pct)
+        */
+
+        // Eingebettete Trenddaten
+        const trendData = {
+          "metadata": {
+            "generated": "2026-04-14T19:25:39.860369",
+            "total_keywords": 28,
+            "quarters_count": 13,
+            "metric": "keyword_pct (normalisiert, %)",
+            "date_range": {
+              "from": "2023-Q1",
+              "to": "2026-Q1"
+            }
+          },
+          "data": [
+            {"keyword": "AgentAI", "quarter": "2023-Q1", "keyword_pct": 6.9, "year": 2023, "quarter_num": 1},
+            {"keyword": "Web3", "quarter": "2023-Q1", "keyword_pct": 6.58, "year": 2023, "quarter_num": 1},
+            {"keyword": "SpaceTech", "quarter": "2023-Q1", "keyword_pct": 1.85, "year": 2023, "quarter_num": 1},
+            {"keyword": "Semiconductors", "quarter": "2023-Q1", "keyword_pct": 2.77, "year": 2023, "quarter_num": 1},
+            {"keyword": "Robotics", "quarter": "2023-Q1", "keyword_pct": 3.44, "year": 2023, "quarter_num": 1},
+            {"keyword": "QuantumTech", "quarter": "2023-Q1", "keyword_pct": 0.9, "year": 2023, "quarter_num": 1},
+            {"keyword": "PropTech", "quarter": "2023-Q1", "keyword_pct": 0.5, "year": 2023, "quarter_num": 1},
+            {"keyword": "PhysicalAI", "quarter": "2023-Q1", "keyword_pct": 0.7, "year": 2023, "quarter_num": 1},
+            {"keyword": "MedTech", "quarter": "2023-Q1", "keyword_pct": 0.6, "year": 2023, "quarter_num": 1},
+            {"keyword": "LLM", "quarter": "2023-Q1", "keyword_pct": 6.3, "year": 2023, "quarter_num": 1},
+            {"keyword": "Infrastructure", "quarter": "2023-Q1", "keyword_pct": 3.08, "year": 2023, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2023-Q1", "keyword_pct": 1.87, "year": 2023, "quarter_num": 1},
+            {"keyword": "MobilityTech", "quarter": "2023-Q1", "keyword_pct": 0.45, "year": 2023, "quarter_num": 1},
+            {"keyword": "GameTech", "quarter": "2023-Q1", "keyword_pct": 0.4, "year": 2023, "quarter_num": 1},
+            {"keyword": "GenAI", "quarter": "2023-Q1", "keyword_pct": 11.02, "year": 2023, "quarter_num": 1},
+            {"keyword": "ClimateTech", "quarter": "2023-Q1", "keyword_pct": 1.13, "year": 2023, "quarter_num": 1},
+            {"keyword": "ComputerVision", "quarter": "2023-Q1", "keyword_pct": 0.65, "year": 2023, "quarter_num": 1},
+            {"keyword": "CreatorEconomy", "quarter": "2023-Q1", "keyword_pct": 0.5, "year": 2023, "quarter_num": 1},
+            {"keyword": "Cybersecurity", "quarter": "2023-Q1", "keyword_pct": 5.08, "year": 2023, "quarter_num": 1},
+            {"keyword": "BioTech", "quarter": "2023-Q1", "keyword_pct": 0.45, "year": 2023, "quarter_num": 1},
+            {"keyword": "DigitalHealth", "quarter": "2023-Q1", "keyword_pct": 0.57, "year": 2023, "quarter_num": 1},
+            {"keyword": "Ecommerce", "quarter": "2023-Q1", "keyword_pct": 1.27, "year": 2023, "quarter_num": 1},
+            {"keyword": "Enterprise", "quarter": "2023-Q1", "keyword_pct": 0.8, "year": 2023, "quarter_num": 1},
+            {"keyword": "FinTech", "quarter": "2023-Q1", "keyword_pct": 5.63, "year": 2023, "quarter_num": 1},
+            {"keyword": "DefenseTech", "quarter": "2023-Q1", "keyword_pct": 1.4, "year": 2023, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2023-Q2", "keyword_pct": 1.97, "year": 2023, "quarter_num": 2},
+            {"keyword": "Web3", "quarter": "2023-Q2", "keyword_pct": 5.26, "year": 2023, "quarter_num": 2},
+            {"keyword": "SpaceTech", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "Semiconductors", "quarter": "2023-Q2", "keyword_pct": 4.13, "year": 2023, "quarter_num": 2},
+            {"keyword": "Robotics", "quarter": "2023-Q2", "keyword_pct": 3.0, "year": 2023, "quarter_num": 2},
+            {"keyword": "QuantumTech", "quarter": "2023-Q2", "keyword_pct": 0.85, "year": 2023, "quarter_num": 2},
+            {"keyword": "PhysicalAI", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "MedTech", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "LLM", "quarter": "2023-Q2", "keyword_pct": 9.18, "year": 2023, "quarter_num": 2},
+            {"keyword": "Infrastructure", "quarter": "2023-Q2", "keyword_pct": 1.87, "year": 2023, "quarter_num": 2},
+            {"keyword": "GenAI", "quarter": "2023-Q2", "keyword_pct": 15.12, "year": 2023, "quarter_num": 2},
+            {"keyword": "PropTech", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "EdTech", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "AgriTech", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "BioTech", "quarter": "2023-Q2", "keyword_pct": 0.57, "year": 2023, "quarter_num": 2},
+            {"keyword": "ClimateTech", "quarter": "2023-Q2", "keyword_pct": 1.73, "year": 2023, "quarter_num": 2},
+            {"keyword": "ComputerVision", "quarter": "2023-Q2", "keyword_pct": 0.85, "year": 2023, "quarter_num": 2},
+            {"keyword": "AgentAI", "quarter": "2023-Q2", "keyword_pct": 1.67, "year": 2023, "quarter_num": 2},
+            {"keyword": "FinTech", "quarter": "2023-Q2", "keyword_pct": 3.83, "year": 2023, "quarter_num": 2},
+            {"keyword": "Cybersecurity", "quarter": "2023-Q2", "keyword_pct": 6.03, "year": 2023, "quarter_num": 2},
+            {"keyword": "DefenseTech", "quarter": "2023-Q2", "keyword_pct": 1.0, "year": 2023, "quarter_num": 2},
+            {"keyword": "DigitalHealth", "quarter": "2023-Q2", "keyword_pct": 1.3, "year": 2023, "quarter_num": 2},
+            {"keyword": "Ecommerce", "quarter": "2023-Q2", "keyword_pct": 1.3, "year": 2023, "quarter_num": 2},
+            {"keyword": "CreatorEconomy", "quarter": "2023-Q2", "keyword_pct": 0.4, "year": 2023, "quarter_num": 2},
+            {"keyword": "HealthTech", "quarter": "2023-Q3", "keyword_pct": 2.25, "year": 2023, "quarter_num": 3},
+            {"keyword": "Infrastructure", "quarter": "2023-Q3", "keyword_pct": 1.73, "year": 2023, "quarter_num": 3},
+            {"keyword": "LLM", "quarter": "2023-Q3", "keyword_pct": 8.27, "year": 2023, "quarter_num": 3},
+            {"keyword": "MobilityTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "PhysicalAI", "quarter": "2023-Q3", "keyword_pct": 1.1, "year": 2023, "quarter_num": 3},
+            {"keyword": "Web3", "quarter": "2023-Q3", "keyword_pct": 6.1, "year": 2023, "quarter_num": 3},
+            {"keyword": "QuantumTech", "quarter": "2023-Q3", "keyword_pct": 0.9, "year": 2023, "quarter_num": 3},
+            {"keyword": "Semiconductors", "quarter": "2023-Q3", "keyword_pct": 3.9, "year": 2023, "quarter_num": 3},
+            {"keyword": "SpaceTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "HRTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "PropTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "Robotics", "quarter": "2023-Q3", "keyword_pct": 3.47, "year": 2023, "quarter_num": 3},
+            {"keyword": "GenAI", "quarter": "2023-Q3", "keyword_pct": 13.3, "year": 2023, "quarter_num": 3},
+            {"keyword": "FinTech", "quarter": "2023-Q3", "keyword_pct": 4.47, "year": 2023, "quarter_num": 3},
+            {"keyword": "GameTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "AgentAI", "quarter": "2023-Q3", "keyword_pct": 1.3, "year": 2023, "quarter_num": 3},
+            {"keyword": "AgriTech", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "BioTech", "quarter": "2023-Q3", "keyword_pct": 0.65, "year": 2023, "quarter_num": 3},
+            {"keyword": "CreatorEconomy", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "ClimateTech", "quarter": "2023-Q3", "keyword_pct": 1.68, "year": 2023, "quarter_num": 3},
+            {"keyword": "DefenseTech", "quarter": "2023-Q3", "keyword_pct": 1.0, "year": 2023, "quarter_num": 3},
+            {"keyword": "DigitalHealth", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "Ecommerce", "quarter": "2023-Q3", "keyword_pct": 0.65, "year": 2023, "quarter_num": 3},
+            {"keyword": "EdTech", "quarter": "2023-Q3", "keyword_pct": 0.9, "year": 2023, "quarter_num": 3},
+            {"keyword": "Enterprise", "quarter": "2023-Q3", "keyword_pct": 0.4, "year": 2023, "quarter_num": 3},
+            {"keyword": "Cybersecurity", "quarter": "2023-Q3", "keyword_pct": 7.1, "year": 2023, "quarter_num": 3},
+            {"keyword": "MobilityTech", "quarter": "2023-Q4", "keyword_pct": 0.75, "year": 2023, "quarter_num": 4},
+            {"keyword": "Infrastructure", "quarter": "2023-Q4", "keyword_pct": 1.1, "year": 2023, "quarter_num": 4},
+            {"keyword": "LLM", "quarter": "2023-Q4", "keyword_pct": 7.68, "year": 2023, "quarter_num": 4},
+            {"keyword": "MedTech", "quarter": "2023-Q4", "keyword_pct": 0.45, "year": 2023, "quarter_num": 4},
+            {"keyword": "PhysicalAI", "quarter": "2023-Q4", "keyword_pct": 1.17, "year": 2023, "quarter_num": 4},
+            {"keyword": "HealthTech", "quarter": "2023-Q4", "keyword_pct": 2.67, "year": 2023, "quarter_num": 4},
+            {"keyword": "QuantumTech", "quarter": "2023-Q4", "keyword_pct": 0.63, "year": 2023, "quarter_num": 4},
+            {"keyword": "Robotics", "quarter": "2023-Q4", "keyword_pct": 3.77, "year": 2023, "quarter_num": 4},
+            {"keyword": "Semiconductors", "quarter": "2023-Q4", "keyword_pct": 4.57, "year": 2023, "quarter_num": 4},
+            {"keyword": "SpaceTech", "quarter": "2023-Q4", "keyword_pct": 0.5, "year": 2023, "quarter_num": 4},
+            {"keyword": "Web3", "quarter": "2023-Q4", "keyword_pct": 4.16, "year": 2023, "quarter_num": 4},
+            {"keyword": "PropTech", "quarter": "2023-Q4", "keyword_pct": 0.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "GenAI", "quarter": "2023-Q4", "keyword_pct": 16.87, "year": 2023, "quarter_num": 4},
+            {"keyword": "BioTech", "quarter": "2023-Q4", "keyword_pct": 0.9, "year": 2023, "quarter_num": 4},
+            {"keyword": "FinTech", "quarter": "2023-Q4", "keyword_pct": 3.23, "year": 2023, "quarter_num": 4},
+            {"keyword": "GameTech", "quarter": "2023-Q4", "keyword_pct": 0.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "AgriTech", "quarter": "2023-Q4", "keyword_pct": 0.5, "year": 2023, "quarter_num": 4},
+            {"keyword": "ClimateTech", "quarter": "2023-Q4", "keyword_pct": 2.7, "year": 2023, "quarter_num": 4},
+            {"keyword": "ComputerVision", "quarter": "2023-Q4", "keyword_pct": 0.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "CreatorEconomy", "quarter": "2023-Q4", "keyword_pct": 0.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "AgentAI", "quarter": "2023-Q4", "keyword_pct": 0.7, "year": 2023, "quarter_num": 4},
+            {"keyword": "DefenseTech", "quarter": "2023-Q4", "keyword_pct": 2.17, "year": 2023, "quarter_num": 4},
+            {"keyword": "DigitalHealth", "quarter": "2023-Q4", "keyword_pct": 0.5, "year": 2023, "quarter_num": 4},
+            {"keyword": "Ecommerce", "quarter": "2023-Q4", "keyword_pct": 1.1, "year": 2023, "quarter_num": 4},
+            {"keyword": "EdTech", "quarter": "2023-Q4", "keyword_pct": 0.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "Cybersecurity", "quarter": "2023-Q4", "keyword_pct": 7.4, "year": 2023, "quarter_num": 4},
+            {"keyword": "Web3", "quarter": "2024-Q1", "keyword_pct": 4.93, "year": 2024, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2024-Q1", "keyword_pct": 1.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "SpaceTech", "quarter": "2024-Q1", "keyword_pct": 2.4, "year": 2024, "quarter_num": 1},
+            {"keyword": "Robotics", "quarter": "2024-Q1", "keyword_pct": 5.17, "year": 2024, "quarter_num": 1},
+            {"keyword": "QuantumTech", "quarter": "2024-Q1", "keyword_pct": 1.35, "year": 2024, "quarter_num": 1},
+            {"keyword": "PropTech", "quarter": "2024-Q1", "keyword_pct": 0.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "MobilityTech", "quarter": "2024-Q1", "keyword_pct": 0.5, "year": 2024, "quarter_num": 1},
+            {"keyword": "MedTech", "quarter": "2024-Q1", "keyword_pct": 0.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "LLM", "quarter": "2024-Q1", "keyword_pct": 7.92, "year": 2024, "quarter_num": 1},
+            {"keyword": "Infrastructure", "quarter": "2024-Q1", "keyword_pct": 1.27, "year": 2024, "quarter_num": 1},
+            {"keyword": "GenAI", "quarter": "2024-Q1", "keyword_pct": 16.8, "year": 2024, "quarter_num": 1},
+            {"keyword": "Semiconductors", "quarter": "2024-Q1", "keyword_pct": 4.16, "year": 2024, "quarter_num": 1},
+            {"keyword": "FinTech", "quarter": "2024-Q1", "keyword_pct": 3.9, "year": 2024, "quarter_num": 1},
+            {"keyword": "BioTech", "quarter": "2024-Q1", "keyword_pct": 1.07, "year": 2024, "quarter_num": 1},
+            {"keyword": "ClimateTech", "quarter": "2024-Q1", "keyword_pct": 1.1, "year": 2024, "quarter_num": 1},
+            {"keyword": "ComputerVision", "quarter": "2024-Q1", "keyword_pct": 0.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "Cybersecurity", "quarter": "2024-Q1", "keyword_pct": 1.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "AgentAI", "quarter": "2024-Q1", "keyword_pct": 1.4, "year": 2024, "quarter_num": 1},
+            {"keyword": "DigitalHealth", "quarter": "2024-Q1", "keyword_pct": 1.0, "year": 2024, "quarter_num": 1},
+            {"keyword": "Ecommerce", "quarter": "2024-Q1", "keyword_pct": 0.55, "year": 2024, "quarter_num": 1},
+            {"keyword": "EdTech", "quarter": "2024-Q1", "keyword_pct": 0.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "Enterprise", "quarter": "2024-Q1", "keyword_pct": 0.55, "year": 2024, "quarter_num": 1},
+            {"keyword": "DefenseTech", "quarter": "2024-Q1", "keyword_pct": 2.67, "year": 2024, "quarter_num": 1},
+            {"keyword": "GameTech", "quarter": "2024-Q1", "keyword_pct": 1.6, "year": 2024, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2024-Q2", "keyword_pct": 2.42, "year": 2024, "quarter_num": 2},
+            {"keyword": "Web3", "quarter": "2024-Q2", "keyword_pct": 2.62, "year": 2024, "quarter_num": 2},
+            {"keyword": "SpaceTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "Semiconductors", "quarter": "2024-Q2", "keyword_pct": 5.75, "year": 2024, "quarter_num": 2},
+            {"keyword": "Robotics", "quarter": "2024-Q2", "keyword_pct": 4.22, "year": 2024, "quarter_num": 2},
+            {"keyword": "QuantumTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "PhysicalAI", "quarter": "2024-Q2", "keyword_pct": 1.8, "year": 2024, "quarter_num": 2},
+            {"keyword": "MobilityTech", "quarter": "2024-Q2", "keyword_pct": 1.2, "year": 2024, "quarter_num": 2},
+            {"keyword": "LLM", "quarter": "2024-Q2", "keyword_pct": 12.62, "year": 2024, "quarter_num": 2},
+            {"keyword": "Infrastructure", "quarter": "2024-Q2", "keyword_pct": 2.32, "year": 2024, "quarter_num": 2},
+            {"keyword": "GenAI", "quarter": "2024-Q2", "keyword_pct": 21.18, "year": 2024, "quarter_num": 2},
+            {"keyword": "GameTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "FinTech", "quarter": "2024-Q2", "keyword_pct": 3.43, "year": 2024, "quarter_num": 2},
+            {"keyword": "EdTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "DigitalHealth", "quarter": "2024-Q2", "keyword_pct": 0.8, "year": 2024, "quarter_num": 2},
+            {"keyword": "DefenseTech", "quarter": "2024-Q2", "keyword_pct": 2.23, "year": 2024, "quarter_num": 2},
+            {"keyword": "Cybersecurity", "quarter": "2024-Q2", "keyword_pct": 2.1, "year": 2024, "quarter_num": 2},
+            {"keyword": "ClimateTech", "quarter": "2024-Q2", "keyword_pct": 2.45, "year": 2024, "quarter_num": 2},
+            {"keyword": "BioTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "AgentAI", "quarter": "2024-Q2", "keyword_pct": 3.07, "year": 2024, "quarter_num": 2},
+            {"keyword": "HRTech", "quarter": "2024-Q2", "keyword_pct": 0.6, "year": 2024, "quarter_num": 2},
+            {"keyword": "Infrastructure", "quarter": "2024-Q3", "keyword_pct": 2.35, "year": 2024, "quarter_num": 3},
+            {"keyword": "LLM", "quarter": "2024-Q3", "keyword_pct": 6.77, "year": 2024, "quarter_num": 3},
+            {"keyword": "PhysicalAI", "quarter": "2024-Q3", "keyword_pct": 0.85, "year": 2024, "quarter_num": 3},
+            {"keyword": "PropTech", "quarter": "2024-Q3", "keyword_pct": 0.6, "year": 2024, "quarter_num": 3},
+            {"keyword": "HealthTech", "quarter": "2024-Q3", "keyword_pct": 1.9, "year": 2024, "quarter_num": 3},
+            {"keyword": "Semiconductors", "quarter": "2024-Q3", "keyword_pct": 5.74, "year": 2024, "quarter_num": 3},
+            {"keyword": "SpaceTech", "quarter": "2024-Q3", "keyword_pct": 0.5, "year": 2024, "quarter_num": 3},
+            {"keyword": "Web3", "quarter": "2024-Q3", "keyword_pct": 2.75, "year": 2024, "quarter_num": 3},
+            {"keyword": "Robotics", "quarter": "2024-Q3", "keyword_pct": 3.62, "year": 2024, "quarter_num": 3},
+            {"keyword": "GenAI", "quarter": "2024-Q3", "keyword_pct": 17.04, "year": 2024, "quarter_num": 3},
+            {"keyword": "BioTech", "quarter": "2024-Q3", "keyword_pct": 1.65, "year": 2024, "quarter_num": 3},
+            {"keyword": "FinTech", "quarter": "2024-Q3", "keyword_pct": 3.4, "year": 2024, "quarter_num": 3},
+            {"keyword": "Ecommerce", "quarter": "2024-Q3", "keyword_pct": 0.6, "year": 2024, "quarter_num": 3},
+            {"keyword": "DigitalHealth", "quarter": "2024-Q3", "keyword_pct": 0.85, "year": 2024, "quarter_num": 3},
+            {"keyword": "DefenseTech", "quarter": "2024-Q3", "keyword_pct": 2.23, "year": 2024, "quarter_num": 3},
+            {"keyword": "Cybersecurity", "quarter": "2024-Q3", "keyword_pct": 1.1, "year": 2024, "quarter_num": 3},
+            {"keyword": "CreatorEconomy", "quarter": "2024-Q3", "keyword_pct": 0.6, "year": 2024, "quarter_num": 3},
+            {"keyword": "ComputerVision", "quarter": "2024-Q3", "keyword_pct": 0.55, "year": 2024, "quarter_num": 3},
+            {"keyword": "ClimateTech", "quarter": "2024-Q3", "keyword_pct": 1.7, "year": 2024, "quarter_num": 3},
+            {"keyword": "GameTech", "quarter": "2024-Q3", "keyword_pct": 0.5, "year": 2024, "quarter_num": 3},
+            {"keyword": "AgentAI", "quarter": "2024-Q3", "keyword_pct": 1.97, "year": 2024, "quarter_num": 3},
+            {"keyword": "Infrastructure", "quarter": "2024-Q4", "keyword_pct": 2.6, "year": 2024, "quarter_num": 4},
+            {"keyword": "LLM", "quarter": "2024-Q4", "keyword_pct": 10.06, "year": 2024, "quarter_num": 4},
+            {"keyword": "MobilityTech", "quarter": "2024-Q4", "keyword_pct": 1.97, "year": 2024, "quarter_num": 4},
+            {"keyword": "PhysicalAI", "quarter": "2024-Q4", "keyword_pct": 1.33, "year": 2024, "quarter_num": 4},
+            {"keyword": "Web3", "quarter": "2024-Q4", "keyword_pct": 2.53, "year": 2024, "quarter_num": 4},
+            {"keyword": "QuantumTech", "quarter": "2024-Q4", "keyword_pct": 0.7, "year": 2024, "quarter_num": 4},
+            {"keyword": "Robotics", "quarter": "2024-Q4", "keyword_pct": 4.88, "year": 2024, "quarter_num": 4},
+            {"keyword": "Semiconductors", "quarter": "2024-Q4", "keyword_pct": 5.43, "year": 2024, "quarter_num": 4},
+            {"keyword": "HealthTech", "quarter": "2024-Q4", "keyword_pct": 1.6, "year": 2024, "quarter_num": 4},
+            {"keyword": "PropTech", "quarter": "2024-Q4", "keyword_pct": 0.4, "year": 2024, "quarter_num": 4},
+            {"keyword": "HRTech", "quarter": "2024-Q4", "keyword_pct": 0.6, "year": 2024, "quarter_num": 4},
+            {"keyword": "SpaceTech", "quarter": "2024-Q4", "keyword_pct": 0.5, "year": 2024, "quarter_num": 4},
+            {"keyword": "GameTech", "quarter": "2024-Q4", "keyword_pct": 0.4, "year": 2024, "quarter_num": 4},
+            {"keyword": "AgriTech", "quarter": "2024-Q4", "keyword_pct": 0.6, "year": 2024, "quarter_num": 4},
+            {"keyword": "BioTech", "quarter": "2024-Q4", "keyword_pct": 1.67, "year": 2024, "quarter_num": 4},
+            {"keyword": "ClimateTech", "quarter": "2024-Q4", "keyword_pct": 2.32, "year": 2024, "quarter_num": 4},
+            {"keyword": "CreatorEconomy", "quarter": "2024-Q4", "keyword_pct": 0.4, "year": 2024, "quarter_num": 4},
+            {"keyword": "AgentAI", "quarter": "2024-Q4", "keyword_pct": 3.17, "year": 2024, "quarter_num": 4},
+            {"keyword": "DefenseTech", "quarter": "2024-Q4", "keyword_pct": 1.87, "year": 2024, "quarter_num": 4},
+            {"keyword": "Ecommerce", "quarter": "2024-Q4", "keyword_pct": 1.1, "year": 2024, "quarter_num": 4},
+            {"keyword": "FinTech", "quarter": "2024-Q4", "keyword_pct": 3.03, "year": 2024, "quarter_num": 4},
+            {"keyword": "Cybersecurity", "quarter": "2024-Q4", "keyword_pct": 2.13, "year": 2024, "quarter_num": 4},
+            {"keyword": "GenAI", "quarter": "2024-Q4", "keyword_pct": 14.43, "year": 2024, "quarter_num": 4},
+            {"keyword": "Web3", "quarter": "2025-Q1", "keyword_pct": 3.14, "year": 2025, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2025-Q1", "keyword_pct": 1.65, "year": 2025, "quarter_num": 1},
+            {"keyword": "SpaceTech", "quarter": "2025-Q1", "keyword_pct": 0.6, "year": 2025, "quarter_num": 1},
+            {"keyword": "Semiconductors", "quarter": "2025-Q1", "keyword_pct": 7.92, "year": 2025, "quarter_num": 1},
+            {"keyword": "Robotics", "quarter": "2025-Q1", "keyword_pct": 4.63, "year": 2025, "quarter_num": 1},
+            {"keyword": "QuantumTech", "quarter": "2025-Q1", "keyword_pct": 0.93, "year": 2025, "quarter_num": 1},
+            {"keyword": "PhysicalAI", "quarter": "2025-Q1", "keyword_pct": 1.4, "year": 2025, "quarter_num": 1},
+            {"keyword": "MobilityTech", "quarter": "2025-Q1", "keyword_pct": 1.1, "year": 2025, "quarter_num": 1},
+            {"keyword": "LLM", "quarter": "2025-Q1", "keyword_pct": 6.2, "year": 2025, "quarter_num": 1},
+            {"keyword": "Infrastructure", "quarter": "2025-Q1", "keyword_pct": 2.07, "year": 2025, "quarter_num": 1},
+            {"keyword": "GameTech", "quarter": "2025-Q1", "keyword_pct": 0.5, "year": 2025, "quarter_num": 1},
+            {"keyword": "FinTech", "quarter": "2025-Q1", "keyword_pct": 4.17, "year": 2025, "quarter_num": 1},
+            {"keyword": "EdTech", "quarter": "2025-Q1", "keyword_pct": 0.6, "year": 2025, "quarter_num": 1},
+            {"keyword": "Ecommerce", "quarter": "2025-Q1", "keyword_pct": 0.85, "year": 2025, "quarter_num": 1},
+            {"keyword": "DigitalHealth", "quarter": "2025-Q1", "keyword_pct": 0.55, "year": 2025, "quarter_num": 1},
+            {"keyword": "DefenseTech", "quarter": "2025-Q1", "keyword_pct": 2.58, "year": 2025, "quarter_num": 1},
+            {"keyword": "Cybersecurity", "quarter": "2025-Q1", "keyword_pct": 1.38, "year": 2025, "quarter_num": 1},
+            {"keyword": "ClimateTech", "quarter": "2025-Q1", "keyword_pct": 1.4, "year": 2025, "quarter_num": 1},
+            {"keyword": "BioTech", "quarter": "2025-Q1", "keyword_pct": 1.67, "year": 2025, "quarter_num": 1},
+            {"keyword": "AgentAI", "quarter": "2025-Q1", "keyword_pct": 4.56, "year": 2025, "quarter_num": 1},
+            {"keyword": "GenAI", "quarter": "2025-Q1", "keyword_pct": 11.95, "year": 2025, "quarter_num": 1},
+            {"keyword": "LLM", "quarter": "2025-Q2", "keyword_pct": 3.84, "year": 2025, "quarter_num": 2},
+            {"keyword": "Web3", "quarter": "2025-Q2", "keyword_pct": 2.13, "year": 2025, "quarter_num": 2},
+            {"keyword": "PhysicalAI", "quarter": "2025-Q2", "keyword_pct": 1.53, "year": 2025, "quarter_num": 2},
+            {"keyword": "PropTech", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "Infrastructure", "quarter": "2025-Q2", "keyword_pct": 2.3, "year": 2025, "quarter_num": 2},
+            {"keyword": "Robotics", "quarter": "2025-Q2", "keyword_pct": 3.3, "year": 2025, "quarter_num": 2},
+            {"keyword": "Semiconductors", "quarter": "2025-Q2", "keyword_pct": 4.08, "year": 2025, "quarter_num": 2},
+            {"keyword": "SpaceTech", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "QuantumTech", "quarter": "2025-Q2", "keyword_pct": 0.5, "year": 2025, "quarter_num": 2},
+            {"keyword": "HealthTech", "quarter": "2025-Q2", "keyword_pct": 0.97, "year": 2025, "quarter_num": 2},
+            {"keyword": "MobilityTech", "quarter": "2025-Q2", "keyword_pct": 1.43, "year": 2025, "quarter_num": 2},
+            {"keyword": "GenAI", "quarter": "2025-Q2", "keyword_pct": 16.4, "year": 2025, "quarter_num": 2},
+            {"keyword": "HRTech", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "ClimateTech", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "CreatorEconomy", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "Cybersecurity", "quarter": "2025-Q2", "keyword_pct": 3.05, "year": 2025, "quarter_num": 2},
+            {"keyword": "AgentAI", "quarter": "2025-Q2", "keyword_pct": 6.35, "year": 2025, "quarter_num": 2},
+            {"keyword": "DigitalHealth", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "Ecommerce", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "FinTech", "quarter": "2025-Q2", "keyword_pct": 3.47, "year": 2025, "quarter_num": 2},
+            {"keyword": "GameTech", "quarter": "2025-Q2", "keyword_pct": 0.6, "year": 2025, "quarter_num": 2},
+            {"keyword": "DefenseTech", "quarter": "2025-Q2", "keyword_pct": 1.17, "year": 2025, "quarter_num": 2},
+            {"keyword": "LLM", "quarter": "2025-Q3", "keyword_pct": 6.27, "year": 2025, "quarter_num": 3},
+            {"keyword": "Web3", "quarter": "2025-Q3", "keyword_pct": 2.02, "year": 2025, "quarter_num": 3},
+            {"keyword": "SpaceTech", "quarter": "2025-Q3", "keyword_pct": 0.7, "year": 2025, "quarter_num": 3},
+            {"keyword": "Semiconductors", "quarter": "2025-Q3", "keyword_pct": 6.46, "year": 2025, "quarter_num": 3},
+            {"keyword": "Robotics", "quarter": "2025-Q3", "keyword_pct": 4.7, "year": 2025, "quarter_num": 3},
+            {"keyword": "QuantumTech", "quarter": "2025-Q3", "keyword_pct": 0.9, "year": 2025, "quarter_num": 3},
+            {"keyword": "PhysicalAI", "quarter": "2025-Q3", "keyword_pct": 1.8, "year": 2025, "quarter_num": 3},
+            {"keyword": "MobilityTech", "quarter": "2025-Q3", "keyword_pct": 0.9, "year": 2025, "quarter_num": 3},
+            {"keyword": "Infrastructure", "quarter": "2025-Q3", "keyword_pct": 1.43, "year": 2025, "quarter_num": 3},
+            {"keyword": "HealthTech", "quarter": "2025-Q3", "keyword_pct": 0.9, "year": 2025, "quarter_num": 3},
+            {"keyword": "GenAI", "quarter": "2025-Q3", "keyword_pct": 12.6, "year": 2025, "quarter_num": 3},
+            {"keyword": "GameTech", "quarter": "2025-Q3", "keyword_pct": 0.6, "year": 2025, "quarter_num": 3},
+            {"keyword": "FinTech", "quarter": "2025-Q3", "keyword_pct": 2.42, "year": 2025, "quarter_num": 3},
+            {"keyword": "Ecommerce", "quarter": "2025-Q3", "keyword_pct": 0.5, "year": 2025, "quarter_num": 3},
+            {"keyword": "DefenseTech", "quarter": "2025-Q3", "keyword_pct": 2.42, "year": 2025, "quarter_num": 3},
+            {"keyword": "Cybersecurity", "quarter": "2025-Q3", "keyword_pct": 1.9, "year": 2025, "quarter_num": 3},
+            {"keyword": "ClimateTech", "quarter": "2025-Q3", "keyword_pct": 1.6, "year": 2025, "quarter_num": 3},
+            {"keyword": "BioTech", "quarter": "2025-Q3", "keyword_pct": 0.5, "year": 2025, "quarter_num": 3},
+            {"keyword": "AgentAI", "quarter": "2025-Q3", "keyword_pct": 7.86, "year": 2025, "quarter_num": 3},
+            {"keyword": "LLM", "quarter": "2025-Q4", "keyword_pct": 5.0, "year": 2025, "quarter_num": 4},
+            {"keyword": "MedTech", "quarter": "2025-Q4", "keyword_pct": 0.5, "year": 2025, "quarter_num": 4},
+            {"keyword": "Web3", "quarter": "2025-Q4", "keyword_pct": 2.77, "year": 2025, "quarter_num": 4},
+            {"keyword": "MobilityTech", "quarter": "2025-Q4", "keyword_pct": 0.9, "year": 2025, "quarter_num": 4},
+            {"keyword": "SpaceTech", "quarter": "2025-Q4", "keyword_pct": 1.93, "year": 2025, "quarter_num": 4},
+            {"keyword": "QuantumTech", "quarter": "2025-Q4", "keyword_pct": 1.27, "year": 2025, "quarter_num": 4},
+            {"keyword": "Robotics", "quarter": "2025-Q4", "keyword_pct": 5.87, "year": 2025, "quarter_num": 4},
+            {"keyword": "Semiconductors", "quarter": "2025-Q4", "keyword_pct": 9.63, "year": 2025, "quarter_num": 4},
+            {"keyword": "Infrastructure", "quarter": "2025-Q4", "keyword_pct": 3.3, "year": 2025, "quarter_num": 4},
+            {"keyword": "PhysicalAI", "quarter": "2025-Q4", "keyword_pct": 1.8, "year": 2025, "quarter_num": 4},
+            {"keyword": "HealthTech", "quarter": "2025-Q4", "keyword_pct": 1.27, "year": 2025, "quarter_num": 4},
+            {"keyword": "Ecommerce", "quarter": "2025-Q4", "keyword_pct": 0.7, "year": 2025, "quarter_num": 4},
+            {"keyword": "GameTech", "quarter": "2025-Q4", "keyword_pct": 0.5, "year": 2025, "quarter_num": 4},
+            {"keyword": "FinTech", "quarter": "2025-Q4", "keyword_pct": 3.03, "year": 2025, "quarter_num": 4},
+            {"keyword": "Enterprise", "quarter": "2025-Q4", "keyword_pct": 1.2, "year": 2025, "quarter_num": 4},
+            {"keyword": "DefenseTech", "quarter": "2025-Q4", "keyword_pct": 1.1, "year": 2025, "quarter_num": 4},
+            {"keyword": "Cybersecurity", "quarter": "2025-Q4", "keyword_pct": 1.73, "year": 2025, "quarter_num": 4},
+            {"keyword": "ClimateTech", "quarter": "2025-Q4", "keyword_pct": 2.33, "year": 2025, "quarter_num": 4},
+            {"keyword": "BioTech", "quarter": "2025-Q4", "keyword_pct": 1.1, "year": 2025, "quarter_num": 4},
+            {"keyword": "AgriTech", "quarter": "2025-Q4", "keyword_pct": 0.5, "year": 2025, "quarter_num": 4},
+            {"keyword": "AgentAI", "quarter": "2025-Q4", "keyword_pct": 9.17, "year": 2025, "quarter_num": 4},
+            {"keyword": "GenAI", "quarter": "2025-Q4", "keyword_pct": 9.7, "year": 2025, "quarter_num": 4},
+            {"keyword": "LLM", "quarter": "2026-Q1", "keyword_pct": 6.85, "year": 2026, "quarter_num": 1},
+            {"keyword": "MedTech", "quarter": "2026-Q1", "keyword_pct": 1.1, "year": 2026, "quarter_num": 1},
+            {"keyword": "MobilityTech", "quarter": "2026-Q1", "keyword_pct": 1.7, "year": 2026, "quarter_num": 1},
+            {"keyword": "Semiconductors", "quarter": "2026-Q1", "keyword_pct": 7.55, "year": 2026, "quarter_num": 1},
+            {"keyword": "QuantumTech", "quarter": "2026-Q1", "keyword_pct": 1.6, "year": 2026, "quarter_num": 1},
+            {"keyword": "Robotics", "quarter": "2026-Q1", "keyword_pct": 6.22, "year": 2026, "quarter_num": 1},
+            {"keyword": "Infrastructure", "quarter": "2026-Q1", "keyword_pct": 0.95, "year": 2026, "quarter_num": 1},
+            {"keyword": "PhysicalAI", "quarter": "2026-Q1", "keyword_pct": 1.55, "year": 2026, "quarter_num": 1},
+            {"keyword": "HealthTech", "quarter": "2026-Q1", "keyword_pct": 3.0, "year": 2026, "quarter_num": 1},
+            {"keyword": "DigitalHealth", "quarter": "2026-Q1", "keyword_pct": 0.6, "year": 2026, "quarter_num": 1},
+            {"keyword": "FinTech", "quarter": "2026-Q1", "keyword_pct": 1.45, "year": 2026, "quarter_num": 1},
+            {"keyword": "Enterprise", "quarter": "2026-Q1", "keyword_pct": 0.6, "year": 2026, "quarter_num": 1},
+            {"keyword": "Ecommerce", "quarter": "2026-Q1", "keyword_pct": 2.1, "year": 2026, "quarter_num": 1},
+            {"keyword": "DefenseTech", "quarter": "2026-Q1", "keyword_pct": 3.97, "year": 2026, "quarter_num": 1},
+            {"keyword": "CreatorEconomy", "quarter": "2026-Q1", "keyword_pct": 0.6, "year": 2026, "quarter_num": 1},
+            {"keyword": "ClimateTech", "quarter": "2026-Q1", "keyword_pct": 0.8, "year": 2026, "quarter_num": 1},
+            {"keyword": "BioTech", "quarter": "2026-Q1", "keyword_pct": 0.6, "year": 2026, "quarter_num": 1},
+            {"keyword": "AgentAI", "quarter": "2026-Q1", "keyword_pct": 8.53, "year": 2026, "quarter_num": 1},
+            {"keyword": "SpaceTech", "quarter": "2026-Q1", "keyword_pct": 1.7, "year": 2026, "quarter_num": 1},
+            {"keyword": "GenAI", "quarter": "2026-Q1", "keyword_pct": 13.9, "year": 2026, "quarter_num": 1},
+            {"keyword": "Web3", "quarter": "2026-Q1", "keyword_pct": 4.85, "year": 2026, "quarter_num": 1}
+          ]
+        };
+
+        // ===== KONFIGURATION =====
+        let selectedKeywords = [];
+        const maxKeywords = 5;
+        const keywordsList = document.getElementById('keywordsList');
+        const selectAllButton = document.getElementById('selectAllButton');
+        const resetButton = document.getElementById('resetButton');
+        const chart = document.getElementById('chart');
+        const chartWrapper = document.getElementById('chartWrapper');
+        const warningMessage = document.getElementById('warningMessage');
+        const emptyStateMessage = document.getElementById('emptyStateMessage');
+
+        // ===== HILFSFUNKTIONEN =====
+
+        function getAllKeywords() {
+            const keywords = new Set();
+            trendData.data.forEach(item => keywords.add(item.keyword));
+            return Array.from(keywords).sort();
+        }
+
+        function getAllQuarters() {
+            const quarters = new Set();
+            trendData.data.forEach(item => quarters.add(item.quarter));
+            return Array.from(quarters).sort((a, b) => {
+                const [yearA, qA] = a.split('-Q').map(x => parseInt(x));
+                const [yearB, qB] = b.split('-Q').map(x => parseInt(x));
+                if (yearA !== yearB) return yearA - yearB;
+                return qA - qB;
+            });
+        }
+
+        function getDataForKeyword(keyword) {
+            return trendData.data
+                .filter(item => item.keyword === keyword)
+                .sort((a, b) => {
+                    const [yearA, qA] = a.quarter.split('-Q').map(x => parseInt(x));
+                    const [yearB, qB] = b.quarter.split('-Q').map(x => parseInt(x));
+                    if (yearA !== yearB) return yearA - yearB;
+                    return qA - qB;
+                });
+        }
+
+        function getLabelClass(trendLabel) {
+            if (!trendLabel) return 'trend-badge--stable';
+            const labelStr = String(trendLabel).toLowerCase();
+            if (labelStr.includes('emerging')) return 'trend-badge--emerging';
+            if (labelStr.includes('rising'))   return 'trend-badge--rising';
+            if (labelStr.includes('hot'))      return 'trend-badge--hot';
+            if (labelStr.includes('mature'))   return 'trend-badge--mature';
+            if (labelStr.includes('declining')) return 'trend-badge--declining';
+            if (labelStr.includes('stable'))   return 'trend-badge--stable';
+            return 'trend-badge--stable';
+        }
+
+        function populateKeywordsList() {
+            const keywords = getAllKeywords();
+            keywordsList.innerHTML = '';
+            
+            if (keywords.length === 0) {
+                keywordsList.classList.add('empty');
+                keywordsList.innerHTML = '<div class="loading">Keine Keywords gefunden</div>';
+                return;
+            }
+            
+            const keywordsWithTrends = keywords.map(keyword => {
+                const keywordData = getDataForKeyword(keyword);
+                let trend = { label: 'Stable', emoji: '😴', momentum: 0 };
+                let displayLabel = '😴 Stable';
+                
+                if (keywordData && keywordData.length >= 2) {
+                    const values = keywordData.map(item => item.keyword_pct);
+                    try {
+                        const result = classifyTrend(values);
+                        if (result && result.label && result.emoji) {
+                            trend = result;
+                            displayLabel = `${result.emoji} ${result.label}`;
+                        }
+                    } catch(e) {
+                        console.error(`Error classifying ${keyword}:`, e);
+                    }
+                }
+                
+                return { keyword, trend, displayLabel };
+            });
+            
+            const attractivenessOrder = {
+                'Emerging': 0, 'Rising': 1, 'Hot': 2, 'Mature': 3,
+                'Stable': 4, 'Declining': 5
+            };
+            
+            keywordsWithTrends.sort((a, b) => {
+                const orderA = attractivenessOrder[a.trend.label] ?? 6;
+                const orderB = attractivenessOrder[b.trend.label] ?? 6;
+                return orderA !== orderB ? orderA - orderB : a.keyword.localeCompare(b.keyword);
+            });
+            
+            keywordsWithTrends.forEach(({ keyword, trend, displayLabel }) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'keyword-checkbox-wrapper';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `kw-${keyword}`;
+                checkbox.value = keyword;
+                checkbox.addEventListener('change', handleKeywordChange);
+                
+                const label = document.createElement('label');
+                label.htmlFor = `kw-${keyword}`;
+                label.innerHTML = `${keyword} <span class="trend-badge ${getLabelClass(trend.label)}">${displayLabel}</span>`;
+                
+                wrapper.appendChild(checkbox);
+                wrapper.appendChild(label);
+                keywordsList.appendChild(wrapper);
+                
+                console.log(`Added: ${keyword} with label: ${displayLabel}`);
+            });
+            
+            if (keywordsWithTrends.length > 0) {
+                const firstCheckbox = document.getElementById(`kw-${keywordsWithTrends[0].keyword}`);
+                if (firstCheckbox) {
+                    firstCheckbox.checked = true;
+                    selectedKeywords = [keywordsWithTrends[0].keyword];
+                }
+            }
+        }
+
+        function updateCheckboxStates() {
+            const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            const isAtMax = checkedBoxes.length >= maxKeywords;
+            
+            allCheckboxes.forEach(checkbox => {
+                const wrapper = checkbox.closest('.keyword-checkbox-wrapper');
+                if (isAtMax && !checkbox.checked) {
+                    checkbox.disabled = true;
+                    if (wrapper) wrapper.style.opacity = '0.4';
+                } else {
+                    checkbox.disabled = false;
+                    if (wrapper) wrapper.style.opacity = '1';
+                }
+            });
+        }
+
+        function handleKeywordChange(event) {
+            const isCheckingNewBox = event.target.checked === true;
+            const currentlyChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            
+            if (isCheckingNewBox && currentlyChecked > maxKeywords) {
+                event.target.checked = false;
+                showWarning('⚠️ Maximal ' + maxKeywords + ' Trends gleichzeitig auswählbar. Bitte zuerst einen Trend abwählen.');
+                return;
+            }
+            
+            const checkedBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+            const selected = checkedBoxes.map(box => box.value);
+            
+            selectedKeywords = selected;
+            hideWarning();
+            updateCheckboxStates();
+            updateChart();
+        }
+
+        function showWarning(message) {
+            warningMessage.textContent = message;
+            warningMessage.style.display = 'block';
+        }
+
+        function hideWarning() {
+            warningMessage.style.display = 'none';
+        }
+
+        function resetSelection() {
+            const keywords = getAllKeywords();
+            if (keywords.length > 0) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = false;
+                });
+                
+                const firstCheckbox = document.getElementById(`kw-${keywords[0]}`);
+                if (firstCheckbox) {
+                    firstCheckbox.checked = true;
+                    selectedKeywords = [keywords[0]];
+                }
+                hideWarning();
+                updateCheckboxStates();
+                updateChart();
+            }
+        }
+
+        function selectAllKeywords() {
+            const keywords = getAllKeywords();
+            const toSelect = keywords.slice(0, maxKeywords);
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            toSelect.forEach(keyword => {
+                const checkbox = document.getElementById(`kw-${keyword}`);
+                if (checkbox) checkbox.checked = true;
+            });
+            
+            selectedKeywords = toSelect;
+            hideWarning();
+            updateCheckboxStates();
+            updateChart();
+        }
+
+        function calculateMedian(arr) {
+            if (!arr || arr.length === 0) return NaN;
+            const sorted = [...arr].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+        }
+
+        function calculatePercentile(arr, percentile) {
+            if (!arr || arr.length === 0) return NaN;
+            const sorted = [...arr].sort((a, b) => a - b);
+            const index = (percentile / 100) * (sorted.length - 1);
+            const lower = Math.floor(index);
+            const upper = Math.ceil(index);
+            const weight = index - lower;
+            return lower === upper ? sorted[lower] : sorted[lower] * (1 - weight) + sorted[upper] * weight;
+        }
+
+        function computeAllLastValues() {
+            const allKeywords = getAllKeywords();
+            const lastValues = [];
+            allKeywords.forEach(keyword => {
+                const keywordData = getDataForKeyword(keyword);
+                if (keywordData.length > 0) {
+                    lastValues.push(keywordData[keywordData.length - 1].keyword_pct);
+                }
+            });
+            return lastValues;
+        }
+
+        function classifyTrend(values) {
+            if (!values || values.length < 2) {
+                return { label: 'Stable', emoji: '😴', momentum: 0 };
+            }
+            
+            const lastValue = values[values.length - 1];
+            const recentValues = values.slice(-4);
+            
+            let momentum = 0;
+            if (recentValues.length >= 2) {
+                let totalChange = 0;
+                for (let i = 1; i < recentValues.length; i++) {
+                    totalChange += (recentValues[i] - recentValues[i - 1]);
+                }
+                momentum = totalChange / (recentValues.length - 1);
+            }
+            
+            const allLastValues = computeAllLastValues();
+            
+            if (!allLastValues || allLastValues.length === 0) {
+                if (momentum > 0.15) {
+                    return { label: 'Rising', emoji: '✨', momentum: momentum };
+                }
+                return { label: 'Stable', emoji: '😴', momentum: momentum };
+            }
+            
+            const level75 = calculatePercentile(allLastValues, 75);
+            const levelMedian = calculateMedian(allLastValues);
+            
+            if (isNaN(level75) || isNaN(levelMedian)) {
+                if (momentum > 0.15) {
+                    return { label: 'Rising', emoji: '✨', momentum: momentum };
+                }
+                return { label: 'Stable', emoji: '😴', momentum: momentum };
+            }
+            
+            if (momentum < -0.3) {
+                return { label: 'Declining', emoji: '📉', momentum: momentum };
+            } else if (lastValue > level75 && momentum > 0.3) {
+                return { label: 'Hot', emoji: '🔥', momentum: momentum };
+            } else if (lastValue > level75 && momentum >= -0.3 && momentum <= 0.3) {
+                return { label: 'Mature', emoji: '⚖️', momentum: momentum };
+            } else if (lastValue < levelMedian && momentum > 0.3) {
+                return { label: 'Emerging', emoji: '🚀', momentum: momentum };
+            } else if (momentum > 0.15) {
+                return { label: 'Rising', emoji: '✨', momentum: momentum };
+            } else {
+                return { label: 'Stable', emoji: '😴', momentum: momentum };
+            }
+        }
+
+        function getChartTitle() {
+            if (selectedKeywords.length === 0) {
+                return 'Keine Keywords ausgewählt';
+            } else if (selectedKeywords.length === 1) {
+                return `Trendentwicklung: ${selectedKeywords[0]}`;
+            } else {
+                return `Keyword Trend Comparison (Quarterly)`;
+            }
+        }
+
+        function updateChart() {
+            if (selectedKeywords.length === 0) {
+                emptyStateMessage.style.display = 'block';
+                chartWrapper.style.display = 'none';
+                return;
+            }
+            
+            emptyStateMessage.style.display = 'none';
+            chartWrapper.style.display = 'block';
+            
+            const quarters = getAllQuarters();
+            const traces = [];
+            
+            const allKeywords = getAllKeywords();
+            const keywordColors = {};
+            const GOLDEN = 137.508;
+            allKeywords.forEach((kw, i) => {
+                const hue = Math.round((i * GOLDEN) % 360);
+                keywordColors[kw] = `hsl(${hue}, 70%, 42%)`;
+            });
+            
+            selectedKeywords.forEach((keyword) => {
+                const keywordData = getDataForKeyword(keyword);
+                const valuesByQuarter = {};
+                keywordData.forEach(item => {
+                    valuesByQuarter[item.quarter] = item.keyword_pct;
+                });
+                
+                const yValues = quarters.map(q => valuesByQuarter[q] || 0);
+                const trend = classifyTrend(yValues);
+                const traceColor = keywordColors[keyword] || '#90A4AE';
+                
+                traces.push({
+                    x: quarters,
+                    y: yValues,
+                    mode: 'lines+markers',
+                    name: `${keyword} ${trend.emoji} ${trend.label}`,
+                    type: 'scatter',
+                    line: { color: traceColor, width: 2.5 },
+                    marker: { size: 5 },
+                    hovertemplate: '<b>' + keyword + ' ' + trend.emoji + '</b><br>' +
+                                  'Q: %{x}<br>' +
+                                  'Attention Share: %{y:.2f}%<br>' +
+                                  'Momentum: ' + (trend.momentum >= 0 ? '+' : '') + trend.momentum.toFixed(2) + '%/Q<br>' +
+                                  '<extra></extra>'
+                });
+            });
+            
+            const layout = {
+                title: { text: getChartTitle(), font: { size: 18 } },
+                xaxis: { title: 'Quartal', tickangle: -45 },
+                yaxis: { title: 'Attention Share (%)', zeroline: false },
+                hovermode: 'closest',
+                margin: { l: 70, r: 30, t: 100, b: 100 },
+                plot_bgcolor: '#f9f9f9',
+                paper_bgcolor: '#ffffff',
+                legend: { orientation: 'v', x: 1.02, y: 1 },
+                responsive: true
+            };
+            
+            Plotly.newPlot(chart, traces, layout, { responsive: true });
+        }
+
+        // ===== EVENT LISTENER =====
+        resetButton.addEventListener('click', resetSelection);
+        selectAllButton.addEventListener('click', selectAllKeywords);
+
+        // ===== INITIALISIERUNG =====
+        window.addEventListener('DOMContentLoaded', function() {
+            populateKeywordsList();
+            updateChart();
+            console.log('✓ Visualisierung initialisiert');
+            console.log(`  Keywords: ${getAllKeywords().length}`);
+            console.log(`  Quartale: ${getAllQuarters().length}`);
+            console.log(`  Metrik: ${trendData.metadata.metric}`);
+        });
+    </script>
+</body>
+</html>

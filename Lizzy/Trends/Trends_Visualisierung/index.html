@@ -16,16 +16,25 @@
         <!-- Header -->
         <header class="header">
             <h1>📊 Trend-Analyse</h1>
-            <p class="subtitle">Quartalsweise Keyword-Trends vergleichen</p>
+            <p class="subtitle">Quartalsweise Trends vergleichen</p>
         </header>
         
         <!-- Control Panel -->
         <div class="control-panel">
             <div class="control-group keywords-group">
                 <label class="label">
-                    <strong>Keywords auswählen</strong>
+                    <strong>Trend auswählen</strong>
                     <span class="hint">— klicken zum Auswählen</span>
                 </label>
+                <div class="trend-legend">
+                    <span class="trend-legend-label">Legende:</span>
+                    <span class="trend-badge trend-badge--emerging">🚀 Emerging — niedrig & wächst stark</span>
+                    <span class="trend-badge trend-badge--rising">✨ Rising — moderat & wächst</span>
+                    <span class="trend-badge trend-badge--hot">🔥 Hot — hoch & wächst</span>
+                    <span class="trend-badge trend-badge--mature">⚖️ Mature — hoch & stagniert</span>
+                    <span class="trend-badge trend-badge--stable">😴 Stable — keine klare Bewegung</span>
+                    <span class="trend-badge trend-badge--declining">📉 Declining — Aufmerksamkeit sinkt</span>
+                </div>
                 <div id="keywordsList" class="keywords-list">
                     <div class="loading">Lädt Keywords...</div>
                 </div>

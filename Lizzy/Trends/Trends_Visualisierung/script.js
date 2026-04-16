@@ -2087,6 +2087,7 @@ const trendData = {
 
 // ===== KONFIGURATION =====
 let selectedKeywords = [];
+const maxKeywords = 5;  // FIX 4: Enforce max 5 keywords cap
 
 // DOM-Elemente
 const keywordsList = document.getElementById('keywordsList');
@@ -2136,8 +2137,26 @@ function getDataForKeyword(keyword) {
         });
 }
 
+
 /**
- * Erstellt Checkboxen für Keyword-Auswahl
+ * Maps a trend label to the corresponding CSS class
+ * BUG 1: Helper function for label-to-CSS mapping
+ */
+function getLabelClass(trendLabel) {
+    if (!trendLabel) return 'trend-badge--stable';
+    const labelStr = String(trendLabel).toLowerCase();
+    if (labelStr.includes('emerging')) return 'trend-badge--emerging';
+    if (labelStr.includes('rising'))   return 'trend-badge--rising';
+    if (labelStr.includes('hot'))      return 'trend-badge--hot';
+    if (labelStr.includes('mature'))   return 'trend-badge--mature';
+    if (labelStr.includes('declining')) return 'trend-badge--declining';
+    if (labelStr.includes('stable'))   return 'trend-badge--stable';
+    return 'trend-badge--stable';
+}
+
+/**
+ * Erstellt Checkboxen für Keyword-Auswahl, sortiert nach Trend-Attraktivität
+ * FIX: Simplified to always show badge for every keyword
  */
 function populateKeywordsList() {
     const keywords = getAllKeywords();
@@ -2149,7 +2168,49 @@ function populateKeywordsList() {
         return;
     }
     
-    keywords.forEach(keyword => {
+    // Build array with trends for each keyword
+    const keywordsWithTrends = keywords.map(keyword => {
+        const keywordData = getDataForKeyword(keyword);
+        
+        // Default to Stable
+        let trend = { label: 'Stable', emoji: '😴', momentum: 0 };
+        let displayLabel = '😴 Stable';
+        
+        // Try to classify if we have enough data
+        if (keywordData && keywordData.length >= 2) {
+            const values = keywordData.map(item => item.keyword_pct);
+            try {
+                const result = classifyTrend(values);
+                if (result && result.label && result.emoji) {
+                    trend = result;
+                    displayLabel = `${result.emoji} ${result.label}`;
+                }
+            } catch(e) {
+                console.error(`Error classifying ${keyword}:`, e);
+            }
+        }
+        
+        return { keyword, trend, displayLabel };
+    });
+    
+    // Sort by attractiveness
+    const attractivenessOrder = {
+        'Emerging': 0,
+        'Rising': 1,
+        'Hot': 2,
+        'Mature': 3,
+        'Stable': 4,
+        'Declining': 5
+    };
+    
+    keywordsWithTrends.sort((a, b) => {
+        const orderA = attractivenessOrder[a.trend.label] ?? 6;
+        const orderB = attractivenessOrder[b.trend.label] ?? 6;
+        return orderA !== orderB ? orderA - orderB : a.keyword.localeCompare(b.keyword);
+    });
+    
+    // Create checkbox HTML for each keyword
+    keywordsWithTrends.forEach(({ keyword, trend, displayLabel }) => {
         const wrapper = document.createElement('div');
         wrapper.className = 'keyword-checkbox-wrapper';
         
@@ -2161,32 +2222,72 @@ function populateKeywordsList() {
         
         const label = document.createElement('label');
         label.htmlFor = `kw-${keyword}`;
-        label.textContent = keyword;
+        label.innerHTML = `${keyword} <span class="trend-badge ${getLabelClass(trend.label)}">${displayLabel}</span>`;
         
         wrapper.appendChild(checkbox);
         wrapper.appendChild(label);
         keywordsList.appendChild(wrapper);
+        
+        console.log(`Added: ${keyword} with label: ${displayLabel}`);
     });
     
-    // Wähle standardmäßig erstes Keyword aus
-    if (keywords.length > 0) {
-        const firstCheckbox = document.getElementById(`kw-${keywords[0]}`);
+    // Select first keyword by default
+    if (keywordsWithTrends.length > 0) {
+        const firstCheckbox = document.getElementById(`kw-${keywordsWithTrends[0].keyword}`);
         if (firstCheckbox) {
             firstCheckbox.checked = true;
-            selectedKeywords = [keywords[0]];
+            selectedKeywords = [keywordsWithTrends[0].keyword];
         }
     }
 }
 
 /**
+ * Updates checkbox disabled states based on selection count
+ * BUG 2: Visual feedback when at max keywords
+ */
+function updateCheckboxStates() {
+    const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    const isAtMax = checkedBoxes.length >= maxKeywords;
+    
+    allCheckboxes.forEach(checkbox => {
+        const wrapper = checkbox.closest('.keyword-checkbox-wrapper');
+        if (isAtMax && !checkbox.checked) {
+            checkbox.disabled = true;
+            if (wrapper) wrapper.style.opacity = '0.4';
+        } else {
+            checkbox.disabled = false;
+            if (wrapper) wrapper.style.opacity = '1';
+        }
+    });
+}
+
+/**
  * Behandelt Änderungen in der Checkbox-Auswahl
+ * BUG 2: Fixed warning logic and checkbox state management
  */
 function handleKeywordChange(event) {
+    // BUG 2: Check BEFORE processing if this is a new check that would exceed the limit
+    const isCheckingNewBox = event.target.checked === true;
+    const currentlyChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    
+    // BUG 2: If checking a NEW box and already at or above maxKeywords, prevent it
+    if (isCheckingNewBox && currentlyChecked > maxKeywords) {
+        event.target.checked = false;
+        showWarning('⚠️ Maximal ' + maxKeywords + ' Trends gleichzeitig auswählbar. Bitte zuerst einen Trend abwählen.');
+        return;
+    }
+    
+    // BUG 2: Otherwise, allow the change
     const checkedBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
     const selected = checkedBoxes.map(box => box.value);
     
     selectedKeywords = selected;
     hideWarning();
+    
+    // BUG 2: Update visual state of all checkboxes
+    updateCheckboxStates();
+    
     updateChart();
 }
 
@@ -2207,12 +2308,16 @@ function hideWarning() {
 
 /**
  * Setzt Auswahl zurück
+ * BUG 2: Re-enable all checkboxes and update visual state
  */
 function resetSelection() {
     const keywords = getAllKeywords();
     if (keywords.length > 0) {
-        // Alle Checkboxen deselektieren
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        // Alle Checkboxen deselektieren und re-enablen
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+            cb.disabled = false;
+        });
         
         // Erstes Keyword auswählen
         const firstCheckbox = document.getElementById(`kw-${keywords[0]}`);
@@ -2221,64 +2326,164 @@ function resetSelection() {
             selectedKeywords = [keywords[0]];
         }
         hideWarning();
+        updateCheckboxStates();  // BUG 2: Update visual state
         updateChart();
     }
 }
 
 /**
- * Wählt alle Keywords aus (ignoriert das 4er-Limit)
+ * Wählt bis zu maxKeywords Keywords aus
+ * BUG 2: Updates visual state after selection
  */
 function selectAllKeywords() {
     const keywords = getAllKeywords();
     
-    // Alle Checkboxen auswählen
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+    // Begrenze auf maxKeywords
+    const toSelect = keywords.slice(0, maxKeywords);
     
-    // Alle Keywords in selectedKeywords setzen
-    selectedKeywords = keywords;
+    // Alle Checkboxen deselektieren
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    
+    // Erste maxKeywords-Checkboxen auswählen
+    toSelect.forEach(keyword => {
+        const checkbox = document.getElementById(`kw-${keyword}`);
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+    });
+    
+    selectedKeywords = toSelect;
+    
     hideWarning();
+    updateCheckboxStates();  // BUG 2: Update visual state
     updateChart();
+}
+
+/**
+ * Berechnet den Median eines Arrays
+ */
+function calculateMedian(arr) {
+    if (!arr || arr.length === 0) return NaN;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    if (sorted.length % 2 === 0) {
+        return (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+    return sorted[mid];
+}
+
+/**
+ * Berechnet das X-Perzentil eines Arrays
+ */
+function calculatePercentile(arr, percentile) {
+    if (!arr || arr.length === 0) return NaN;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const index = (percentile / 100) * (sorted.length - 1);
+    const lower = Math.floor(index);
+    const upper = Math.ceil(index);
+    const weight = index - lower;
+    
+    if (lower === upper) {
+        return sorted[lower];
+    }
+    
+    return sorted[lower] * (1 - weight) + sorted[upper] * weight;
+}
+
+/**
+ * Berechnet alle letzten Werte aller Keywords für Perzentilvergleiche
+ */
+function computeAllLastValues() {
+    const allKeywords = getAllKeywords();
+    const lastValues = [];
+    
+    allKeywords.forEach(keyword => {
+        const keywordData = getDataForKeyword(keyword);
+        if (keywordData.length > 0) {
+            lastValues.push(keywordData[keywordData.length - 1].keyword_pct);
+        }
+    });
+    
+    return lastValues;
 }
 
 /**
  * Klassifiziert den Trend basierend auf Level und Momentum
  * @param {number[]} values - Array mit keyword_pct Werten chronologisch sortiert
- * @returns {Object} { label, emoji } - z.B. { label: 'Emerging', emoji: '🚀' }
+ * @returns {Object} { label, emoji, momentum } - z.B. { label: 'Emerging', emoji: '🚀', momentum: 0.15 }
+ * BUG 1: Added guard for insufficient data
  */
 function classifyTrend(values) {
-    if (!values || values.length === 0) {
-        return { label: 'N/A', emoji: '❓' };
+    // BUG 1: Guard for insufficient data
+    if (!values || values.length < 2) {
+        console.warn('classifyTrend: Insufficient data', values?.length);
+        return { label: 'Stable', emoji: '😴', momentum: 0 };
     }
     
-    // Level = letzter Wert
-    const level = values[values.length - 1];
+    if (values.length === 0) {
+        return { label: 'Stable', emoji: '😴', momentum: 0 };
+    }
     
-    // Momentum = durchschnittliche Veränderung der letzten 3 Quartale
+    // lastValue = letzter Element
+    const lastValue = values[values.length - 1];
+    
+    // recentValues = letzte 4 Werte
+    const recentValues = values.slice(-4);
+    
+    // momentum = durchschnittliche Quarter-over-Quarter Änderung in recentValues
     let momentum = 0;
-    if (values.length >= 2) {
-        const recentValues = values.slice(-4);  // Letzte 4 Werte für 3 Differenzen
+    if (recentValues.length >= 2) {
         let totalChange = 0;
-        let changeCount = 0;
-        
         for (let i = 1; i < recentValues.length; i++) {
             totalChange += (recentValues[i] - recentValues[i - 1]);
-            changeCount++;
         }
-        
-        momentum = changeCount > 0 ? totalChange / changeCount : 0;
+        momentum = totalChange / (recentValues.length - 1);
     }
     
-    // Klassifikation nach Regeln
-    if (momentum < -0.5) {
-        return { label: 'Declining', emoji: '📉' };
-    } else if (level < 5 && momentum > 0.5) {
-        return { label: 'Emerging', emoji: '🚀' };
-    } else if (level > 8 && momentum > 0.5) {
-        return { label: 'Hot', emoji: '🔥' };
-    } else if (level > 8 && momentum >= -0.5 && momentum <= 0.5) {
-        return { label: 'Mature', emoji: '⚖️' };
+    // shortMomentum = Veränderung zwischen letzten 2 Werten
+    let shortMomentum = 0;
+    if (values.length >= 2) {
+        shortMomentum = values[values.length - 1] - values[values.length - 2];
+    }
+    
+    // allLastValues und Perzentile berechnen
+    const allLastValues = computeAllLastValues();
+    
+    // Guard: Wenn keine anderen Keywords vorhanden, als Stable klassifizieren
+    if (!allLastValues || allLastValues.length === 0) {
+        console.warn(`classifyTrend: No allLastValues data for percentile comparison, defaulting to Stable`);
+        // Nutze momentan für einfache Rising/Stable Klassifikation
+        if (momentum > 0.15) {
+            return { label: 'Rising', emoji: '✨', momentum: momentum };
+        }
+        return { label: 'Stable', emoji: '😴', momentum: momentum };
+    }
+    
+    const level75 = calculatePercentile(allLastValues, 75);
+    const levelMedian = calculateMedian(allLastValues);
+    
+    // Guard: Überprüfe NaN resultate
+    if (isNaN(level75) || isNaN(levelMedian)) {
+        console.warn(`classifyTrend: Invalid percentile calculations, defaulting to Stable`);
+        if (momentum > 0.15) {
+            return { label: 'Rising', emoji: '✨', momentum: momentum };
+        }
+        return { label: 'Stable', emoji: '😴', momentum: momentum };
+    }
+    
+    // Klassifikation nach Regeln (in dieser Reihenfolge)
+    if (momentum < -0.3) {
+        return { label: 'Declining', emoji: '📉', momentum: momentum };
+    } else if (lastValue > level75 && momentum > 0.3) {
+        return { label: 'Hot', emoji: '🔥', momentum: momentum };
+    } else if (lastValue > level75 && momentum >= -0.3 && momentum <= 0.3) {
+        return { label: 'Mature', emoji: '⚖️', momentum: momentum };
+    } else if (lastValue < levelMedian && momentum > 0.3) {
+        return { label: 'Emerging', emoji: '🚀', momentum: momentum };
+    } else if (momentum > 0.15) {
+        return { label: 'Rising', emoji: '✨', momentum: momentum };
     } else {
-        return { label: 'Stable', emoji: '⭐' };
+        return { label: 'Stable', emoji: '😴', momentum: momentum };
     }
 }
 
@@ -2297,6 +2502,7 @@ function getChartTitle() {
 
 /**
  * Aktualisiert das Chart
+ * FIX 3: Generate unique per-keyword colors using HSL spacing
  */
 function updateChart() {
     // Empty State prüfen
@@ -2311,10 +2517,19 @@ function updateChart() {
     
     const quarters = getAllQuarters();
     const traces = [];
-    const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'];
+    
+    // BUG 2: Generate unique HSL colors for all keywords using golden angle distribution
+    const allKeywords = getAllKeywords();
+    const keywordColors = {};
+    const GOLDEN = 137.508;  // Golden angle in degrees for maximally distinct colors
+    allKeywords.forEach((kw, i) => {
+        const hue = Math.round((i * GOLDEN) % 360);
+        keywordColors[kw] = `hsl(${hue}, 70%, 42%)`;
+        console.log(`Color for ${kw}: hsl(${hue}, 70%, 42%)`);
+    });
     
     // Trace pro ausgewähltem Keyword
-    selectedKeywords.forEach((keyword, index) => {
+    selectedKeywords.forEach((keyword) => {
         const keywordData = getDataForKeyword(keyword);
         
         // Mapping Quartale -> Werte
@@ -2328,24 +2543,28 @@ function updateChart() {
         
         // Trend klassifizieren
         const trend = classifyTrend(yValues);
-        const traceLabel = `${keyword} – ${trend.label} ${trend.emoji}`;
+        const trendKey = trend.label.toLowerCase();
+        
+        // BUG 2: Use unique per-keyword color with golden angle distribution
+        const traceColor = keywordColors[keyword] || '#90A4AE';
         
         traces.push({
             x: quarters,
             y: yValues,
             mode: 'lines+markers',
-            name: traceLabel,
+            name: `${keyword} ${trend.emoji} ${trend.label}`,
             type: 'scatter',
             line: {
-                color: colors[index % colors.length],
+                color: traceColor,
                 width: 2.5
             },
             marker: {
                 size: 5
             },
-            hovertemplate: '<b>%{fullData.name}</b><br>' +
-                          'Quartal: %{x}<br>' +
-                          'Share: %{y:.2f}%<br>' +
+            hovertemplate: '<b>' + keyword + ' ' + trend.emoji + '</b><br>' +
+                          'Q: %{x}<br>' +
+                          'Attention Share: %{y:.2f}%<br>' +
+                          'Momentum: ' + (trend.momentum >= 0 ? '+' : '') + trend.momentum.toFixed(2) + '%/Q<br>' +
                           '<extra></extra>'
         });
     });
@@ -2360,10 +2579,10 @@ function updateChart() {
             tickangle: -45
         },
         yaxis: {
-            title: 'Market Share (%)',
+            title: 'Attention Share (%)',
             zeroline: false
         },
-        hovermode: 'x unified',
+        hovermode: 'closest',
         margin: { l: 70, r: 30, t: 100, b: 100 },
         plot_bgcolor: '#f9f9f9',
         paper_bgcolor: '#ffffff',
@@ -2376,6 +2595,43 @@ function updateChart() {
     };
     
     Plotly.newPlot(chart, traces, layout, { responsive: true });
+}
+
+// ===== HILFSFUNKTIONEN FÜR DATENEXTRAKTION =====
+
+/**
+ * Gibt alle einzigartigen Keywords zurück
+ */
+function getAllKeywords() {
+    const keywords = new Set();
+    trendData.data.forEach(item => {
+        keywords.add(item.keyword);
+    });
+    return Array.from(keywords).sort();
+}
+
+/**
+ * Gibt alle Datenpunkte für ein spezifisches Keyword zurück, sortiert nach Quarter
+ */
+function getDataForKeyword(keyword) {
+    return trendData.data
+        .filter(item => item.keyword === keyword)
+        .sort((a, b) => {
+            // Sortiere nach Jahr, dann nach Quarter
+            if (a.year !== b.year) return a.year - b.year;
+            return a.quarter_num - b.quarter_num;
+        });
+}
+
+/**
+ * Gibt alle einzigartigen Quartale zurück
+ */
+function getAllQuarters() {
+    const quarters = new Set();
+    trendData.data.forEach(item => {
+        quarters.add(item.quarter);
+    });
+    return Array.from(quarters).sort();
 }
 
 // ===== EVENT LISTENER =====
