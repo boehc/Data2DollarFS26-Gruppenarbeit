@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBI Career Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        
+    /* ── Reset & Base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Typography Scale ── */
+    .t-xs  { font-size: 0.75rem; }   /* 12px */
+    .t-sm  { font-size: 0.8125rem; } /* 13px */
+    .t-base{ font-size: 0.875rem; }  /* 14px */
+    .t-md  { font-size: 1rem; }      /* 16px */
+    .t-lg  { font-size: 1.25rem; }   /* 20px */
+    .t-xl  { font-size: 1.5rem; }    /* 24px */
+    .t-2xl { font-size: 1.75rem; }   /* 28px */
+    .t-3xl { font-size: 2.25rem; }   /* 36px */
+
+    /* ── Spacing helpers (8px grid) ── */
+    .gap-1  { gap: 0.25rem; }
+    .gap-2  { gap: 0.5rem; }
+    .gap-3  { gap: 0.75rem; }
+    .gap-4  { gap: 1rem; }
+    .gap-6  { gap: 1.5rem; }
+
+    /* ── Card System ── */
+    .card {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        /* Refactoring UI: offset shadow instead of border */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .card-title {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+        margin-bottom: 16px;
+    }
+
+    /* ── Badge System ── */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+    }
+    .badge-blue   { background: #eff6ff; color: #1d4ed8; }
+    .badge-violet { background: #f5f3ff; color: #6d28d9; }
+    .badge-amber  { background: #fffbeb; color: #b45309; }
+    .badge-green  { background: #ecfdf5; color: #047857; }
+
+    /* ── Chip System (Skills) ── */
+    .chip-group { margin-bottom: 14px; }
+    .chip-group-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .chip-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .chip {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        line-height: 1.3;
+        transition: transform 0.1s ease;
+    }
+    .chip:hover { transform: translateY(-1px); }
+    .chip-sm {
+        padding: 2px 8px;
+        font-size: 0.75rem;
+        border-radius: 6px;
+        background: #f1f5f9;
+        color: #64748b;
+    }
+    .chip-gap {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+
+    /* ── Course Cards ── */
+    .course-card {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        border-left: 3px solid #e2e8f0;
+        transition: border-color 0.15s ease;
+    }
+    .course-card:hover { border-left-color: #7c3aed; }
+    .course-title {
+        font-weight: 600;
+        font-size: 0.8125rem;
+        color: #1e293b;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .course-meta {
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    /* ── Success / Warning States ── */
+    .state-success {
+        background: #ecfdf5;
+        color: #065f46;
+        padding: 14px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.8125rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .state-empty {
+        color: #94a3b8;
+        font-size: 0.8125rem;
+        font-style: italic;
+        padding: 8px 0;
+    }
+
+    /* ── Animations ── */
+    @keyframes slideInRight {
+        from { transform: translateX(100%); }
+        to   { transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+
+        /* ── Hero Section ── */
+        .hero {
+            background: #0f172a;
+            color: white;
+            padding: 64px 40px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Subtle geometric decoration */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .hero p {
+            font-size: 1.0625rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.65;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* ── Main Container ── */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* ── Overview Grid ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        /* ── Kennzahlen Table ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .data-table thead th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .data-table tbody td {
+            padding: 12px 12px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .data-table tfoot td {
+            padding: 12px 12px;
+            font-weight: 700;
+            color: #1e293b;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        /* ── Section Header ── */
+        .section-header {
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+        .section-desc {
+            font-size: 0.9375rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* ── Profile Card Grid ── */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+        .profile-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.5s ease both;
+        }
+        .profile-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.08);
+        }
+        /* Refactoring UI: accent border via colored top bar */
+        .profile-card-accent {
+            height: 4px;
+            width: 100%;
+        }
+        .profile-card-body {
+            padding: 24px;
+        }
+        .profile-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .profile-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .profile-card-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .profile-card-sub {
+            font-size: 0.8125rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .profile-card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+            padding: 14px 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .profile-card-stat { text-align: center; }
+        .profile-card-stat-val {
+            font-size: 1.375rem;
+            font-weight: 800;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .profile-card-stat-lbl {
+            font-size: 0.6875rem;
+            color: #94a3b8;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 4px;
+        }
+        .profile-card-cta {
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .profile-card-cta span {
+            transition: transform 0.2s ease;
+        }
+        .profile-card:hover .profile-card-cta span {
+            transform: translateX(4px);
+        }
+
+        /* ── How it works ── */
+        .how-it-works {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 48px;
+            background: white;
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .step {
+            flex: 1;
+            padding: 20px 24px;
+            border-radius: 12px;
+            transition: background 0.2s ease;
+        }
+        .step:hover { background: #f8fafc; }
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .step-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .step-desc {
+            font-size: 0.8125rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .overview-grid { grid-template-columns: 1fr; }
+            .how-it-works { flex-direction: column; }
+            .hero h1 { font-size: 1.75rem; }
+            .main { padding: 24px 20px 60px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🎓 MBI-Studiengang · FHNW</div>
+            <h1>Career Explorer</h1>
+            <p>Interaktive Analyse von 1194 Stelleninseraten,
+               zugeordnet zu den 6 Vertiefungsprofilen des MBI-Studiengangs.
+               Finde deinen Weg vom Studium in den Arbeitsmarkt.</p>
+        </div>
+    </section>
+
+    <div class="main">
+        <!-- How it works -->
+        <div class="how-it-works" style="animation: slideUp 0.4s ease both;">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-title">Profil wählen</div>
+                <div class="step-desc">Wähle eines der 6 MBI-Vertiefungsprofile aus.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-title">Stellen erkunden</div>
+                <div class="step-desc">Durchsuche passende Stelleninserate aus dem Markt.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-title">Skills & Kurse</div>
+                <div class="step-desc">Sieh benötigte Skills, passende MBI-Kurse und Gaps.</div>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="overview-grid" style="animation: slideUp 0.5s ease both;">
+            <div class="card" style="display:flex;flex-direction:column;">
+                <div class="card-title">Verteilung nach Profil</div>
+                <div style="flex:1;display:flex;align-items:center;">
+                    <div>                            <div id="f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0")) {                    Plotly.newPlot(                        "f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0",                        [{"hole":0.6,"hovertemplate":"\u003cb\u003e%{label}\u003c\u002fb\u003e\u003cbr\u003e%{value} Stellen (%{percent})\u003cextra\u003e\u003c\u002fextra\u003e","labels":["Digital Business","Tech Architect","Business Dev.","Supply Chain","Digital Channel","Startup & Scale-up"],"marker":{"colors":["#475569","#2563eb","#059669","#dc2626","#7c3aed","#d97706"]},"pull":[0.02,0.02,0.02,0.02,0.02,0.02],"sort":false,"textfont":{"family":"Inter, sans-serif","size":12},"textinfo":"label+percent","textposition":"outside","values":[651,204,129,82,66,62],"type":"pie"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"margin":{"t":20,"l":20,"r":20,"b":20},"font":{"family":"Inter, -apple-system, sans-serif","color":"#475569"},"height":380,"showlegend":false,"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","annotations":[{"showarrow":false,"text":"\u003cb\u003e1194\u003c\u002fb\u003e\u003cbr\u003e\u003cspan style='font-size:12px;color:#94a3b8'\u003eStellen\u003c\u002fspan\u003e","x":0.5,"y":0.5,"font":{"size":28,"color":"#0f172a","family":"Inter, sans-serif"}}]},                        {"responsive": true}                    )                };            </script>        </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Kennzahlen</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th style="text-align:right;">Stellen</th>
+                            <th style="text-align:right;">Ø Skills</th>
+                            <th style="text-align:right;">Ø Tech</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#475569;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Digital Business</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">651</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">13</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.7</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#2563eb;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Tech Architect</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">204</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">15</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.8</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#059669;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Business Dev.</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">129</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">17</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.0</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#dc2626;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Supply Chain</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">82</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.1</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#7c3aed;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Digital Channel</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">66</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.6</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#d97706;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Startup & Scale-up</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">62</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.8</td>
+    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td style="text-align:right;">1194</td>
+                            <td style="text-align:right;">14</td>
+                            <td style="text-align:right;">1.9</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Profile Cards -->
+        <div class="section-header">
+            <div class="section-title">Profile erkunden</div>
+            <div class="section-desc">Wähle ein Profil, um die zugehörigen Stelleninserate zu sehen.</div>
+        </div>
+        <div class="profile-grid">
+            
+    <a href="profil_transforming_managing_digital_business.html" class="profile-card" style="animation-delay: 0.1s;">
+        <div class="profile-card-accent" style="background: #475569;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#f8fafc;">
+                    🔄
+                </div>
+                <div>
+                    <div class="profile-card-name">Digital Business</div>
+                    <div class="profile-card-sub">651 Stellen · 55%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">13</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">1.7</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">651</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#475569;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_technology_solution_architect.html" class="profile-card" style="animation-delay: 0.16s;">
+        <div class="profile-card-accent" style="background: #2563eb;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#eff6ff;">
+                    🏗️
+                </div>
+                <div>
+                    <div class="profile-card-name">Tech Architect</div>
+                    <div class="profile-card-sub">204 Stellen · 17%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">15</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">2.8</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">204</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#2563eb;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_business_development.html" class="profile-card" style="animation-delay: 0.22s;">
+        <div class="profile-card-accent" style="background: #059669;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#ecfdf5;">
+                    📈
+                </div>
+                <div>
+                    <div class="profile-card-name">Business Dev.</div>
+                    <div class="profile-card-sub">129 Stellen · 11%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">17</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">2.0</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">129</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#059669;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_supply_chain_operations_management.html" class="profile-card" style="animation-delay: 0.28s;">
+        <div class="profile-card-accent" style="background: #dc2626;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#fef2f2;">
+                    🔗
+                </div>
+                <div>
+                    <div class="profile-card-name">Supply Chain</div>
+                    <div class="profile-card-sub">82 Stellen · 7%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">2.1</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">82</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#dc2626;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_digital_channel_crm.html" class="profile-card" style="animation-delay: 0.33999999999999997s;">
+        <div class="profile-card-accent" style="background: #7c3aed;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#f5f3ff;">
+                    📱
+                </div>
+                <div>
+                    <div class="profile-card-name">Digital Channel</div>
+                    <div class="profile-card-sub">66 Stellen · 6%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">1.6</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">66</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#7c3aed;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_start_up_scale_up_entrepreneurship.html" class="profile-card" style="animation-delay: 0.4s;">
+        <div class="profile-card-accent" style="background: #d97706;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#fffbeb;">
+                    🚀
+                </div>
+                <div>
+                    <div class="profile-card-name">Startup & Scale-up</div>
+                    <div class="profile-card-sub">62 Stellen · 5%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">1.8</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">62</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#d97706;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+        </div>
+    </div>
+</body>
+</html>
