@@ -55,21 +55,46 @@ const CFG = {responsive:true,displayModeBar:true,modeBarButtonsToRemove:['lasso2
 function ml(o){return JSON.parse(JSON.stringify({...BASE,...o,xaxis:{...BASE.xaxis,...(o.xaxis||{})},yaxis:{...BASE.yaxis,...(o.yaxis||{})}}));}
 
 // ===== TAB SWITCHING =====
+function switchToTab(tabName) {
+  const tabs = document.querySelectorAll('#oppTabs .sector-tab');
+  const targetTab = Array.from(tabs).find(tab => tab.dataset.tab === tabName);
+  if (targetTab) {
+    tabs.forEach(t => t.classList.remove('active'));
+    targetTab.classList.add('active');
+    document.querySelectorAll('.opp-tab-content').forEach(c => c.style.display = 'none');
+    document.getElementById('tab-' + tabName).style.display = 'block';
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.querySelectorAll('#oppTabs .sector-tab');
+  
+  // Tab click handler
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelectorAll('.opp-tab-content').forEach(c => c.style.display = 'none');
-      document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
-      setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+      switchToTab(tab.dataset.tab);
     });
   });
+  
+  // Check URL hash on page load
+  const hash = window.location.hash.substring(1); // Remove the '#'
+  if (hash === 'techdive') {
+    switchToTab('techdive');
+  }
+  
   renderRanking();
   renderHeatmap();
   renderTechDive();
   renderRobotics();
+});
+
+// Handle hash changes (when clicking internal links)
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.substring(1);
+  if (hash === 'techdive') {
+    switchToTab('techdive');
+  }
 });
 
 // ===== MATRIX =====
