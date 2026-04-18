@@ -1,0 +1,12 @@
+﻿c:/Users/nadja/1_Data2Dollar/Kurskatalog/.venv-1/Scripts/python.exe : 
+C:\Users\nadja\1_Data2Dollar\Kurskatalog\.venv-1\Scripts\python.exe: can't 
+open file 
+'C:\\Users\\nadja\\1_Data2Dollar\\Kurskatalog\\extract_keywords_pipeline.py': 
+[Errno 2] No such file or directory
+In Zeile:1 Zeichen:234
++ ... urskatalog; c:/Users/nadja/1_Data2Dollar/Kurskatalog/.venv-1/Scripts/ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\nadja\...le or directory 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

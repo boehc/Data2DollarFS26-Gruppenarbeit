@@ -1,0 +1,6 @@
+# MBI Curriculum Skill Extraction - Requirements
+# Installieren mit: pip install -r requirements.txt
+
+openai>=1.0.0
+pandas>=2.0.0
+tqdm>=4.65.0

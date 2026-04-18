@@ -1,0 +1,9 @@
+kaggle
+selenium
+webdriver-manager
+scrapy
+beautifulsoup4
+requests
+pandas
+python-dotenv
+lxml
