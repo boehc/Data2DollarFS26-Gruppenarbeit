@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lizzys – Wo lohnt sich eine Gründung aus dem MBI?</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Lizzys</a>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="trends.html" class="nav-link">Trends</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="opportunity.html" class="nav-link">Opportunity</a>
+                <a href="courses.html" class="nav-link">MBI-Kurse</a>
+                <a href="opportunity.html#fazit" class="nav-cta">→ Empfehlung</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Wo lohnt sich eine Gründung aus dem MBI?</h1>
+            <p class="hero-subtitle">
+                Eine datenbasierte Analyse von Schweizer Startup-Investments, globalen Tech-Trends 
+                und dem HSG MBI-Curriculum – damit die Entscheidung nicht auf Bauchgefühl basiert.
+            </p>
+            <a href="trends.html" class="hero-cta">→ Analyse starten</a>
+        </div>
+    </section>
+
+    <!-- Daten-Übersicht -->
+    <section class="metrics">
+        <div class="container">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">2'817</div>
+                    <div class="metric-label">Artikel analysiert</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">VK + Swiss</div>
+                    <div class="metric-label">Venture Kick & Swiss Startups</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">14</div>
+                    <div class="metric-label">Branchen</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">2023–2026</div>
+                    <div class="metric-label">Q1 bis Q1</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigations-Karten -->
+    <section class="nav-cards">
+        <div class="container">
+            <div class="nav-cards-grid">
+                <a href="trends.html" class="nav-card">
+                    <div class="nav-card-icon">🌍</div>
+                    <h3 class="nav-card-title">Globale Trends</h3>
+                    <p class="nav-card-description">
+                        Was bewegt sich global in der Tech-Welt?
+                    </p>
+                    <span class="nav-card-arrow">→</span>
+                </a>
+                
+                <a href="investments.html" class="nav-card">
+                    <div class="nav-card-icon">🇨🇭</div>
+                    <h3 class="nav-card-title">Schweizer VC</h3>
+                    <p class="nav-card-description">
+                        Wohin fliesst Kapital in der Schweiz?
+                    </p>
+                    <span class="nav-card-arrow">→</span>
+                </a>
+                
+                <a href="opportunity.html" class="nav-card">
+                    <div class="nav-card-icon">🎯</div>
+                    <h3 class="nav-card-title">Deine Chance</h3>
+                    <p class="nav-card-description">
+                        Wo ist der Sweet Spot für MBI-Gründer?
+                    </p>
+                    <span class="nav-card-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodik (Collapsible) -->
+    <section class="methodology">
+        <div class="container">
+            <button class="methodology-toggle" id="methodologyToggle">
+                <span>Methodik & Datenquellen</span>
+                <span class="methodology-icon">▼</span>
+            </button>
+            <div class="methodology-content" id="methodologyContent">
+                <div class="methodology-grid">
+                    <div class="methodology-item">
+                        <h4>Datenquellen</h4>
+                        <ul>
+                            <li><strong>Venture Kick</strong> – CH VC-Daten (Deals, Funding)</li>
+                            <li><strong>Swiss Startups</strong> – CH Startup-Ökosystem</li>
+                            <li><strong>TechCrunch / HackerNews</strong> – 2'817 Tech-News Artikel</li>
+                            <li><strong>HSG MBI Curriculum</strong> – 86 Kurse mit Skills-Mapping</li>
+                        </ul>
+                    </div>
+                    <div class="methodology-item">
+                        <h4>Zeitraum</h4>
+                        <p>2023 Q1 bis 2026 Q1 (13 Quartale)</p>
+                    </div>
+                    <div class="methodology-item">
+                        <h4>Normalisierung</h4>
+                        <p>
+                            Tech- & Industry-Trends: Prozent-Anteil pro Quartal (normalisiert).
+                            Co-Occurrence: Normalisiert pro Tech-Trend.
+                            Threshold: ≥2 Erwähnungen pro Artikel.
+                        </p>
+                    </div>
+                    <div class="methodology-item">
+                        <h4>Branchen-Klassifizierung</h4>
+                        <p>14 Hauptkategorien: BioTech, FinTech, ClimateTech, HealthTech, GenAI, MedTech, Robotics, DefenseTech, SpaceTech, EdTech, MobilityTech, AgriTech, PropTech, InsurTech</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Lizzys – Pfad A: Gründen | MBI HSG | April 2026</p>
+            <p>Datenquellen: Venture Kick, Swiss Startups, TechCrunch, HackerNews, HSG MBI Curriculum</p>
+        </div>
+    </footer>
+
+    <script src="js/components/nav.js"></script>
+    <script>
+        // Methodik Toggle
+        const methodologyToggle = document.getElementById('methodologyToggle');
+        const methodologyContent = document.getElementById('methodologyContent');
+        const methodologyIcon = methodologyToggle.querySelector('.methodology-icon');
+
+        methodologyToggle.addEventListener('click', () => {
+            const isOpen = methodologyContent.style.maxHeight;
+            
+            if (isOpen) {
+                methodologyContent.style.maxHeight = null;
+                methodologyIcon.textContent = '▼';
+            } else {
+                methodologyContent.style.maxHeight = methodologyContent.scrollHeight + 'px';
+                methodologyIcon.textContent = '▲';
+            }
+        });
+    </script>
+</body>
+</html>

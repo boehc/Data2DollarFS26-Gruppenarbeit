@@ -1,0 +1,14 @@
+keyword,2025-Q3,2025-Q4,2026-Q1,2026-Q2,avg_per_quarter,trend,direction
+Enterprise,1,1,4,1,1.8,136.4,↑ Rising
+Ecommerce,3,0,3,0,1.5,0.0,→ Stable
+HealthTech,1,5,4,0,2.5,-32.3,↓ Falling
+ClimateTech,12,10,13,0,8.8,-40.5,↓ Falling
+BioTech,34,35,38,1,27.0,-43.4,↓ Falling
+GenAI,5,8,5,2,5.0,-45.5,↓ Falling
+FinTech,51,41,35,1,32.0,-60.7,↓ Falling
+MedTech,8,3,4,0,3.8,-62.5,↓ Falling
+EdTech,1,0,0,0,0.2,-83.3,↓ Falling
+Cybersecurity,0,2,0,0,0.5,-90.9,↓ Falling
+AgriTech,0,3,0,0,0.8,-93.8,↓ Falling
+PropTech,2,4,0,0,1.5,-96.8,↓ Falling
+Robotics,4,5,0,0,2.2,-97.8,↓ Falling

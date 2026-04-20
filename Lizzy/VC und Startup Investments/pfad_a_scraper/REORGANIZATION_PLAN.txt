@@ -1,0 +1,58 @@
+═══════════════════════════════════════════════════════════
+FOLDER REORGANIZATION PLAN
+═══════════════════════════════════════════════════════════
+Date: 13. April 2026
+Goal: Clean structure for professor review
+
+NEW STRUCTURE:
+───────────────────────────────────────────────────────────
+
+📁 final_pipeline/          ← NEW! Only production-ready files
+  ├── 1_data_collection/
+  │   ├── 1_kaggle_downloader.py
+  │   ├── 2_vclense_scraper.py
+  │   ├── 3_yc_scraper_v2.py (FINAL)
+  │   ├── 5_startupticker_scraper_v7_STEP1_ONLY.py (FINAL)
+  │   └── 7_venturekick_scraper_v5_STEP1_ONLY.py (FINAL)
+  │
+  ├── 2_data_processing/
+  │   ├── 4_merge_and_clean.py
+  │   ├── 8_llm_article_analyzer.py
+  │   └── 10_automated_llm_extraction.py
+  │
+  ├── 3_analysis/
+  │   ├── step2_industry_trends.py (NEW!)
+  │   └── 9_quality_analysis.py
+  │
+  ├── README.md (main docs)
+  ├── V7_QUICK_START.md
+  └── requirements.txt
+
+📁 archive/                 ← All old versions & dev files
+  ├── old_scrapers/
+  │   ├── startupticker_v1-v6/
+  │   └── venturekick_v1-v4/
+  │
+  ├── old_docs/
+  │   └── (all V3, V6 docs)
+  │
+  ├── test_files/
+  │   └── (temp_test, test_v6, etc.)
+  │
+  └── logs/
+      └── (all .log files)
+
+📁 data/                    ← Keep as is
+📁 output/                  ← Keep as is (industry_trends)
+
+═══════════════════════════════════════════════════════════
+EXECUTION PLAN:
+═══════════════════════════════════════════════════════════
+
+Step 1: Create new folders
+Step 2: Copy FINAL files to final_pipeline/
+Step 3: Move old versions to archive/
+Step 4: Create clean README in final_pipeline/
+Step 5: Verify everything works
+
+═══════════════════════════════════════════════════════════

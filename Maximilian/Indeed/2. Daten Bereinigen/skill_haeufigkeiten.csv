@@ -1,0 +1,251 @@
+﻿berufsfeld,keyword,tfidf_score,anzahl_jobs,anteil_jobs_pct
+Business Developer,business,0.03761884336184767,138,73.0
+Business Developer,management,0.03480947298715997,89,47.1
+Business Developer,data,0.028170158135964823,65,34.4
+Business Developer,technical,0.027052654840750978,71,37.6
+Business Developer,sales,0.026797681159475357,47,24.9
+Business Developer,development,0.02512358711764975,99,52.4
+Business Developer,product,0.02263081530843294,50,26.5
+Business Developer,customer,0.02255242321363693,37,19.6
+Business Developer,engineering,0.022241923868884135,67,35.4
+Business Developer,solutions,0.02181852018859962,75,39.7
+Business Developer,project,0.020931804164009,43,22.8
+Business Developer,english,0.019956189336749214,100,52.9
+Business Developer,technology,0.01953369986804265,58,30.7
+Business Developer,software,0.01826494748123987,44,23.3
+Business Developer,profile,0.018037946915428742,43,22.8
+Business Developer,digital,0.017890189933544253,38,20.1
+Business Developer,german,0.017687185544916734,61,32.3
+Business Developer,financial,0.017015028034280563,41,21.7
+Business Developer,tools,0.016465193931640292,63,33.3
+Business Developer,process,0.016260659410264396,55,29.1
+Business Developer,information,0.01587474231970603,52,27.5
+Business Developer,people,0.01582966049190204,51,27.0
+Business Developer,travel,0.01567807513455759,30,15.9
+Business Developer,professional,0.015575706691725894,58,30.7
+Business Developer,services,0.01512502623981341,44,23.3
+Business Developer,industry,0.01508516522959347,55,29.1
+Business Developer,us,0.015057893847970334,65,34.4
+Business Developer,science,0.015013836325562004,39,20.6
+Business Developer,office,0.014866056862405991,45,23.8
+Business Developer,leadership,0.014765785055330126,34,18.0
+Business Developer,processes,0.014670600374957153,58,30.7
+Business Developer,service,0.014543381036051628,38,20.1
+Business Developer,field,0.014365442644169663,55,29.1
+Business Developer,opportunities,0.01419014527090457,68,36.0
+Business Developer,application,0.01412340751646837,44,23.3
+Business Developer,career,0.01392200940676901,44,23.3
+Business Developer,advantage,0.013845277741712129,37,19.6
+Business Developer,projects,0.013739180986533425,46,24.3
+Business Developer,innovation,0.013718027293629457,43,22.8
+Business Developer,consulting,0.013687206942295742,27,14.3
+Business Developer,language,0.013593630558434325,33,17.5
+Business Developer,finance,0.013576164549238734,39,20.6
+Business Developer,fluent,0.013570279261871937,41,21.7
+Business Developer,marketing,0.013567353434489816,21,11.1
+Business Developer,systems,0.013448152126258205,50,26.5
+Business Developer,analysis,0.013036877396030854,31,16.4
+Business Developer,security,0.013021174111909862,13,6.9
+Business Developer,complex,0.013006454551041416,49,25.9
+Business Developer,impact,0.012935334987832042,43,22.8
+Business Developer,into,0.012548840682881236,43,22.8
+Digital Channel & Relationship Manager,sales,0.034418860272787934,28,33.7
+Digital Channel & Relationship Manager,business,0.029368084251161834,31,37.3
+Digital Channel & Relationship Manager,management,0.02912533717235321,36,43.4
+Digital Channel & Relationship Manager,customer,0.025715545864508582,29,34.9
+Digital Channel & Relationship Manager,manager,0.02055209467782281,29,34.9
+Digital Channel & Relationship Manager,solutions,0.019922949501616036,19,22.9
+Digital Channel & Relationship Manager,customers,0.019728615469113888,15,18.1
+Digital Channel & Relationship Manager,marketing,0.018324858550934943,14,16.9
+Digital Channel & Relationship Manager,english,0.01719701945019262,35,42.2
+Digital Channel & Relationship Manager,digital,0.016638930182654145,29,34.9
+Digital Channel & Relationship Manager,development,0.016244384548691402,23,27.7
+Digital Channel & Relationship Manager,us,0.015495925009606157,22,26.5
+Digital Channel & Relationship Manager,application,0.014907694613521915,15,18.1
+Digital Channel & Relationship Manager,kunden,0.014846916164145584,14,16.9
+Digital Channel & Relationship Manager,opportunities,0.01447351226292317,20,24.1
+Digital Channel & Relationship Manager,medical,0.014301618672475817,6,7.2
+Digital Channel & Relationship Manager,innovation,0.014069999390092182,19,22.9
+Digital Channel & Relationship Manager,german,0.014040185210286504,24,28.9
+Digital Channel & Relationship Manager,market,0.013908682741096311,17,20.5
+Digital Channel & Relationship Manager,deutsch,0.013750025901425584,24,28.9
+Digital Channel & Relationship Manager,services,0.013727117728019484,15,18.1
+Digital Channel & Relationship Manager,office,0.013399182455761086,21,25.3
+Digital Channel & Relationship Manager,success,0.013301121489873502,23,27.7
+Digital Channel & Relationship Manager,travel,0.013300871680478091,20,24.1
+Digital Channel & Relationship Manager,professional,0.013245057634838665,20,24.1
+Digital Channel & Relationship Manager,technical,0.013241035250468398,14,16.9
+Digital Channel & Relationship Manager,information,0.013223695751669269,23,27.7
+Digital Channel & Relationship Manager,strategic,0.013092595240544215,16,19.3
+Digital Channel & Relationship Manager,people,0.012877515359981023,17,20.5
+Digital Channel & Relationship Manager,process,0.012760671243900698,14,16.9
+Digital Channel & Relationship Manager,mitarbeitenden,0.01273640090359989,12,14.5
+Digital Channel & Relationship Manager,englischkenntnisse,0.012697762582546126,22,26.5
+Digital Channel & Relationship Manager,relationship,0.012675229403872581,17,20.5
+Digital Channel & Relationship Manager,learning,0.012524760917017583,19,22.9
+Digital Channel & Relationship Manager,tools,0.012523328491869278,21,25.3
+Digital Channel & Relationship Manager,data,0.012444067609508846,21,25.3
+Digital Channel & Relationship Manager,product,0.012408699608979588,12,14.5
+Digital Channel & Relationship Manager,value,0.01229556798353325,15,18.1
+Digital Channel & Relationship Manager,deutsch englischkenntnisse,0.012089341356956836,19,22.9
+Digital Channel & Relationship Manager,service,0.012058185657374675,15,18.1
+Digital Channel & Relationship Manager,clinical,0.012046884609315732,5,6.0
+Digital Channel & Relationship Manager,multiple,0.01190794073659379,14,16.9
+Digital Channel & Relationship Manager,unterstützung,0.011766078789148492,14,16.9
+Digital Channel & Relationship Manager,scientific,0.011670827784956431,4,4.8
+Digital Channel & Relationship Manager,engineering,0.0114695723059246,10,12.0
+Digital Channel & Relationship Manager,umgang,0.011335418875242736,16,19.3
+Digital Channel & Relationship Manager,portfolio,0.011334993889314122,8,9.6
+Digital Channel & Relationship Manager,health,0.011326774467267632,14,16.9
+Digital Channel & Relationship Manager,field,0.011230923913277392,16,19.3
+Digital Channel & Relationship Manager,abb,0.011205811560880342,2,2.4
+IT Manager,kunden,0.027752956331434646,121,31.9
+IT Manager,management,0.02017909832740771,112,29.6
+IT Manager,deutsch,0.017056899879865202,141,37.2
+IT Manager,abgeschlossene,0.01677387852138575,85,22.4
+IT Manager,service,0.015928668684228153,57,15.0
+IT Manager,informatik,0.01558419951524499,93,24.5
+IT Manager,business,0.014993654571238817,97,25.6
+IT Manager,microsoft,0.014986896260753139,50,13.2
+IT Manager,mitarbeitenden,0.013621994802168944,74,19.5
+IT Manager,weiterentwicklung,0.013606418070755855,98,25.9
+IT Manager,freude,0.013579841195829457,65,17.2
+IT Manager,sap,0.01355902236864507,32,8.4
+IT Manager,englischkenntnisse,0.013189318322677744,85,22.4
+IT Manager,aktiv,0.013052239502391344,87,23.0
+IT Manager,marketing,0.012804530726378818,28,7.4
+IT Manager,lösungen,0.012786047407949449,88,23.2
+IT Manager,umgang,0.012687140721502791,66,17.4
+IT Manager,verständnis,0.012530730351863053,84,22.2
+IT Manager,unterstützung,0.012467432037721582,92,24.3
+IT Manager,manager,0.012298070276169446,89,23.5
+IT Manager,wochen,0.012168289702264657,50,13.2
+IT Manager,de,0.011832992814831876,14,3.7
+IT Manager,umsetzung,0.01172504143394628,69,18.2
+IT Manager,technische,0.011717014571977446,70,18.5
+IT Manager,deutschkenntnisse,0.011501561152976982,49,12.9
+IT Manager,gemeinsam,0.01149615427762204,76,20.1
+IT Manager,ag,0.01143138716794243,70,18.5
+IT Manager,projekten,0.011421797629113863,68,17.9
+IT Manager,kannst,0.011416459832133252,75,19.8
+IT Manager,services,0.011344073551160381,67,17.7
+IT Manager,englisch,0.011300139577505773,68,17.9
+IT Manager,innen,0.011271178830060924,47,12.4
+IT Manager,wort,0.011188382044214138,75,19.8
+IT Manager,projekte,0.011176668560945107,68,17.9
+IT Manager,wort schrift,0.010950690716642232,65,17.2
+IT Manager,schrift,0.010950690716642232,65,17.2
+IT Manager,office,0.010869205716858777,60,15.8
+IT Manager,weitere,0.010866376492855786,66,17.4
+IT Manager,per,0.01054596987506919,64,16.9
+IT Manager,hr,0.010525459497385373,44,11.6
+IT Manager,zwingend,0.010395088984567674,21,5.5
+IT Manager,sicher,0.010329135157504598,63,16.6
+IT Manager,interesse,0.010163942162840351,39,10.3
+IT Manager,internen,0.010060772630816523,51,13.5
+IT Manager,entwicklung,0.010052159542280883,72,19.0
+IT Manager,deiner,0.00984111910944358,65,17.2
+IT Manager,technischen,0.009685309048313842,42,11.1
+IT Manager,vergleichbare,0.009662303424044326,55,14.5
+IT Manager,cloud,0.00963433600852202,42,11.1
+IT Manager,efz,0.009548532909688387,26,6.9
+Startup & Technology Entrepreneur,management,0.02617367483666713,36,32.7
+Startup & Technology Entrepreneur,business,0.022903650688657226,39,35.5
+Startup & Technology Entrepreneur,engineering,0.022813093784547624,30,27.3
+Startup & Technology Entrepreneur,technical,0.021440541857252755,31,28.2
+Startup & Technology Entrepreneur,sales,0.02044879304727577,19,17.3
+Startup & Technology Entrepreneur,systems,0.018701381157420913,24,21.8
+Startup & Technology Entrepreneur,ai,0.01793948511299089,24,21.8
+Startup & Technology Entrepreneur,tools,0.017733782550461707,27,24.5
+Startup & Technology Entrepreneur,office,0.017181130799278282,25,22.7
+Startup & Technology Entrepreneur,startup,0.015917042563943738,30,27.3
+Startup & Technology Entrepreneur,english,0.015902423235087667,38,34.5
+Startup & Technology Entrepreneur,process,0.015292277343884674,28,25.5
+Startup & Technology Entrepreneur,development,0.015203807986785453,30,27.3
+Startup & Technology Entrepreneur,data,0.01498842561439233,22,20.0
+Startup & Technology Entrepreneur,design,0.014952364099192253,14,12.7
+Startup & Technology Entrepreneur,innovation,0.014877156958745016,27,24.5
+Startup & Technology Entrepreneur,project,0.014746366416171908,17,15.5
+Startup & Technology Entrepreneur,client,0.01469661514589397,12,10.9
+Startup & Technology Entrepreneur,deutsch,0.014366353045840847,19,17.3
+Startup & Technology Entrepreneur,us,0.014103791023707844,31,28.2
+Startup & Technology Entrepreneur,german,0.013759035795492385,32,29.1
+Startup & Technology Entrepreneur,solutions,0.013693889322337907,29,26.4
+Startup & Technology Entrepreneur,quality,0.013426146238848205,18,16.4
+Startup & Technology Entrepreneur,finance,0.013227866622990258,13,11.8
+Startup & Technology Entrepreneur,cloud,0.013190114632172036,13,11.8
+Startup & Technology Entrepreneur,interesse,0.012974424551093607,17,15.5
+Startup & Technology Entrepreneur,building,0.012946506697340472,24,21.8
+Startup & Technology Entrepreneur,into,0.012231054504092374,24,21.8
+Startup & Technology Entrepreneur,kunden,0.012090418619381997,13,11.8
+Startup & Technology Entrepreneur,mechanical,0.012023990850080428,9,8.2
+Startup & Technology Entrepreneur,product,0.011959782650241984,18,16.4
+Startup & Technology Entrepreneur,strategic,0.011899493111948463,16,14.5
+Startup & Technology Entrepreneur,customer,0.01186710995774497,20,18.2
+Startup & Technology Entrepreneur,per,0.011715220830869622,21,19.1
+Startup & Technology Entrepreneur,impact,0.011282044023411812,17,15.5
+Startup & Technology Entrepreneur,swiss,0.011251012809072244,13,11.8
+Startup & Technology Entrepreneur,microsoft,0.011134575010647086,9,8.2
+Startup & Technology Entrepreneur,projects,0.011124393593581298,18,16.4
+Startup & Technology Entrepreneur,field,0.01110385923462121,21,19.1
+Startup & Technology Entrepreneur,talent,0.010965862102197844,16,14.5
+Startup & Technology Entrepreneur,industry,0.010904176959606217,23,20.9
+Startup & Technology Entrepreneur,freude,0.010790598904833942,11,10.0
+Startup & Technology Entrepreneur,umgang,0.010762367218388729,8,7.3
+Startup & Technology Entrepreneur,universität,0.010729797975709875,5,4.5
+Startup & Technology Entrepreneur,software,0.010649666292411342,15,13.6
+Startup & Technology Entrepreneur,customers,0.010641924406605002,14,12.7
+Startup & Technology Entrepreneur,people,0.010581872337456267,22,20.0
+Startup & Technology Entrepreneur,recruitment,0.01057903035488826,14,12.7
+Startup & Technology Entrepreneur,exceptional,0.010314951288098789,22,20.0
+Startup & Technology Entrepreneur,ownership,0.010291940315453944,15,13.6
+Supply Chain & Operations Manager,management,0.04230429192163794,23,53.5
+Supply Chain & Operations Manager,sap,0.03509630804198275,12,27.9
+Supply Chain & Operations Manager,deutsch,0.031965538960489065,28,65.1
+Supply Chain & Operations Manager,zwingend,0.031010964917504633,5,11.6
+Supply Chain & Operations Manager,supply,0.027826950412068858,16,37.2
+Supply Chain & Operations Manager,suche,0.027625785202604534,3,7.0
+Supply Chain & Operations Manager,kunden,0.02750047190355323,12,27.9
+Supply Chain & Operations Manager,englischkenntnisse,0.02681060486468967,20,46.5
+Supply Chain & Operations Manager,supply chain,0.025882722518946518,16,37.2
+Supply Chain & Operations Manager,chain,0.02579465169263376,18,41.9
+Supply Chain & Operations Manager,business,0.02534482314568385,12,27.9
+Supply Chain & Operations Manager,weitere,0.024929464473126755,13,30.2
+Supply Chain & Operations Manager,englisch,0.024816584050355472,16,37.2
+Supply Chain & Operations Manager,logistik,0.024604275508239612,8,18.6
+Supply Chain & Operations Manager,deutsch englischkenntnisse,0.023323706590000288,14,32.6
+Supply Chain & Operations Manager,marketing,0.021926837233139054,7,16.3
+Supply Chain & Operations Manager,product,0.021668935222665726,6,14.0
+Supply Chain & Operations Manager,field,0.02124739972137222,4,9.3
+Supply Chain & Operations Manager,betriebswirtschaft,0.02094708723116894,12,27.9
+Supply Chain & Operations Manager,erfahrungen,0.02093177100098086,6,14.0
+Supply Chain & Operations Manager,anforderungen,0.020839088526941916,9,20.9
+Supply Chain & Operations Manager,operations,0.020795887356575574,10,23.3
+Supply Chain & Operations Manager,sales,0.019795932568413242,5,11.6
+Supply Chain & Operations Manager,ag,0.01917230411730003,8,18.6
+Supply Chain & Operations Manager,sicher,0.018949934152065816,10,23.3
+Supply Chain & Operations Manager,entwicklung,0.018788920116034225,9,20.9
+Supply Chain & Operations Manager,group,0.018565448686395786,7,16.3
+Supply Chain & Operations Manager,informationen,0.01855999505288075,8,18.6
+Supply Chain & Operations Manager,aktiv,0.018226979205017726,12,27.9
+Supply Chain & Operations Manager,weiterentwicklung,0.018154514691493196,8,18.6
+Supply Chain & Operations Manager,abgeschlossene,0.018100113066107235,11,25.6
+Supply Chain & Operations Manager,vergleichbaren,0.017927754514607736,9,20.9
+Supply Chain & Operations Manager,innerhalb,0.017789857932850515,9,20.9
+Supply Chain & Operations Manager,abgeschlossenes,0.0170063151127013,12,27.9
+Supply Chain & Operations Manager,verständnis,0.016993216882894298,7,16.3
+Supply Chain & Operations Manager,industrie,0.01690983441403833,7,16.3
+Supply Chain & Operations Manager,fh,0.016847851260397315,8,18.6
+Supply Chain & Operations Manager,deutsch englisch,0.016740835921348913,8,18.6
+Supply Chain & Operations Manager,kannst,0.016661974446324154,7,16.3
+Supply Chain & Operations Manager,chain management,0.01628750658574401,7,16.3
+Supply Chain & Operations Manager,supply chain management,0.01628750658574401,7,16.3
+Supply Chain & Operations Manager,bereitschaft,0.016195525447747838,6,14.0
+Supply Chain & Operations Manager,interesse,0.016057888876448257,10,23.3
+Supply Chain & Operations Manager,freude,0.015917026070872715,6,14.0
+Supply Chain & Operations Manager,service,0.015719181151146188,9,20.9
+Supply Chain & Operations Manager,unterstützung,0.015590509333511148,12,27.9
+Supply Chain & Operations Manager,erfolgreich,0.01536557626905265,6,14.0
+Supply Chain & Operations Manager,vielfalt,0.01526815430644176,10,23.3
+Supply Chain & Operations Manager,verkauf,0.015122395775839442,4,9.3
+Supply Chain & Operations Manager,microsoft,0.015051388005587798,3,7.0

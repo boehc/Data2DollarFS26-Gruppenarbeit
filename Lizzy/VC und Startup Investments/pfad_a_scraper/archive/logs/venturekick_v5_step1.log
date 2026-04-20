@@ -1,0 +1,75 @@
+/Users/chiaraboehme/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+🚀 Setting up Chrome WebDriver...
+✓ WebDriver ready
+
+======================================================================
+VENTUREKICK.CH SCRAPER V5 - STEP 1 ONLY
+======================================================================
+Deterministic Extraction:
+  • Article Text (cleaned HTML)
+  • Publication Date (DD.MM.YYYY → YYYY-MM-DD)
+  • Year (integer)
+  • URL (source)
+Filter: Only articles from 2023 onwards
+Output: ./data/venturekick_raw_articles_v5_step1.csv
+======================================================================
+
+PHASE 1: Collect Article URLs
+----------------------------------------------------------------------
+🔍 Scraping news overview: https://www.venturekick.ch/index.cfm?page=135424
+🎯 Target: 500 articles
+
+📄 Scraping newsroom page... +5 articles found
+
+✓ Collected 5 article URLs
+
+✓ Collected 5 article URLs
+
+PHASE 2: Extract Article Details (STEP 1)
+----------------------------------------------------------------------
+  [  1/5] ... ✓ (None)
+  [  2/5] ... ✓ (None)
+  [  3/5] ... ✓ (None)
+  [  4/5] ... ✓ (None)
+  [  5/5] ... ✓ (None)
+
+✓ Processing complete
+
+PHASE 3: Save Results
+----------------------------------------------------------------------
+✓ Saved: data/venturekick_raw_articles_v5_step1.csv
+  Rows: 5
+  Columns: 5
+
+======================================================================
+SUMMARY (STEP 1 COMPLETE)
+======================================================================
+Total articles scraped: 5
+Articles skipped: 0
+Errors: 0
+
+📈 Field Completeness:
+  Title               : 100.0% (5/5)
+  Publication_Date    :   0.0% (0/5)
+  Year                :   0.0% (0/5)
+  Article_Text        : 100.0% (5/5)
+
+📝 Article Text Statistics:
+  Articles with text: 5/5 (100.0%)
+  Average length: 826 characters
+  Min: 108, Max: 1434
+
+📋 Sample Records (first 5):
+Title Publication_Date Year
+                  None None
+                  None None
+                  None None
+                  None None
+                  None None
+
+✅ STEP 1 COMPLETED SUCCESSFULLY
+
+Next: Run STEP 2 (LLM or other analysis) on data/venturekick_raw_articles_v5_step1.csv
+
+🔒 WebDriver closed
