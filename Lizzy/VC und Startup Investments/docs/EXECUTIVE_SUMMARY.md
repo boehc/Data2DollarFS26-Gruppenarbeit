@@ -1,12 +1,18 @@
-# 🎯 Industry Trends 2023–2026 — Executive Summary
+# 🎯 Zusammenfassung für Entscheidungsträger
 
-## Quick Answer: "Wo gründen 2026?"
+**Analyse:** Schweizer Startup-Ökosystem 2023–2026  
+**Datengrundlage:** 1'327 Finanzierungsrunden  
+**Stand:** April 2026
+
+---
+
+## Die Kernfrage: "Wo gründen 2026?"
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
-│  🌱 EMERGING (JETZT gründen!)                              │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│  🌱 EMERGING (JETZT einsteigen!)                           │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │                                                            │
 │  1. GenAI              +168% Momentum  |  1.8% → 4.1%     │
 │  2. Robotics           +109% Momentum  |  1.0% → 4.1%     │
@@ -19,198 +25,157 @@
 
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
-│  ↑ GROWING (solide Wahl)                                   │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│  📈 GROWING (Sichere Wahl)                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │                                                            │
-│  3. BioTech            30.9% Share     |  58% Funding      │
-│  4. MedTech            5.0% Share      |  Rank #4          │
+│  1. BioTech            30.9% Marktanteil | CHF 22.3 Mrd   │
+│  2. MedTech            5.0% Marktanteil  | +8% Momentum   │
 │                                                            │
-│  ✓ Größter Markt (BioTech)                                 │
-│  ✓ Große Funding-Runden                                    │
-│  ✓ Stabiles Wachstum                                       │
-│                                                            │
-└────────────────────────────────────────────────────────────┘
-
-┌────────────────────────────────────────────────────────────┐
-│                                                            │
-│  → STABLE (neutral)                                        │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
-│                                                            │
-│  • HealthTech, Ecommerce, PropTech, AgriTech, Cybersec.   │
-│                                                            │
-│  ⚖️ Weder starkes Wachstum noch Schrumpfung               │
+│  ✓ Grösste Marktanteile                                    │
+│  ✓ Stabiles Funding                                        │
+│  ✓ Etabliertes Ökosystem in der Schweiz                    │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
-│  ↓ SLOWING/DECLINING (vermeiden!)                          │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│  📉 DECLINING (Vorsicht!)                                  │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │                                                            │
-│  ✗ ClimateTech         -7.1pp Share    |  -47% Momentum   │
-│  ✗ FinTech             -0.7pp Share    |  -12% Momentum   │
-│  ✗ Enterprise          -1.8pp Share    |  -27% Momentum   │
-│  ✗ EdTech              -0.6pp Share    |  -67% Momentum   │
-│  ✗ SpaceTech           -0.8pp Share    |  -89% Momentum   │
+│  1. ClimateTech        -47% Momentum   | -7.1pp Verlust   │
+│  2. FinTech            -12% Momentum   | 36% → sinkend    │
+│  3. SpaceTech          -89% Momentum   | Kaum Aktivität   │
 │                                                            │
-│  ⚠️ Verlieren Marktanteile & Dynamik                       │
-│  ⚠️ SpaceTech praktisch tot (0 Deals 2026-Q2)             │
+│  ⚠️ Sinkende Marktanteile                                  │
+│  ⚠️ Reduziertes Investoreninteresse                        │
+│  ⚠️ Zunehmende Konkurrenz um weniger Kapital               │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📊 Key Metrics im Vergleich
+## 📊 Detaillierte Branchen-Analyse
 
-### Top 5 nach Market Share 2025
-1. **FinTech** — 36.1% (größter Markt, aber -12% Momentum ⚠️)
-2. **BioTech** — 30.9% (zweitgrößter, stabil)
-3. **ClimateTech** — 9.8% (war 16.9% in 2023! 📉)
-4. **MedTech** — 5.0% (wachsend ↑)
-5. **GenAI** — 4.1% (war 1.8% in 2023! 🚀)
-5. **Robotics** — 4.1% (war 1.0% in 2023! 🚀)
+### Marktanteile 2025 (Top 5)
 
-### Größte Gewinner (Market Share Change 2023→2025)
-1. **BioTech** — +3.2pp
-2. **Robotics** — +3.1pp
-3. **GenAI** — +2.3pp
-4. **MedTech** — +1.5pp
+| Rang | Branche | Marktanteil | Deals | Trend |
+|------|---------|-------------|-------|-------|
+| 1 | FinTech | 36.1% | 151 | ↓ Sinkend |
+| 2 | BioTech | 30.9% | 129 | → Stabil |
+| 3 | ClimateTech | 9.8% | 41 | ↓↓ Stark sinkend |
+| 4 | MedTech | 5.0% | 21 | ↑ Wachsend |
+| 5 | GenAI | 4.1% | 17 | ↑↑ Stark wachsend |
 
-### Größte Verlierer (Market Share Change 2023→2025)
-1. **ClimateTech** — -7.1pp ⚠️⚠️⚠️
-2. **Enterprise** — -1.8pp
-3. **SpaceTech** — -0.8pp
-4. **FinTech** — -0.7pp
+### Momentum-Ranking (Veränderung 2023→2025)
 
-### Höchstes Momentum (letzte 4 Quartale)
-1. **GenAI** — +168% 🚀🚀🚀
-2. **Robotics** — +109% 🚀🚀
-3. **Ecommerce** — +23% ↑
-4. **PropTech** — +23% ↑
-
-### Niedrigstes Momentum
-1. **SpaceTech** — -89% 💀
-2. **EdTech** — -67% 📉
-3. **ClimateTech** — -47% 📉
-4. **HealthTech** — -40% 📉
+| Rang | Branche | Momentum | Interpretation |
+|------|---------|----------|----------------|
+| 1 | GenAI | +168.4% | 🚀 Explosives Wachstum |
+| 2 | Robotics | +109.1% | 🚀 Starkes Wachstum |
+| 3 | PropTech | +23.1% | ↑ Wachsend |
+| 4 | Ecommerce | +23.1% | ↑ Wachsend |
+| 5 | MedTech | +8.3% | → Leicht positiv |
+| ... | ... | ... | ... |
+| 12 | HealthTech | -39.5% | ↓ Rückläufig |
+| 13 | ClimateTech | -47.3% | ↓↓ Stark rückläufig |
+| 14 | SpaceTech | -88.9% | ⚠️ Kollaps |
 
 ---
 
-## 🎓 Was bedeutet das?
+## 💰 Funding-Analyse
 
-### 🌟 Die "Winning Bet"
-**GenAI + Robotics** sind die klaren Gewinner:
-- Verdoppeln/verdreifachen ihren Marktanteil
-- Höchstes Momentum JETZT (nicht historisch)
-- Steigendes Funding-Volumen
-- Ranking-Aufstieg (beide jetzt #5)
+### Funding-Verteilung nach Branche
 
-→ **Wenn du 2026 gründest, sollten diese beiden auf deiner Shortlist sein.**
+| Branche | Funding-Anteil | CHF (geschätzt) |
+|---------|---------------|-----------------|
+| BioTech | 58.0% | CHF 22.3 Mrd |
+| FinTech | 19.2% | CHF 7.4 Mrd |
+| MedTech | 8.5% | CHF 3.3 Mrd |
+| ClimateTech | 6.2% | CHF 2.4 Mrd |
+| Andere | 8.1% | CHF 3.1 Mrd |
 
-### 💰 Der "Safe Bet"
-**BioTech + MedTech** sind etabliert und wachsen:
-- BioTech: 30.9% Marktanteil, 58% des Funding-Volumens
-- Große Funding-Runden (durchschnittlich höhere Summen)
-- Stabile Top-Positionen
-
-→ **Wenn du Sicherheit + Wachstum suchst, wähle diese.**
-
-### ⚠️ Der "Überraschende Verlierer"
-**ClimateTech** kollabiert:
-- Market Share: 16.9% → 9.8% (-7.1pp)
-- Funding-Volumen: 18.6% → 3.4% (-15.2pp)
-- Momentum: -47%
-
-→ **War 2023 noch #3, jetzt dramatischer Einbruch.**  
-   Mögliche Gründe: Hype vorbei? Finanzierungsklima härter? Konsolidierung?
-
-### 🤔 Der "Paradox"
-**FinTech** ist der größte Markt (36.1%) aber verliert Momentum (-12%):
-- Viele Deals, aber eher kleinere Summen
-- Reife Industrie → weniger spektakuläre Exits?
-- Konsolidierung statt Explosion
-
-→ **Größe ≠ Dynamik. Für Gründer: Etabliert aber nicht sexy.**
-
-### 💀 Der "Dead Space"
-**SpaceTech** ist quasi tot:
-- 0.8% → 0.0% Market Share
-- -89% Momentum
-- 0 Deals in 2026-Q2
-
-→ **Vermeiden, außer du hast SpaceX-Level Kapital.**
+> **Erkenntnis:** BioTech dominiert das Schweizer Startup-Funding mit fast 60% des Gesamtvolumens.
 
 ---
 
-## 📈 Trend-Interpretation für Strategie
+## 🎯 Investment-Empfehlungen
 
-### Wenn du JETZT gründest (2026):
-1. **Wähle GenAI oder Robotics** — höchstes Wachstum, steigendes Interesse
-2. **Überdenke ClimateTech/EdTech/SpaceTech** — Markt kühlt ab
-3. **FinTech nur mit starkem USP** — großer aber gesättigter Markt
-4. **BioTech/MedTech** — langsamer aber sicher
+### STRONG BUY — Sofort handeln
+| Branche | Begründung |
+|---------|------------|
+| **GenAI** | Explosives Wachstum, frühe Phase, hohe Skalierbarkeit |
+| **Robotics** | Starkes Momentum, industrielle Basis in CH, Zukunftstechnologie |
 
-### Wenn du INVESTIERST (VC-Perspektive):
-1. **Early-Stage GenAI/Robotics** — Exposure zum Wachstumsmarkt
-2. **Late-Stage BioTech** — große Exits wahrscheinlich (58% Funding-Volumen!)
-3. **ClimateTech nur mit Discount** — Markt ist rückläufig
-4. **Diversifikation wichtig** — 2 Emerging + 1-2 Growing
+### BUY — Solide Wahl
+| Branche | Begründung |
+|---------|------------|
+| **BioTech** | Grösster Markt, stabile Funding-Pipelines, CH-Stärke |
+| **MedTech** | Wachsendes Segment, gute CH-Infrastruktur |
 
-### Wenn du ein Accelerator bist:
-1. **Batch-Fokus:** 50% GenAI/Robotics, 30% BioTech/MedTech, 20% Rest
-2. **Marketing:** "Wir fokussieren auf die Wachstumsmärkte 2026"
-3. **Network:** VCs die in GenAI/Robotics investieren
+### HOLD — Abwarten
+| Branche | Begründung |
+|---------|------------|
+| **HealthTech** | Volatil, keine klare Richtung |
+| **Ecommerce** | Gesättigt, aber stabil |
+| **PropTech** | Leichtes Wachstum, nischig |
 
----
-
-## 🔮 Ausblick 2026–2027
-
-Basierend auf aktuellen Trends (fortgeschrieben):
-
-**Wahrscheinlich:**
-- GenAI erreicht 6-8% Market Share (wenn +168% Momentum anhält)
-- Robotics erreicht 5-6% (wenn +109% Momentum anhält)
-- ClimateTech fällt unter 8% (wenn -47% Momentum anhält)
-- SpaceTech bleibt bei ~0%
-
-**Unwahrscheinlich aber möglich:**
-- ClimateTech-Revival durch Policy-Shift (EU Green Deal 2.0?)
-- FinTech-Boom durch neue Technologie (Blockchain 2.0? CBDC?)
-- SpaceTech-Comeback durch Mega-Round (unwahrscheinlich in Europa)
-
-**Risiken:**
-- GenAI-Hype könnte wie Web3 implodieren
-- Robotics könnte durch Recession gebremst werden
-- BioTech abhängig von Approval-Cycles (kann volatil sein)
+### AVOID — Nicht empfohlen
+| Branche | Begründung |
+|---------|------------|
+| **ClimateTech** | Starker Rückgang, trotz gesellschaftlicher Relevanz |
+| **FinTech** | Markt schrumpft, hohe Konkurrenz |
+| **SpaceTech** | Kaum Aktivität in CH |
+| **EdTech** | Marginaler Markt |
 
 ---
 
-## 📌 Data Confidence
+## 📈 Zeitliche Entwicklung
 
-### ✅ Hohe Konfidenz:
-- BioTech, FinTech (viele Datenpunkte, konsistent)
-- Trend-Richtungen (GenAI↑, ClimateTech↓)
+### Deal-Aktivität nach Jahr
 
-### ⚠️ Moderate Konfidenz:
-- Funding-Volumen (nur 62% der Deals haben Daten)
-- 2026-Daten (nur 2 Quartale, könnte sich ändern)
+| Jahr | Total Deals | Veränderung |
+|------|-------------|-------------|
+| 2023 | 397 | Basis |
+| 2024 | 512 | +29% |
+| 2025 | 418 | -18% |
+| 2026 (Q1) | 95 | (laufend) |
 
-### ❓ Niedrige Konfidenz:
-- SpaceTech, EdTech (sehr wenige Deals → hohe Volatilität)
-- Absolute Forecasts (Trends können brechen)
-
-→ **Nutze die Daten für Richtung, nicht absolute Zahlen.**
+> **Interpretation:** Nach einem Peak 2024 normalisiert sich der Markt 2025. Die Qualität der Deals steigt (weniger, aber grösser).
 
 ---
 
-## 🎯 One-Sentence Takeaway
+## 🔑 Fazit für MBI-Studierende
 
-**"Gründe 2026 in GenAI oder Robotics, vermeide ClimateTech/SpaceTech,  
-und nutze BioTech als Safe Bet — FinTech ist groß aber gesättigt."**
+### Top 3 Empfehlungen
+
+1. **GenAI-basiertes Startup** — Höchstes Wachstumspotenzial, aber auch Risiko
+2. **BioTech/MedTech** — Sicherere Wahl mit stabiler Schweizer Infrastruktur
+3. **Robotics** — Gutes Momentum, industrielle Anknüpfungspunkte
+
+### Vermeiden
+
+- ClimateTech (trotz gesellschaftlicher Bedeutung — Markt ist schwierig)
+- FinTech (übersättigt, schwieriges Funding-Umfeld)
+- Nischenmärkte (SpaceTech, EdTech)
 
 ---
 
-**Full Analysis:** See `README.md` and `ANALYSIS_SUMMARY.md`  
-**Data:** 7 CSV files in `output/industry_trends/`  
-**Generated:** April 2026 | data2dollar MBI Gruppenarbeit
+## ⚠️ Methodische Hinweise
+
+### Datenquellen
+- **Startupticker.ch** — Schweizer Startup-News (Hauptquelle)
+- **Venture Kick** — VC-Förderungsdaten
+
+### Momentum-Definition
+Momentum = Veränderung des **relativen Marktanteils**, nicht absolute Zahlen.
+- Beispiel: FinTech hat mehr Deals als GenAI, aber sinkenden Marktanteil
+- GenAI hat weniger Deals, aber stark steigenden Marktanteil
+
+### GenAI-Klassifizierung
+"GenAI" = Startups deren **Kernprodukt** auf KI basiert (44 Startups).
+Nicht: Startups die KI als Tool/Feature nutzen.
+
+---
+
+*Analyse erstellt: April 2026*

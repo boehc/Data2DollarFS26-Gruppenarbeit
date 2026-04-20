@@ -89,7 +89,7 @@ Funding Analysis      → Volumen pro Branche/Quartal
 | 🔴 **AVOID** | ClimateTech, FinTech | Sinkende Marktanteile, Dynamik lässt nach |
 | 🔴 **SELL** | SpaceTech, EdTech | Praktisch keine Deals mehr |
 
-### Key Insights
+### Wichtigste Erkenntnisse
 1. **BioTech** dominiert mit 31% Marktanteil und 58% des Funding-Volumens
 2. **GenAI** hat sich von 1.8% auf 4.1% Marktanteil verdoppelt
 3. **ClimateTech** hat -7.1pp Marktanteil verloren (grösster Verlierer)

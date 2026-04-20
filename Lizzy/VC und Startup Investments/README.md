@@ -29,10 +29,11 @@ VC und Startup Investments/
 │   ├── 1_data_collection/    ← Scraper
 │   ├── 2_data_processing/    ← Bereinigung & LLM
 │   └── 3_analysis/           ← Trend-Analyse
-├── docs/                     ← Dokumentation (7 Dateien)
+├── docs/                     ← Dokumentation (4 Dateien)
 │   ├── PROFESSOR_OVERVIEW.md ← ⭐ Kurzübersicht für Bewertung
-│   ├── EXECUTIVE_SUMMARY.md  ← Kernaussagen
-│   └── ...
+│   ├── EXECUTIVE_SUMMARY.md  ← Kernaussagen & Empfehlungen
+│   ├── SCHNELLSTART.md       ← Quick Start Guide
+│   └── CSV_DATEIEN_INDEX.md  ← Übersicht aller CSV-Dateien
 ├── results/                  ← Finale CSV-Ergebnisse (16 Dateien)
 │   ├── SIMPLE_SUMMARY.csv    ← One-Pager
 │   ├── INVESTMENT_RECOMMENDATIONS.csv
@@ -77,11 +78,12 @@ VC und Startup Investments/
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Schnellstart
 
 ### Für Professor (Kurzübersicht)
 ```
 docs/PROFESSOR_OVERVIEW.md    → 2-3 Min Lesezeit
+docs/SCHNELLSTART.md          → Kompakte Projektübersicht
 results/SIMPLE_SUMMARY.csv    → One-Page Ergebnisse
 ```
 
@@ -102,9 +104,11 @@ python3 -c "import pandas as pd; df=pd.read_csv('rohdaten/startups_classified_v2
 |-----------|-------|--------------|
 | ⭐⭐⭐ | `docs/PROFESSOR_OVERVIEW.md` | Zusammenfassung für Bewertung |
 | ⭐⭐⭐ | `results/INVESTMENT_RECOMMENDATIONS.csv` | Buy/Hold/Avoid Signale |
+| ⭐⭐⭐ | `docs/CSV_DATEIEN_INDEX.md` | Übersicht aller Ergebnis-Dateien |
 | ⭐⭐ | `results/SIMPLE_SUMMARY.csv` | One-Pager aller Branchen |
 | ⭐⭐ | `rohdaten/startups_classified_v2.csv` | Bereinigte Rohdaten |
 | ⭐ | `code/3_analysis/step2_industry_trends.py` | Hauptanalyse-Script |
+| ⭐ | `code/CODE_OVERVIEW.md` | Technische Pipeline-Dokumentation |
 
 ---
 
