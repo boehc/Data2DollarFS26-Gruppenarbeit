@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBI Explorer – Dein Weg vom Studium in den Arbeitsmarkt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/nav.js" defer></script>
+</head>
+<body>
+    <header class="nav">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo" aria-label="MBI Explorer – Home">
+          <span class="nav-logo-mark">M</span>
+          <span class="nav-logo-text">
+            MBI Explorer
+            <small>Career Intelligence</small>
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Hauptnavigation">
+          <a href="index.html" class="nav-link">Übersicht</a>
+          <a href="index.html#profile" class="nav-link">Profile</a>
+          <a href="assessment.html" class="nav-link">Self-Assessment</a>
+          <a href="index.html#how" class="nav-link">So funktioniert's</a>
+        </nav>
+        <div class="nav-cta">
+          <a href="index.html#profile" class="btn btn-primary btn-sm">Profil wählen</a>
+          <button class="nav-toggle" aria-label="Menü" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            MBI-Studiengang · FHNW · FS26
+          </div>
+          <h1>Dein Weg vom <em>Studium</em><br>in den Arbeitsmarkt.</h1>
+          <p>Interaktive Analyse von 1'194 Stelleninseraten, zugeordnet zu den 6 Vertiefungsprofilen des MBI-Studiengangs.</p>
+          <div class="hero-cta">
+            <a href="#profile" class="btn btn-primary">Profile erkunden</a>
+            <a href="#how" class="btn btn-ghost">So funktioniert's</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="hero-stat-val">1'194</div><div class="hero-stat-lbl">Stelleninserate</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-lbl">Vertiefungsprofile</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">14</div><div class="hero-stat-lbl">Ø Skills / Stelle</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">1.9</div><div class="hero-stat-lbl">Ø Tech-Stack</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="how" class="section-sm">
+      <div class="container">
+        <div class="section-head left">
+          <span class="eyebrow">So funktioniert's</span>
+          <h2>In drei Schritten zu deinem Profil</h2>
+        </div>
+        <div class="how-grid">
+          <div class="how-step"><div class="how-num">1</div><div class="how-title">Profil wählen</div><div class="how-desc">Wähle eines der 6 MBI-Vertiefungsprofile aus, die zu deinen Interessen passen.</div></div>
+          <div class="how-step"><div class="how-num">2</div><div class="how-title">Stellen erkunden</div><div class="how-desc">Durchsuche passende Stelleninserate aus dem Schweizer Arbeitsmarkt.</div></div>
+          <div class="how-step"><div class="how-num">3</div><div class="how-title">Skills & Kurse</div><div class="how-desc">Sieh benötigte Skills, passende MBI-Kurse und identifiziere deine Gaps.</div></div>
+        </div>
+      </div>
+    </section>
+    <section id="market" class="section-tight">
+      <div class="container">
+        <div class="section-head left">
+          <span class="eyebrow">Marktüberblick</span>
+          <h2>Verteilung nach Profil</h2>
+          <p>Wie sich die 1'194 Stellen auf die 6 MBI-Vertiefungsprofile aufteilen.</p>
+        </div>
+        <div class="overview-grid">
+            <div class="card" style="display:flex;flex-direction:column;">
+                <div class="card-title">Verteilung nach Profil</div>
+                <div style="flex:1;display:flex;align-items:center;">
+                    <div>                            <div id="f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0")) {                    Plotly.newPlot(                        "f04ae6d6-6e69-4a7a-abeb-5ab89e0c5ba0",                        [{"hole":0.6,"hovertemplate":"\u003cb\u003e%{label}\u003c\u002fb\u003e\u003cbr\u003e%{value} Stellen (%{percent})\u003cextra\u003e\u003c\u002fextra\u003e","labels":["Digital Business","Tech Architect","Business Dev.","Supply Chain","Digital Channel","Startup & Scale-up"],"marker":{"colors":["#475569","#2563eb","#059669","#dc2626","#7c3aed","#d97706"]},"pull":[0.02,0.02,0.02,0.02,0.02,0.02],"sort":false,"textfont":{"family":"DM Sans, sans-serif","size":12},"textinfo":"label+percent","textposition":"outside","values":[651,204,129,82,66,62],"type":"pie"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"margin":{"t":20,"l":20,"r":20,"b":20},"font":{"family":"DM Sans, sans-serif","color":"#475569"},"height":380,"showlegend":false,"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","annotations":[{"showarrow":false,"text":"\u003cb\u003e1194\u003c\u002fb\u003e\u003cbr\u003e\u003cspan style='font-size:12px;color:#94a3b8'\u003eStellen\u003c\u002fspan\u003e","x":0.5,"y":0.5,"font":{"size":28,"color":"#0f172a","family":"DM Sans, sans-serif"}}]},                        {"responsive": true}                    )                };            </script>        </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Kennzahlen</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th style="text-align:right;">Stellen</th>
+                            <th style="text-align:right;">Ø Skills</th>
+                            <th style="text-align:right;">Ø Tech</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#475569;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Digital Business</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">651</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">13</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.7</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#2563eb;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Tech Architect</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">204</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">15</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.8</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#059669;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Business Dev.</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">129</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">17</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.0</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#dc2626;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Supply Chain</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">82</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">2.1</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#7c3aed;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Digital Channel</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">66</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.6</td>
+    </tr><tr>
+        <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#d97706;flex-shrink:0;"></span>
+                <span style="font-weight:600;">Startup & Scale-up</span>
+            </div>
+        </td>
+        <td style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">62</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">14</td>
+        <td style="text-align:right;font-variant-numeric:tabular-nums;">1.8</td>
+    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td style="text-align:right;">1194</td>
+                            <td style="text-align:right;">14</td>
+                            <td style="text-align:right;">1.9</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+      </div>
+    </section>
+    <section id="profile" class="section-lg">
+      <div class="container">
+        <div class="section-head left">
+          <span class="eyebrow">Profile</span>
+          <h2>Welches Profil passt zu dir?</h2>
+          <p>Wähle ein Vertiefungsprofil, um die zugehörigen Stelleninserate, Skills und MBI-Kurse zu erkunden.</p>
+        </div>
+        <div class="profile-grid">
+            
+    <a href="profil_transforming_managing_digital_business.html" class="profile-card" style="animation-delay: 0.1s;">
+        <div class="profile-card-accent" style="background: #475569;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#f8fafc;">
+                    🔄
+                </div>
+                <div>
+                    <div class="profile-card-name">Digital Business</div>
+                    <div class="profile-card-sub">651 Stellen · 55%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">13</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">1.7</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#475569;">651</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#475569;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_technology_solution_architect.html" class="profile-card" style="animation-delay: 0.16s;">
+        <div class="profile-card-accent" style="background: #2563eb;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#eff6ff;">
+                    🏗️
+                </div>
+                <div>
+                    <div class="profile-card-name">Tech Architect</div>
+                    <div class="profile-card-sub">204 Stellen · 17%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">15</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">2.8</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#2563eb;">204</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#2563eb;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_business_development.html" class="profile-card" style="animation-delay: 0.22s;">
+        <div class="profile-card-accent" style="background: #059669;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#ecfdf5;">
+                    📈
+                </div>
+                <div>
+                    <div class="profile-card-name">Business Dev.</div>
+                    <div class="profile-card-sub">129 Stellen · 11%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">17</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">2.0</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#059669;">129</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#059669;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_supply_chain_operations_management.html" class="profile-card" style="animation-delay: 0.28s;">
+        <div class="profile-card-accent" style="background: #dc2626;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#fef2f2;">
+                    🔗
+                </div>
+                <div>
+                    <div class="profile-card-name">Supply Chain</div>
+                    <div class="profile-card-sub">82 Stellen · 7%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">2.1</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#dc2626;">82</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#dc2626;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_digital_channel_crm.html" class="profile-card" style="animation-delay: 0.33999999999999997s;">
+        <div class="profile-card-accent" style="background: #7c3aed;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#f5f3ff;">
+                    📱
+                </div>
+                <div>
+                    <div class="profile-card-name">Digital Channel</div>
+                    <div class="profile-card-sub">66 Stellen · 6%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">1.6</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#7c3aed;">66</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#7c3aed;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+    <a href="profil_start_up_scale_up_entrepreneurship.html" class="profile-card" style="animation-delay: 0.4s;">
+        <div class="profile-card-accent" style="background: #d97706;"></div>
+        <div class="profile-card-body">
+            <div class="profile-card-header">
+                <div class="profile-card-icon" style="background:#fffbeb;">
+                    🚀
+                </div>
+                <div>
+                    <div class="profile-card-name">Startup & Scale-up</div>
+                    <div class="profile-card-sub">62 Stellen · 5%</div>
+                </div>
+            </div>
+            <div class="profile-card-stats">
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">14</div>
+                    <div class="profile-card-stat-lbl">Ø Skills</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">1.8</div>
+                    <div class="profile-card-stat-lbl">Ø Tech</div>
+                </div>
+                <div class="profile-card-stat">
+                    <div class="profile-card-stat-val" style="color:#d97706;">62</div>
+                    <div class="profile-card-stat-lbl">Stellen</div>
+                </div>
+            </div>
+            <div class="profile-card-cta" style="color:#d97706;">
+                Profil erkunden <span>→</span>
+            </div>
+        </div>
+    </a>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container-wide">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="nav-logo">
+              <span class="nav-logo-mark">M</span>
+              <span class="nav-logo-text">
+                MBI Explorer
+                <small>Career Intelligence</small>
+              </span>
+            </a>
+            <p>Interaktive Analyse von 1'194 Stelleninseraten, zugeordnet zu den 6 Vertiefungsprofilen des MBI-Studiengangs der FHNW.</p>
+          </div>
+          <div class="footer-col">
+            <h5>Navigation</h5>
+            <ul>
+              <li><a href="index.html">Übersicht</a></li>
+              <li><a href="index.html#profile">Profile</a></li>
+              <li><a href="index.html#how">So funktioniert's</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Profile</h5>
+            <ul>
+              <li><a href="profil_transforming_managing_digital_business.html">Digital Business</a></li>
+              <li><a href="profil_technology_solution_architect.html">Tech Architect</a></li>
+              <li><a href="profil_business_development.html">Business Dev.</a></li>
+              <li><a href="profil_supply_chain_operations_management.html">Supply Chain</a></li>
+              <li><a href="profil_digital_channel_crm.html">Digital Channel</a></li>
+              <li><a href="profil_start_up_scale_up_entrepreneurship.html">Startup & Scale-up</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div>© 2026 MBI Explorer · Data2Dollar FS26 · FHNW</div>
+          <div>Built with care · Maximilian</div>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>

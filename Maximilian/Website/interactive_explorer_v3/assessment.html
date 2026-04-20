@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Assessment – MBI Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/assessment.css">
+    <script src="data/courses_data.js"></script>
+    <script src="data/jobs_data.js"></script>
+    <script src="data/skills_data.js"></script>
+    <script src="js/nav.js" defer></script>
+    <script src="js/assessment.js" defer></script>
+</head>
+<body>
+    <header class="nav">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo" aria-label="MBI Explorer – Home">
+          <span class="nav-logo-mark">M</span>
+          <span class="nav-logo-text">
+            MBI Explorer
+            <small>Career Intelligence</small>
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Hauptnavigation">
+          <a href="index.html" class="nav-link">Übersicht</a>
+          <a href="index.html#profile" class="nav-link">Profile</a>
+          <a href="assessment.html" class="nav-link nav-link-active">Self-Assessment</a>
+          <a href="index.html#how" class="nav-link">So funktioniert's</a>
+        </nav>
+        <div class="nav-cta">
+          <a href="index.html#profile" class="btn btn-primary btn-sm">Profil wählen</a>
+          <button class="nav-toggle" aria-label="Menü" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">MBI Explorer</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Self-Assessment</span>
+      </nav>
+    </div>
+
+    <section class="assessment-hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Persönliches Matching
+        </div>
+        <h1>Welche Jobs passen zu <em>deinen</em> Kursen?</h1>
+        <p>Wähle links deine MBI-Kurse. Wir matchen deine Skill-Abdeckung live gegen <strong>1'158 analysierte Stellen</strong> — mit <strong>IDF-Gewichtung</strong>, damit seltene Tech-Skills mehr zählen als generische Teamfähigkeit. Nutze den Fokus-Regler rechts, um das Matching zwischen Tech und Soft-Skills zu verschieben.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div id="assessmentLoading" class="assessment-loading">
+          <div class="spinner"></div>
+          <div>Lade Kurs- und Job-Daten …</div>
+        </div>
+
+        <div id="assessmentApp" class="assessment-app" style="display:none;">
+          <!-- LEFT: Course picker -->
+          <aside class="assessment-sidebar">
+            <div class="assessment-sidebar-head">
+              <h3>Deine besuchten Kurse</h3>
+              <div class="assessment-sidebar-stats" id="courseStats">0 / 0 ausgewählt</div>
+            </div>
+
+            <div class="assessment-sidebar-controls">
+              <input type="text" id="courseSearch" class="search-input" placeholder="Kurs suchen …">
+              <div class="assessment-quick-actions">
+                <button type="button" class="btn-ghost-sm" id="selectAllBtn">Alle</button>
+                <button type="button" class="btn-ghost-sm" id="clearAllBtn">Keine</button>
+              </div>
+            </div>
+
+            <div class="assessment-course-list" id="courseList"></div>
+          </aside>
+
+          <!-- RIGHT: Results -->
+          <main class="assessment-main">
+            <div class="assessment-summary" id="assessmentSummary">
+              <div class="assessment-summary-item">
+                <div class="assessment-summary-val" id="sumCourses">0</div>
+                <div class="assessment-summary-lbl">Kurse gewählt</div>
+              </div>
+              <div class="assessment-summary-item">
+                <div class="assessment-summary-val" id="sumTop">–</div>
+                <div class="assessment-summary-lbl">Top-Match</div>
+              </div>
+              <div class="assessment-summary-item">
+                <div class="assessment-summary-val" id="sumTech">–</div>
+                <div class="assessment-summary-lbl">Ø Tech-Fit 🔧</div>
+              </div>
+              <div class="assessment-summary-item">
+                <div class="assessment-summary-val" id="sumSoft">–</div>
+                <div class="assessment-summary-lbl">Ø Profil-Fit 🤝</div>
+              </div>
+              <div class="assessment-summary-item">
+                <div class="assessment-summary-val" id="sumProfile">–</div>
+                <div class="assessment-summary-lbl">Stärkstes Profil</div>
+              </div>
+            </div>
+
+            <div class="assessment-controls">
+              <div class="ctrl-group ctrl-focus">
+                <label class="ctrl-lbl">Fokus: <span id="focusValue">Ausgewogen</span></label>
+                <div class="ctrl-slider">
+                  <span>🤝 Soft</span>
+                  <input type="range" id="focusSlider" min="0" max="1" step="0.05" value="0.55">
+                  <span>🔧 Tech</span>
+                </div>
+              </div>
+              <div class="ctrl-group">
+                <label class="ctrl-lbl" for="yearsSelect">Max. Erfahrung</label>
+                <select class="filter-select" id="yearsSelect">
+                  <option value="">egal</option>
+                  <option value="0">Einsteiger (0 J.)</option>
+                  <option value="2">bis 2 J.</option>
+                  <option value="5">bis 5 J.</option>
+                  <option value="10">bis 10 J.</option>
+                </select>
+              </div>
+              <div class="ctrl-group">
+                <label class="ctrl-lbl">Level</label>
+                <div class="ctrl-checks">
+                  <label><input type="checkbox" data-seniority="junior" checked> Junior</label>
+                  <label><input type="checkbox" data-seniority="mid"    checked> Mid</label>
+                  <label><input type="checkbox" data-seniority="senior" checked> Senior</label>
+                  <label><input type="checkbox" data-seniority="lead"   checked> Lead</label>
+                </div>
+              </div>
+              <div class="ctrl-group">
+                <label class="ctrl-lbl">Pool</label>
+                <div class="ctrl-checks">
+                  <label><input type="checkbox" id="otherToggle">  unzugeordnete Jobs</label>
+                  <label><input type="checkbox" id="sparseToggle"> Jobs mit &lt;4 Skills</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="assessment-filters">
+              <div class="filter-chips" id="profileFilterChips" role="tablist"
+                   title="Klick: ein/aus · Doppelklick: als Favorit (soft boost)"></div>
+              <select class="filter-select" id="assessmentSort">
+                <option value="match-desc">Gesamt-Match ↓</option>
+                <option value="tech-desc">Tech-Fit ↓</option>
+                <option value="covered-desc">Abgedeckte Skills ↓</option>
+                <option value="gaps-asc">Wenigste Gaps ↑</option>
+              </select>
+            </div>
+
+            <div class="results-count" id="assessmentCount">
+              <strong>0</strong> Stellen analysiert
+            </div>
+
+            <div class="assessment-results" id="assessmentResults"></div>
+
+            <div class="assessment-empty" id="assessmentEmpty" style="display:none;">
+              <div class="assessment-empty-icon">👉</div>
+              <h4>Wähle links mindestens einen Kurs</h4>
+              <p>Sobald du Kurse ankreuzt, erscheinen hier die am besten passenden Jobs.</p>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 MBI Explorer · FHNW Data2Dollar · FS26</p>
+      </div>
+    </footer>
+</body>
+</html>
