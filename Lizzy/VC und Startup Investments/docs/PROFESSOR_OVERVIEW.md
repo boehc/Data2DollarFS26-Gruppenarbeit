@@ -139,11 +139,11 @@ Die interaktive Webseite (`Webseite Gründerin/`) visualisiert die Analyse:
 
 ## 📚 Weiterführende Ressourcen
 
-- **Rohdaten:** `pfad_a_scraper/data/startupticker_enriched_FINAL.csv`
-- **Klassifiziert:** `pfad_a_scraper/data/startups_classified_v2.csv`
+- **Rohdaten:** `rohdaten/startupticker_enriched_FINAL.csv`
+- **Klassifiziert:** `rohdaten/startups_classified_v2.csv`
 - **Webseite:** `Webseite Gründerin/`
-- **Archiv:** `pfad_a_scraper/archive/` (alle alten Versionen)
+- **Archiv:** `archive/` (alle alten Versionen)
 
 ---
 
-*Erstellt: 19. April 2026*
+*Erstellt: 20. April 2026*
